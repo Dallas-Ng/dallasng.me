@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import ProjectCardList from '../components/project-card-list';
 
 const IndexPage: NextPage = () => (
-	<Center minHeight="80vh">
+	<Center minHeight="100vh">
 		<Box w={{ base: '90%', md: '80%', lg: '70%' }}>
 			<Heading as="h1" size="2xl">
 				Dallas Ng
