@@ -1,8 +1,13 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import dynamic from 'next/dynamic';
 import { Divider, Box, Center, Link, Stack } from '@chakra-ui/react';
 import { Heading } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import ProjectCardList from '../components/project-card-list';
+
+const ProjectCardList = dynamic(
+	() => import('../components/project-card-list'),
+	{ ssr: false }
+);
 
 const IndexPage: NextPage = () => (
 	<Center minHeight="100vh">
@@ -17,7 +22,7 @@ const IndexPage: NextPage = () => (
 
 			<Divider my="5" />
 
-			<Stack direction={{ sm: 'column', md: 'row' }} spacing="20px">
+			<Stack direction={{ base: 'column', md: 'row' }} spacing="20px">
 				<Link href="mailto:ngdallas1@gmail.com">ngdallas1@gmail.com</Link>
 
 				<Link href="https://www.linkedin.com/in/dallas-ng/">
