@@ -6,7 +6,7 @@ import { NextPage } from 'next';
 
 const ProjectCardList = dynamic(
 	() => import('../components/project-card-list'),
-	{ ssr: false }
+	{ ssr: false, loading: () => <div style={{ height: 200 }} /> }
 );
 
 const IndexPage: NextPage = () => (
