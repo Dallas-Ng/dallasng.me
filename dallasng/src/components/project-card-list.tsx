@@ -18,7 +18,8 @@ import ProjectCard, { ProjectCardLoading } from './project-card';
 const ProjectCardList = () => {
 	const [isMobileViewport] = useMediaQuery('(max-width: 768px)');
 	const { data, error, isValidating, mutate } = useSWR<IEndpointProject>(
-		`/api/mock`
+		`/api/mock`,
+		{ revalidateOnFocus: false }
 	);
 	const loading = isValidating;
 	const projects = !isValidating && data && data.projects;
