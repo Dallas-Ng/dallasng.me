@@ -17,7 +17,7 @@ const IndexPage: NextPage = () => (
 
 			<Divider my="5" />
 
-			<Stack direction="row" spacing="20px">
+			<Stack direction={{ sm: 'column', md: 'row' }} spacing="20px">
 				<Link href="mailto:ngdallas1@gmail.com">ngdallas1@gmail.com</Link>
 
 				<Link href="https://www.linkedin.com/in/dallas-ng/">
