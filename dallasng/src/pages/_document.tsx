@@ -18,6 +18,7 @@ class AppDocument extends Document {
 				<body>
 					<title>Dallas Ng</title>
 					<meta name="description" content="Dallas Ng Portfolio" />
+					<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
 					<Main />
 					<NextScript />

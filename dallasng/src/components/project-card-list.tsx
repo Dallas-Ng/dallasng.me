@@ -6,13 +6,13 @@ import {
 	Box,
 	Button,
 	Flex,
-	Link,
 	Text,
 	useMediaQuery
 } from '@chakra-ui/react';
 import React from 'react';
 import useSWR from 'swr';
 import { IEndpointProject } from '../types/api.interface';
+import Link from './link';
 import ProjectCard, { ProjectCardLoading } from './project-card';
 
 const ProjectCardList = () => {

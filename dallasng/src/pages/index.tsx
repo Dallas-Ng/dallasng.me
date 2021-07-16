@@ -1,8 +1,10 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import dynamic from 'next/dynamic';
-import { Divider, Box, Center, Link, Stack } from '@chakra-ui/react';
+import { Divider, Box, Center, Stack, Text } from '@chakra-ui/react';
 import { Heading } from '@chakra-ui/react';
+import React from 'react';
 import { NextPage } from 'next';
+import Link from '../components/link';
 
 const ProjectCardList = dynamic(
 	() => import('../components/project-card-list'),
@@ -26,11 +28,15 @@ const IndexPage: NextPage = () => (
 				<Link href="mailto:ngdallas1@gmail.com">ngdallas1@gmail.com</Link>
 
 				<Link href="https://www.linkedin.com/in/dallas-ng/">
-					LinkedIn <ExternalLinkIcon pb="3px" />
+					<Text>
+						LinkedIn <ExternalLinkIcon pb="3px" />
+					</Text>
 				</Link>
 
 				<Link href="https://github.com/dallas-ng">
-					GitHub <ExternalLinkIcon pb="3px" />
+					<Text>
+						GitHub <ExternalLinkIcon pb="3px" />
+					</Text>
 				</Link>
 			</Stack>
 
