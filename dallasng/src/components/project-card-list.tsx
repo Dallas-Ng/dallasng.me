@@ -1,7 +1,14 @@
 import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/alert';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SimpleGrid } from '@chakra-ui/layout';
-import { AlertDescription, Box, Flex, Link, Text } from '@chakra-ui/react';
+import {
+	AlertDescription,
+	Box,
+	Flex,
+	Link,
+	Text,
+	useMediaQuery
+} from '@chakra-ui/react';
 import React from 'react';
 import useSWR from 'swr';
 import { IEndpointProject } from '../types/api.interface';
@@ -11,6 +18,8 @@ const ProjectCardList = () => {
 	const { data, error } = useSWR<IEndpointProject>(`/api/mock`);
 	const loading = !data && !error;
 	const projects = !loading && data ? data.projects : [];
+
+	const [isMobileViewport] = useMediaQuery('(max-width: 768px)');
 
 	if (error) {
 		return (
@@ -32,8 +41,13 @@ const ProjectCardList = () => {
 		return (
 			<SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="20px">
 				<ProjectCardLoading />
-				<ProjectCardLoading />
-				<ProjectCardLoading />
+
+				{!isMobileViewport && (
+					<>
+						<ProjectCardLoading />
+						<ProjectCardLoading />
+					</>
+				)}
 			</SimpleGrid>
 		);
 	}
