@@ -4,6 +4,7 @@ import { SimpleGrid } from '@chakra-ui/layout';
 import {
 	AlertDescription,
 	Box,
+	Button,
 	Flex,
 	Link,
 	Text,
@@ -15,11 +16,12 @@ import { IEndpointProject } from '../types/api.interface';
 import ProjectCard, { ProjectCardLoading } from './project-card';
 
 const ProjectCardList = () => {
-	const { data, error } = useSWR<IEndpointProject>(`/api/mock`);
-	const loading = !data && !error;
-	const projects = !loading && data ? data.projects : [];
-
 	const [isMobileViewport] = useMediaQuery('(max-width: 768px)');
+	const { data, error, isValidating, mutate } = useSWR<IEndpointProject>(
+		`/api/mock`
+	);
+	const loading = isValidating;
+	const projects = !isValidating && data && data.projects;
 
 	if (error) {
 		return (
@@ -29,6 +31,8 @@ const ProjectCardList = () => {
 					<AlertTitle>
 						Failed to load projects, please try again later
 					</AlertTitle>
+
+					<Button onClick={() => mutate()}>Load Again</Button>
 				</Alert>
 			</Box>
 		);
