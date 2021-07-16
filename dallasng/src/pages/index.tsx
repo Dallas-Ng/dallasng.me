@@ -6,6 +6,7 @@ import { NextPage } from 'next';
 
 const ProjectCardList = dynamic(
 	() => import('../components/project-card-list'),
+	// eslint-disable-next-line
 	{ ssr: false, loading: () => <div style={{ height: 200 }} /> }
 );
 
