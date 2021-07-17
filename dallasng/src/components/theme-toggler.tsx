@@ -9,8 +9,8 @@ const ThemeToggler = memo(() => {
 		<IconButton
 			isRound
 			bg="transparent"
-			aria-label={colorMode === 'dark' ? 'Dark Mode' : 'Light Mode'}
-			icon={colorMode === 'dark' ? <MoonIcon /> : <SunIcon />}
+			aria-label={colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
+			icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
 			onMouseDown={toggleColorMode}
 		/>
 	);
