@@ -1,3 +1,4 @@
+import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import {
 	Box,
@@ -15,6 +16,7 @@ import ThemeToggler from './theme-toggler';
 
 const NavigationBar = memo(() => {
 	const [isMobileViewport] = useMediaQuery('(max-width: 768px)');
+	const router = useRouter();
 
 	return (
 		<Flex alignItems="center" justifyContent="space-between" mt="20px">
@@ -46,13 +48,15 @@ const NavigationBar = memo(() => {
 
 			<Stack direction="row" spacing={['2px', '5px']}>
 				<IconButton
-					aria-label="GitHub"
+					onClick={() => router.push('https://www.linkedin.com/in/dallas-ng/')}
+					aria-label="LinkedIn"
 					icon={<FaLinkedinIn />}
 					bg="transparent"
 					isRound
 				/>
 
 				<IconButton
+					onClick={() => router.push('https://github.com/Dallas-Ng')}
 					aria-label="GitHub"
 					icon={<FaGithub />}
 					bg="transparent"
