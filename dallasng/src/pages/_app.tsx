@@ -1,3 +1,4 @@
+import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Fragment } from 'react';
@@ -15,6 +16,12 @@ const App: React.FC<IProps> = ({ Component, pageProps }) => {
 
 	return (
 		<ChakraProvider theme={theme}>
+			<DefaultSeo
+				title="Portfolio"
+				titleTemplate="%s - Dallas Ng"
+				description="dallasng.me"
+			/>
+
 			<Layout>{getLayout(<Component {...pageProps} />)}</Layout>
 		</ChakraProvider>
 	);
