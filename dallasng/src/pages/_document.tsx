@@ -16,8 +16,6 @@ class AppDocument extends Document {
 			<Html>
 				<Head />
 				<body>
-					<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-
 					<Main />
 					<NextScript />
 				</body>
