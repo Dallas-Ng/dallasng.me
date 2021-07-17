@@ -1,5 +1,5 @@
 import Link from '@/src/components/link';
-import { ProjectCardLoading } from '@/src/components/project-card';
+import ProjectCard, { ProjectCardLoading } from '@/src/components/project-card';
 import { IEndpointProject } from '@/src/types/api.interface';
 import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/alert';
 import { ExternalLinkIcon } from '@chakra-ui/icons';

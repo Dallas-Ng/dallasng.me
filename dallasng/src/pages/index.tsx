@@ -7,7 +7,7 @@ import { Heading } from '@chakra-ui/react';
 import React from 'react';
 
 const ProjectCardList = dynamic(
-	() => import('../components/project-card-list'),
+	() => import('../components/project-card').then(x => x.ProjectCardList),
 	{ ssr: false, loading: () => <div style={{ height: 200 }} /> } // eslint-disable-line
 );
 
