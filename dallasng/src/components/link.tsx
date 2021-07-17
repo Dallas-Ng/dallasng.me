@@ -3,6 +3,7 @@ import { Link as ChakraLink, LinkProps } from '@chakra-ui/react';
 import React from 'react';
 
 interface ILinkProps extends LinkProps {
+	href: string;
 	underline?: boolean;
 }
 

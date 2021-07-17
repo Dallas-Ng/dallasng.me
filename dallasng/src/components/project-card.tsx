@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { Box, ChakraProps, Heading, Skeleton, Text } from '@chakra-ui/react';
-import React from 'react';
+import { memo } from 'react';
 import { TProject } from '../types/data.types';
 
 const BoxProps: ChakraProps = {
@@ -14,7 +14,7 @@ const BoxProps: ChakraProps = {
 	flexDirection: 'column'
 };
 
-const ProjectCard = (props: TProject) => {
+const ProjectCard = memo((props: TProject) => {
 	const { title, desc, href } = props;
 
 	return (
@@ -36,16 +36,15 @@ const ProjectCard = (props: TProject) => {
 			</Box>
 		</Link>
 	);
-};
+});
 
-const ProjectCardLoading = () => (
+const ProjectCardLoading = memo(() => (
 	<Box {...BoxProps}>
 		<Skeleton height="23px" mt="3" mb="20px" />
-
 		<Skeleton height="16px" mb="10px" />
 		<Skeleton height="16px" mb="10px" />
 	</Box>
-);
+));
 
 export { ProjectCardLoading };
 
