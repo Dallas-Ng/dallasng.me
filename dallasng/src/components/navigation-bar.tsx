@@ -1,12 +1,5 @@
-import {
-	Box,
-	Flex,
-	IconButton,
-	Image,
-	Stack,
-	Text,
-	Tooltip
-} from '@chakra-ui/react';
+import Image from 'next/image';
+import { Box, Flex, IconButton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { memo } from 'react';
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import Link from './link';
@@ -24,7 +17,7 @@ const NavigationBar = memo(() => (
 						display="flex"
 						w={['40px', '60px']}
 						justifyContent="center">
-						<Image boxSize="40px" src="/logo.png" />
+						<Image src="/logo.png" width={40} height={40} alt="" />
 					</Box>
 				</Tooltip>
 			</Link>
