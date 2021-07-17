@@ -1,8 +1,8 @@
+import { TProject } from '@/src/types/data.types';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { Box, ChakraProps, Heading, Skeleton, Text } from '@chakra-ui/react';
 import { memo } from 'react';
-import { TProject } from '../types/data.types';
 
 const BoxProps: ChakraProps = {
 	height: '200px',

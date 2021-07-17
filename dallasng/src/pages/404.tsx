@@ -1,10 +1,10 @@
+import Link from '@/src/components/link';
+import DefaultLayout from '@/src/layouts/default.layout';
+import { Page } from '@/src/types/page';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Text } from '@chakra-ui/react';
 import { Heading } from '@chakra-ui/react';
 import React from 'react';
-import Link from '../components/link';
-import DefaultLayout from '../layouts/default.layout';
-import { Page } from '../types/page';
 
 const Page404: Page = () => (
 	<>

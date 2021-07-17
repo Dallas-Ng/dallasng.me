@@ -1,10 +1,10 @@
+import theme from '@/src/components/theme';
+import { Page } from '@/src/types/page';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Fragment } from 'react';
-import theme from '../components/theme';
 import '../styles/globals.scss';
-import { Page } from '../types/page';
 
 type IProps = AppProps & {
 	Component: Page;

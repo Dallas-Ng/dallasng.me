@@ -1,7 +1,7 @@
+import NavigationBar from '@/src/components/navigation-bar';
 import { NextSeo } from 'next-seo';
 import { Box, Container } from '@chakra-ui/react';
-import { memo } from 'react';
-import NavigationBar from '../components/navigation-bar';
+import React, { memo } from 'react';
 
 const DefaultLayout = memo(props => (
 	<>

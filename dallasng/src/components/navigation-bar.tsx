@@ -1,3 +1,4 @@
+import Link from '@/components/link';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import {
@@ -9,9 +10,8 @@ import {
 	Tooltip,
 	useMediaQuery
 } from '@chakra-ui/react';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import Link from './link';
 import ThemeToggler from './theme-toggler';
 
 const NavigationBar = memo(() => {

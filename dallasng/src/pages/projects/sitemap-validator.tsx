@@ -1,5 +1,6 @@
-import DefaultLayout from '../../layouts/default.layout';
-import { Page } from '../../types/page';
+import DefaultLayout from '@/src/layouts/default.layout';
+import { Page } from '@/src/types/page';
+import React from 'react';
 
 const PageSitemapValidator: Page = () => {
 	return <div></div>;

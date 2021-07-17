@@ -1,3 +1,6 @@
+import Link from '@/src/components/link';
+import { ProjectCardLoading } from '@/src/components/project-card';
+import { IEndpointProject } from '@/src/types/api.interface';
 import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/alert';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SimpleGrid } from '@chakra-ui/layout';
@@ -11,9 +14,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import useSWR from 'swr';
-import { IEndpointProject } from '../types/api.interface';
-import Link from './link';
-import ProjectCard, { ProjectCardLoading } from './project-card';
 
 const ProjectCardList = () => {
 	const [isMobileViewport] = useMediaQuery('(max-width: 768px)');
