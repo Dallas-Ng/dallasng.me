@@ -11,10 +11,11 @@ export const sleep = async (ms: number): Promise<void> => {
 /**
  * An async function that returns an empty promise after a random period within 2-3 second
  *
+ * @param maxPromiseSeconds - integer
  * @returns void
  */
-export const mockApi = async (): Promise<void> => {
-	return await sleep(getRandomNumber(0.1, 5) * 1000);
+export const mockApi = async (maxPromiseSeconds = 2): Promise<void> => {
+	return await sleep(getRandomNumber(0.1, maxPromiseSeconds) * 1000);
 };
 
 /**

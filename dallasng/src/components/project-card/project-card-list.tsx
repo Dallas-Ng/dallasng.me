@@ -1,98 +1,41 @@
+import { mockApi } from '@/src/common/utils';
 import Link from '@/src/components/link';
-import ProjectCard, { ProjectCardLoading } from '@/src/components/project-card';
-import { IEndpointProject } from '@/src/types/api.interface';
+import { ProjectCardLoading } from '@/src/components/project-card';
 import { Alert, AlertIcon, AlertTitle } from '@chakra-ui/alert';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { SimpleGrid } from '@chakra-ui/layout';
-import {
-	AlertDescription,
-	Box,
-	Button,
-	Flex,
-	Text,
-	useMediaQuery
-} from '@chakra-ui/react';
+import { AlertDescription, Flex } from '@chakra-ui/react';
 import React from 'react';
-import useSWR from 'swr';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const ProjectCardList = () => {
-	const [isMobileViewport] = useMediaQuery('(max-width: 768px)');
-	const { data, error, isValidating, mutate } = useSWR<IEndpointProject>(
-		`/api/mock`,
-		{ revalidateOnFocus: false }
-	);
-	const loading = isValidating;
-	const projects = !isValidating && data && data.projects;
+	const [loading, setLoading] = useState(true);
 
-	if (error) {
-		return (
-			<Box height="200px">
-				<Alert borderRadius="md" mb="5" status="error">
-					<AlertIcon />
-					<AlertTitle>
-						Failed to load projects, please try again later
-					</AlertTitle>
+	useEffect(() => {
+		const loadData = async () => {
+			await mockApi();
+			setLoading(false);
+		};
 
-					<Button onClick={() => mutate()}>Load Again</Button>
-				</Alert>
-			</Box>
-		);
-	}
-
-	/**
-	 * Loading project card
-	 */
+		loadData();
+	});
 	if (loading) {
-		return (
-			<SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="20px">
-				<ProjectCardLoading />
-
-				{!isMobileViewport && (
-					<>
-						<ProjectCardLoading />
-						<ProjectCardLoading />
-					</>
-				)}
-			</SimpleGrid>
-		);
-	}
-
-	/**
-	 * If no projects are supplied
-	 */
-	if (projects.length === 0) {
-		return (
-			<Box height="200px">
-				<Alert borderRadius="md" mb="5" status="info">
-					<AlertIcon />
-
-					<Flex flexDirection="column">
-						<AlertTitle>No Projects Found Yet!</AlertTitle>
-						<AlertDescription>
-							<Link href="https://github.com/dallas-ng">
-								Visit my GitHub for projects <ExternalLinkIcon pb="3px" />
-							</Link>
-						</AlertDescription>
-					</Flex>
-				</Alert>
-			</Box>
-		);
+		return <ProjectCardLoading />;
 	}
 
 	return (
-		<>
-			<SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="20px">
-				{projects.map(project => (
-					<ProjectCard key={project.href} {...project} />
-				))}
-			</SimpleGrid>
+		<Alert borderRadius="md" mb="5" status="info">
+			<AlertIcon />
 
-			<Flex justify="flex-end">
-				<Text mt="20px">
-					<Link href="/projects">View All Projects</Link>
-				</Text>
+			<Flex flexDirection="column">
+				<AlertTitle>No Projects Found Yet!</AlertTitle>
+				<AlertDescription>
+					<Link href="https://github.com/dallas-ng">
+						Visit my GitHub for projects <ExternalLinkIcon pb="3px" />
+					</Link>
+				</AlertDescription>
 			</Flex>
-		</>
+		</Alert>
 	);
 };
 
