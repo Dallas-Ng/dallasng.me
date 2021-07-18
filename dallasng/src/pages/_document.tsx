@@ -15,6 +15,8 @@ class AppDocument extends Document {
 		return (
 			<Html>
 				<Head />
+				<link rel="icon" href="/logo-blue.png" />
+
 				<body>
 					<Main />
 					<NextScript />
