@@ -8,19 +8,30 @@ const DefaultLayout = memo(props => (
 	<>
 		<NextSeo {...props} />
 
-		<Container maxW="container.md">
-			<Flex w="100%" minH="100vh" direction="column">
-				<Box w="100%" mb="50px">
-					<NavigationBar />
+		<Box
+			w="100%"
+			position="sticky"
+			top="0px"
+			zIndex="9"
+			style={{
+				backdropFilter: 'blur(15px)',
+				WebkitBackdropFilter: 'blur(15px)'
+			}}>
+			<Container maxW="container.md">
+				<NavigationBar />
+			</Container>
+		</Box>
+
+		<Container maxW="container.md" mt="20px">
+			<Flex
+				w="100%"
+				direction="column"
+				style={{ minHeight: 'calc(100vh - 80px)' }}>
+				<Box flex="1" as="main">
+					{props.children}
 				</Box>
 
-				<Box flex="1">
-					<main>{props.children}</main>
-				</Box>
-
-				<Box>
-					<Footer />
-				</Box>
+				<Footer />
 			</Flex>
 		</Container>
 	</>

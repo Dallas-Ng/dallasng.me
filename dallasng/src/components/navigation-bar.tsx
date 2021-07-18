@@ -19,7 +19,7 @@ const NavigationBar = memo(() => {
 	const router = useRouter();
 
 	return (
-		<Flex alignItems="center" justifyContent="space-between" mt="20px">
+		<Flex as="nav" alignItems="center" justifyContent="space-between" h="60px">
 			<Flex alignItems="center">
 				<Link href="/">
 					<Tooltip label="Home" hasArrow isDisabled={isMobileViewport}>
