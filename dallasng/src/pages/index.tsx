@@ -9,7 +9,7 @@ import React from 'react';
 const IndexPage: Page = () => (
 	<>
 		<Heading as="h1" size="2xl" mb="3">
-			Hi, I'm Dallas
+			Hi, I&apos;m Dallas
 		</Heading>
 
 		<Text>
