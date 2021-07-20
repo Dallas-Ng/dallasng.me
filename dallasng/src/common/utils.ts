@@ -1,4 +1,9 @@
 /**
+ * The current running mode of the app
+ */
+export const ENV_MODE = process.env.NODE_ENV as 'development' | 'production';
+
+/**
  * An async function that functions like python's time.sleep()
  *
  * @param ms - milliseconds to sleep for
