@@ -5,7 +5,7 @@ import React, { memo } from 'react';
 const Footer = memo(() => (
 	<Flex
 		as="footer"
-		h="60px"
+		h="100px"
 		justifyContent="space-between"
 		alignItems="center"
 		fontSize="12px">
