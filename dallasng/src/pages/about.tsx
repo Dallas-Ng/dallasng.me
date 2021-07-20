@@ -94,10 +94,10 @@ const PageAbout: Page = () => {
 			<Header link="Skills" />
 
 			<Stack spacing="20px">
-				{skills.map(skill => (
-					<Flex flexDirection="column">
-						<Text fontWeight="700">{skill.type}</Text>
-						<Text>{skill.items}</Text>
+				{skills.map(({ type, items }) => (
+					<Flex flexDirection="column" key={type}>
+						<Text fontWeight="700">{type}</Text>
+						<Text>{items}</Text>
 					</Flex>
 				))}
 			</Stack>
