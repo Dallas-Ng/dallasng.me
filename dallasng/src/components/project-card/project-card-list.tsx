@@ -30,7 +30,10 @@ const ProjectCardList = () => {
 			<Flex flexDirection="column">
 				<AlertTitle>No Projects Found Yet!</AlertTitle>
 				<AlertDescription>
-					<Link href="https://github.com/dallas-ng">
+					<Link
+						href="https://github.com/dallas-ng"
+						target="_blank"
+						rel="noreferrer">
 						Visit my GitHub for projects
 						<ExternalLinkIcon pb="3px" />
 					</Link>

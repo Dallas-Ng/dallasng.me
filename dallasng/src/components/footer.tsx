@@ -10,7 +10,12 @@ const Footer = memo(() => (
 		alignItems="center"
 		fontSize="12px">
 		<Text display={['none', 'block']} flex="1" textAlign="center">
-			<Link href="https://github.com/dallas-ng">View Source Code</Link>
+			<Link
+				href="https://github.com/dallas-ng"
+				target="_blank"
+				rel="noreferrer">
+				View Source Code
+			</Link>
 		</Text>
 
 		<Text flex="1" textAlign="center">

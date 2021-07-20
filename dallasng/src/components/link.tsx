@@ -8,9 +8,9 @@ interface ILinkProps extends LinkProps {
 }
 
 const Link: React.FC<ILinkProps> = props => (
-	<ChakraLink as={NextLink} {...props}>
-		<a>{props.children}</a>
-	</ChakraLink>
+	<NextLink href={props.href}>
+		<ChakraLink {...props}>{props.children}</ChakraLink>
+	</NextLink>
 );
 
 export default Link;
