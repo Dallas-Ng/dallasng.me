@@ -2,7 +2,7 @@ import DefaultLayout from '@/src/layouts/default.layout';
 import { Page } from '@/src/types/page';
 import { NextSeo } from 'next-seo';
 import dynamic from 'next/dynamic';
-import { Heading } from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 
 const ProjectCardList = dynamic(
@@ -15,9 +15,9 @@ const PageProjects: Page = () => {
 		<>
 			<NextSeo title="Projects" />
 
-			<Heading size="md" mb="5">
-				Projects
-			</Heading>
+			<Heading mb="2">Projects</Heading>
+
+			<Text mb="5">See what I have been developing on</Text>
 
 			<ProjectCardList />
 		</>

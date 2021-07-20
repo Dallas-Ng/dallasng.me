@@ -19,7 +19,7 @@ import { HiLink } from 'react-icons/hi';
 
 const Header = ({ link }: { link: string }) => (
 	<>
-		<Divider py="30px" mb="30px" id={link} />
+		<Divider py="25px" mb="30px" id={link} />
 
 		<Link href={`#${link}`} _hover={{ color: 'blue.600' }}>
 			<Flex mb="5">
@@ -33,79 +33,82 @@ const Header = ({ link }: { link: string }) => (
 	</>
 );
 
-const PageAbout: Page = () => {
-	return (
-		<>
-			<NextSeo title="About" />
+const PageAbout: Page = () => (
+	<>
+		<NextSeo title="About" />
 
-			<Heading mb="2">About</Heading>
+		<Heading mb="2">About</Heading>
 
-			<Text>Find out more about me</Text>
+		<Text>A little more about me</Text>
 
-			<Header link="Me" />
+		<Header link="Me" />
 
-			<Stack>
-				<Text>
-					Based in Singapore, I have been developing for over 4 years now, 2 of
-					it being professional. I developed a strong skillset in developing
-					full-stack applications, building both sides of the infrastructure.
+		<Stack spacing="15px">
+			<Text>
+				Presently, I am a core engineer at WorkClass. My main responsibilities
+				lie with building the platform and to drive the vision of the company.
+			</Text>
+
+			<Text>
+				Based in Singapore, I have been coding for over 4 years now, 2 of it
+				being professional. I developed a strong skillset in building full-stack
+				applications, working in face-paced environments, wearing many hats.
+			</Text>
+
+			<Text>
+				If you have any opportunities or want to contact me, you contact me{' '}
+				<Link href="mailto:ngdallas1@gmail.com" color="teal.500">
+					here
+				</Link>
+				.
+			</Text>
+		</Stack>
+
+		<Header link="Resume" />
+
+		{experience.map((job, i) => (
+			<Box key={i} mb={i + 1 !== experience.length && '40px'}>
+				<Text fontSize="2xl" fontWeight="700">
+					{job.title}
 				</Text>
 
-				<Text>
-					You can email me{' '}
-					<Link href="mailto:ngdallas1@gmail.com" color="teal.500">
-						here
-					</Link>{' '}
-					for any opportunities
-				</Text>
-			</Stack>
-
-			<Header link="Resume" />
-
-			{experience.map((job, i) => (
-				<Box key={i} mb={i + 1 !== experience.length && '40px'}>
-					<Text fontSize="2xl" fontWeight="700">
-						{job.title}
+				<Flex
+					justifyContent="space-between"
+					flexDirection={['column', 'row']}
+					mb="2">
+					<Text fontSize="xl" fontWeight="600">
+						{job.company}
 					</Text>
 
-					<Flex
-						justifyContent="space-between"
-						flexDirection={['column', 'row']}
-						mb="2">
-						<Text fontSize="xl" fontWeight="600">
-							{job.company}
-						</Text>
+					<Text as="i">
+						{job.from} - {job.to}
+					</Text>
+				</Flex>
 
-						<Text as="i">
-							{job.from} - {job.to}
-						</Text>
-					</Flex>
+				<UnorderedList mb="2" spacing="7px" pl="14px">
+					{job.description.map((desc, i) => (
+						<ListItem key={i}>{desc}</ListItem>
+					))}
+				</UnorderedList>
 
-					<UnorderedList mb="2" spacing="7px" pl="14px">
-						{job.description.map((desc, i) => (
-							<ListItem key={i}>{desc}</ListItem>
-						))}
-					</UnorderedList>
+				<Text as="i">Technologies: {job.technologies.join(', ')}</Text>
+			</Box>
+		))}
 
-					<Text as="i">Technologies: {job.technologies.join(', ')}</Text>
-				</Box>
+		<Header link="Skills" />
+
+		<Stack spacing="20px">
+			{skills.map(({ type, items }) => (
+				<Flex flexDirection="column" key={type}>
+					<Text fontWeight="700">{type}</Text>
+					<Text>{items}</Text>
+				</Flex>
 			))}
+		</Stack>
 
-			<Header link="Skills" />
-
-			<Stack spacing="20px">
-				{skills.map(({ type, items }) => (
-					<Flex flexDirection="column" key={type}>
-						<Text fontWeight="700">{type}</Text>
-						<Text>{items}</Text>
-					</Flex>
-				))}
-			</Stack>
-
-			<Box height="100px" />
-		</>
-	);
-};
+		<Box height="100px" />
+	</>
+);
 
 PageAbout.getLayout = page => <DefaultLayout>{page}</DefaultLayout>;
 

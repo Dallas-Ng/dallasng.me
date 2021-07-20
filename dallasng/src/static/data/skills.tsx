@@ -5,7 +5,7 @@ export const skills = [
 	},
 	{
 		type: 'Technologies',
-		items: 'AWS, Azure, Nginx, GIT, TFS, SQL, GraphQL'
+		items: 'AWS, Azure, Nginx, GIT, TFS, SQL, GraphQL, Cypress, Selenium'
 	},
 	{
 		type: 'Frameworks',
