@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 
 export const experience = [
 	{
-		title: 'Senior Software Engineer',
+		title: 'Technical Lead',
 		company: 'WorkClass',
 		from: 'Aug 2020',
 		to: 'Present',

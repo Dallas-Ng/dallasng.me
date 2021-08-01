@@ -21,10 +21,10 @@ const NavigationBar = memo(() => {
 	return (
 		<Flex as="nav" alignItems="center" justifyContent="space-between" h="60px">
 			<Flex alignItems="center">
-				<Link href="/">
+				<Link href="/" 	mr={['10px', '20px']}>
 					<Tooltip label="Home" hasArrow isDisabled={isMobileViewport}>
 						<Box
-							mr={['10px', '20px']}
+						
 							bg="gray.800"
 							borderRadius="5px"
 							display="flex"
