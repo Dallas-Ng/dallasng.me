@@ -66,6 +66,14 @@ const PageAbout: Page = () => (
 
 		<Header link="Resume" />
 
+		<Text color="teal.600">
+			<a href="/resume.pdf" download>
+				Download Resume
+			</a>
+		</Text>
+
+		<br />
+
 		{experience.map((job, i) => (
 			<Box key={i} mb={i + 1 !== experience.length && '40px'}>
 				<Text fontSize="2xl" fontWeight="700">

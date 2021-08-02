@@ -8,7 +8,7 @@ export const experience = [
 		to: 'Present',
 		description: [
 			<Text>
-				<strong>Engineer #1 and technical lead</strong> for WorkClass,{' '}
+				<strong>Engineer #1 and technical lead</strong> for all WorkClass,{' '}
 				<strong>pioneered development</strong> for WorkClass services.
 			</Text>,
 			<Text>
@@ -18,13 +18,20 @@ export const experience = [
 				<strong>indexed organic keywords by 45%</strong>.
 			</Text>,
 			<Text>
-				Built platform monetisation strategies,{' '}
-				<strong>producing 10% of total revenue every month</strong>
+				Developed platform monetisation strategies and sales tools,{' '}
+				<strong>
+					created adsense strategies which produces 10% of total revenue every
+					month
+				</strong>
 			</Text>,
 			<Text>
 				Scaled technical architecture for <strong>10 different services</strong>
 				, to <strong>support 100k users</strong>, ranging from mobile apps, web
 				apps and backend operations
+			</Text>,
+			<Text>
+				<strong>Built development team</strong>, conducted resume screenings and
+				hiring interviews and coordinated team structure
 			</Text>
 		],
 		technologies: [
