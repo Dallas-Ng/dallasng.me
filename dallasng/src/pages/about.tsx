@@ -21,15 +21,17 @@ const Header = ({ link }: { link: string }) => (
 	<>
 		<Divider py="25px" mb="30px" id={link} />
 
-		<Link href={`#${link}`} _hover={{ color: 'blue.600' }}>
-			<Flex mb="5">
-				<Heading size="md" mr="5px">
-					{link}
-				</Heading>
+		<Box mb="5">
+			<Link href={`#${link}`} _hover={{ color: 'blue.600' }}>
+				<Flex>
+					<Heading size="md" mr="5px">
+						{link}
+					</Heading>
 
-				<HiLink fontSize="20px" />
-			</Flex>
-		</Link>
+					<HiLink fontSize="20px" />
+				</Flex>
+			</Link>
+		</Box>
 	</>
 );
 
