@@ -24,20 +24,21 @@ const ProjectCardList = () => {
 	}
 
 	return (
-		<Alert borderRadius="md" mb="5" status="info">
+		<Alert borderRadius="md" mb="5" status="warning">
 			<AlertIcon />
 
 			<Flex flexDirection="column">
-				<AlertTitle>No Projects Found Yet!</AlertTitle>
-				<AlertDescription>
-					<Link
-						href="https://github.com/dallas-ng"
-						target="_blank"
-						rel="noreferrer">
-						Visit my GitHub for projects
-						<ExternalLinkIcon pb="3px" />
-					</Link>
-				</AlertDescription>
+				<AlertTitle>Want to get something done? Contact me!</AlertTitle>
+
+				{/* <AlertDescription> */}
+				{/* <Link
+					href="https://github.com/dallas-ng"
+					target="_blank"
+					rel="noreferrer">
+					Visit my GitHub for projects
+					<ExternalLinkIcon pb="3px" />
+				</Link> */}
+				{/* </AlertDescription> */}
 			</Flex>
 		</Alert>
 	);

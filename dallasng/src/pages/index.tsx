@@ -13,12 +13,13 @@ const IndexPage: Page = () => (
 		</Heading>
 
 		<Text>
-			I work at{' '}
+			A full-stack developer with over 3 years of experience.
+			{/* I work at{' '}
 			<Link href="https://workclass.co">
 				WorkClass
 				<ExternalLinkIcon pb="3px" />
 			</Link>{' '}
-			as a Senior Software Engineer.
+			as a Senior Software Engineer. */}
 		</Text>
 
 		<Divider my="5" />

@@ -46,13 +46,13 @@ const PageAbout: Page = () => (
 		<Header link="Me" />
 
 		<Stack spacing="15px">
-			<Text>
+			{/* <Text>
 				Presently, I am a core engineer at WorkClass. My main responsibilities
 				lie with building the platform and to drive the vision of the company.
-			</Text>
+			</Text> */}
 
 			<Text>
-				Based in Singapore, I have been coding for over 4 years now, 2 of it
+				Based in Singapore, I have been coding for over 5 years now, 3 of it
 				being professional. I developed a strong skillset in building full-stack
 				applications, working in face-paced environments, wearing many hats.
 			</Text>
@@ -101,7 +101,9 @@ const PageAbout: Page = () => (
 					))}
 				</UnorderedList>
 
-				<Text as="i">Technologies: {job.technologies.join(', ')}</Text>
+				{job.technologies.length > 0 && (
+					<Text as="i">Technologies: {job.technologies.join(', ')}</Text>
+				)}
 			</Box>
 		))}
 

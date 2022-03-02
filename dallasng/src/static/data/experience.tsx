@@ -2,10 +2,20 @@ import { Text } from '@chakra-ui/react';
 
 export const experience = [
 	{
+		title: 'Software Engineer',
+		company: 'Freelance',
+		from: 'Sep 2021',
+		to: 'Present',
+		description: [
+			<Text>Currently building dream projects for others and myself</Text>
+		],
+		technologies: []
+	},
+	{
 		title: 'Technical Lead',
 		company: 'WorkClass',
 		from: 'Aug 2020',
-		to: 'Present',
+		to: 'Sep 2021',
 		description: [
 			<Text>
 				<strong>Engineer #1 and technical lead</strong> for all WorkClass,{' '}
