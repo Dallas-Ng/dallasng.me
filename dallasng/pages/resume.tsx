@@ -38,8 +38,8 @@ const ResumePage: NextPage = () => {
 				Education
 			</Title>
 
-			{EDUCATION.map(edu => (
-				<Paper>
+			{EDUCATION.map((edu, i) => (
+				<Paper key={i}>
 					<Group position="apart">
 						<div>
 							<Text weight="bold">{edu.institution}</Text>
@@ -81,8 +81,8 @@ const ResumePage: NextPage = () => {
 					</Group>
 
 					<ul style={{ margin: '10px 0' }}>
-						{exp.description.map(desc => (
-							<li>{desc}</li>
+						{exp.description.map((desc, i) => (
+							<li key={i}>{desc}</li>
 						))}
 					</ul>
 
