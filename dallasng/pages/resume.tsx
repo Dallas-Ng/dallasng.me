@@ -63,7 +63,7 @@ const ResumePage: NextPage = () => {
 				<div
 					key={i}
 					className={classes.expItem}
-					id={exp.company.toLowerCase().replaceAll(' ', '-')}>
+					id={exp.company.toLowerCase().replace(/ /g, '-')}>
 					<Title order={3}>{exp.title}</Title>
 
 					<Group position="apart">

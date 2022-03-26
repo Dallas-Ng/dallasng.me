@@ -39,7 +39,7 @@ const WorkExpCard: React.FC<IProps> = props => {
 					variant={theme.colorScheme === 'dark' ? 'default' : 'light'}
 					radius="xl"
 					component={NextLink}
-					href={`/resume#${company.toLowerCase().replaceAll(' ', '-')}`}>
+					href={`/resume#${company.toLowerCase().replace(/ /g, '-')}`}>
 					<Center>
 						View
 						<ChevronRight size={14} />
