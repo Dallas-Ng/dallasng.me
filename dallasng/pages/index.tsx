@@ -80,7 +80,7 @@ const IndexPage: NextPage = () => {
 
 					<ProjectCard
 						href="https://intern.house"
-						imgSrc="https://intern.house/assets/Logo.png"
+						imgSrc="/images/internhouse.webp"
 						imgFit="contain"
 						title="intern.house"
 						desc="No longer in development - A website that connects interns to accomodations"

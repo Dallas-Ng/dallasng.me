@@ -1,24 +1,17 @@
-import {
-	Badge,
-	Card,
-	Image,
-	Text,
-	Group,
-	createStyles,
-	Tooltip
-} from '@mantine/core';
+import { Badge, Card, Text, Group, createStyles, Tooltip } from '@mantine/core';
+import Image from 'next/image';
 
 interface IProps {
 	href?: string;
 	imgSrc: string;
-	imgFit?: 'contain' | 'cover' | undefined;
+	imgFit?: 'contain' | 'cover';
 	title: string;
 	desc: string;
 	skills?: string[];
 }
 
 const ProjectCard: React.FC<IProps> = props => {
-	const { href, imgSrc, imgFit, title, desc, skills = [] } = props;
+	const { href, imgSrc, imgFit = 'cover', title, desc, skills = [] } = props;
 	const c = useStyles().classes;
 
 	return (
@@ -38,7 +31,7 @@ const ProjectCard: React.FC<IProps> = props => {
 				shadow="sm"
 				p="lg">
 				<Card.Section className={c.imgContainer}>
-					<Image src={imgSrc} height={100} alt={title} fit={imgFit} />
+					<Image src={imgSrc} alt={title} layout="fill" objectFit={imgFit} />
 				</Card.Section>
 
 				<Group position="apart" className={c.header}>
@@ -68,6 +61,8 @@ const useStyles = createStyles(theme => ({
 		}
 	},
 	imgContainer: {
+		position: 'relative',
+		height: 100,
 		background:
 			theme.colorScheme === 'dark' ? theme.colors.gray[8] : theme.colors.gray[2]
 	},
