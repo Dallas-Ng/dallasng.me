@@ -1,5 +1,4 @@
 import {
-	Anchor,
 	Avatar,
 	Button,
 	Center,
@@ -8,7 +7,7 @@ import {
 	Text
 } from '@mantine/core';
 import { NextLink } from '@mantine/next';
-import { ChevronRight } from 'tabler-icons-react';
+import { IconChevronRight } from '@tabler/icons';
 
 interface IProps {
 	imgUrl: string;
@@ -42,7 +41,7 @@ const WorkExpCard: React.FC<IProps> = props => {
 					href={`/resume#${company.toLowerCase().replace(/ /g, '-')}`}>
 					<Center>
 						View
-						<ChevronRight size={14} />
+						<IconChevronRight />
 					</Center>
 				</Button>
 			</Group>

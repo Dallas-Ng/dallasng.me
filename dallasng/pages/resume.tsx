@@ -11,7 +11,7 @@ import {
 import { NextPage } from 'next';
 import Layout from '../components/shared/layout';
 import { EXPERIENCE } from '../data/experience.data';
-import { FileDownload } from 'tabler-icons-react';
+import { IconFileDownload } from '@tabler/icons';
 import { SKILLS } from '../data/skills.data';
 import { EDUCATION } from '../data/education.data';
 import { NextLink } from '@mantine/next';
@@ -27,7 +27,7 @@ const ResumePage: NextPage = () => {
 				component="a"
 				download
 				href="/dallas_ng_resume.pdf"
-				leftIcon={<FileDownload size={16} />}
+				leftIcon={<IconFileDownload size={16} />}
 				variant="outline"
 				mt="md"
 				mb="xl">

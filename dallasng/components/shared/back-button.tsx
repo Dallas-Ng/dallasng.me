@@ -1,13 +1,13 @@
 import { Button } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { ArrowNarrowLeft } from 'tabler-icons-react';
+import { IconArrowNarrowLeft } from '@tabler/icons';
 
 const BackButton: React.FC = () => {
 	const { back } = useRouter();
 
 	return (
 		<Button onClick={back} mt={50} variant="subtle" compact>
-			<ArrowNarrowLeft /> Go Back
+			<IconArrowNarrowLeft /> Go Back
 		</Button>
 	);
 };
