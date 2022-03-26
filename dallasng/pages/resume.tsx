@@ -15,12 +15,21 @@ import { IconFileDownload } from '@tabler/icons';
 import { SKILLS } from '../data/skills.data';
 import { EDUCATION } from '../data/education.data';
 import { NextLink } from '@mantine/next';
+import Head from 'next/head';
 
 const ResumePage: NextPage = () => {
 	const { classes } = useStyles();
 
 	return (
 		<Layout>
+			<Head>
+				<title>Dallas Ng - Resume</title>
+				<meta
+					name="description"
+					content="View my work experience, education and skills"
+				/>
+			</Head>
+
 			<Title>Resume</Title>
 
 			<Button

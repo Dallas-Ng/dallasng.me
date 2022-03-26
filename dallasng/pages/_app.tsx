@@ -29,6 +29,10 @@ const App = (props: AppProps): JSX.Element => {
 			<Head>
 				<title>Dallas Ng</title>
 				<meta
+					name="description"
+					content="Dallas Ng, a software engineer that excels in fast paced environemnts."
+				/>
+				<meta
 					name="viewport"
 					content="minimum-scale=1, initial-scale=1, width=device-width"
 				/>
