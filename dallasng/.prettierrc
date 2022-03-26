@@ -7,7 +7,6 @@
 	"trailingComma": "none",
 	"endOfLine": "lf",
 	"useTabs": true,
-	"jsxBracketSameLine": true,
 	"importOrder": ["react", "^(?!react)\\w+$", "^[./]"],
-	"importOrderSeparation": false
+	"bracketSameLine": true
 }

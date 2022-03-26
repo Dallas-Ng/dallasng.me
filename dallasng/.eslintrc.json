@@ -1,14 +1,3 @@
 {
-	"env": {
-		"browser": true,
-		"es2021": true,
-		"node": true
-	},
-	"extends": [
-		"next"
-	],
-  "ignorePatterns": ["next.config.js"],
-	"rules": {
-		"react/display-name": "off"
-	}
+  "extends": "next/core-web-vitals"
 }
