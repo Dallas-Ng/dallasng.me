@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	trailingSlash: true,
 	reactStrictMode: true,
-	redirects: [
+	trailingSlash: true,
+	redirects: () => [
 		{
-			source: '/about',
+			source: '/about/',
 			destination: '/',
 			permanent: true
 		}

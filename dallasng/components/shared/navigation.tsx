@@ -22,7 +22,13 @@ const Navigation: React.FC<IProps> = ({ containerSize }) => {
 				<Group>
 					<Anchor href="/" component={NextLink}>
 						<div className={c.imgContainer}>
-							<Image src="/logo.png" height={40} width={40} alt="Dallas Ng" />
+							<Image
+								src="/logo.png"
+								height={40}
+								width={40}
+								alt="Dallas Ng"
+								layout="fixed"
+							/>
 						</div>
 					</Anchor>
 

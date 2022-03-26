@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
 
 	return (
 		<footer>
-			<Grid className={c.footer} align="center">
+			<Grid className={c.footer} align="top">
 				<Grid.Col span={4}>
 					<Anchor
 						className={c.footerLink}
@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
 
 const useStyles = createStyles(theme => ({
 	footer: {
-		height: 60,
+		height: 80,
 		textAlign: 'center'
 	},
 	footerLink: {

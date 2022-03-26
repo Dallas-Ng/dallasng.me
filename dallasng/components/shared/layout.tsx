@@ -34,7 +34,7 @@ const Layout: React.FC<IProps> = ({
 
 const useStyles = createStyles(_theme => ({
 	main: {
-		minHeight: 'calc(100vh - 120px)',
+		minHeight: 'calc(100vh - 140px)',
 		paddingBottom: 100
 	}
 }));

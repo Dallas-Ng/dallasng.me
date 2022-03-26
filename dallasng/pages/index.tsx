@@ -72,7 +72,7 @@ const IndexPage: NextPage = () => {
 					]}>
 					<ProjectCard
 						href="https://github.com/Dallas-Ng/Steam-Account-Switcher"
-						imgSrc="https://cdn.akamai.steamstatic.com/store/home/store_home_share.jpg"
+						imgSrc="/images/steam.webp"
 						title="Steam Account Switcher"
 						desc="A windows application that helps switch in between steam accounts seamlessly"
 						skills={['c#', 'WPF']}
@@ -95,7 +95,7 @@ const IndexPage: NextPage = () => {
 
 					<ProjectCard
 						href="https://github.com/Randycje/TeamWater"
-						imgSrc="https://cdn.discordapp.com/attachments/669950848465502208/712519362774433812/unknown.png"
+						imgSrc="/images/shbc.webp"
 						title="Small Habits Big Change"
 						desc="PUB Competition Initiative to Get People to Save Water"
 						skills={['HTML/CSS', 'JavaScript']}
