@@ -88,7 +88,7 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
-						imgSrc="/images/tuick.png"
+						imgSrc="/images/tuick.webp"
 						title="Tuick"
 						desc="School management system that you will ever need to run and manage your tuition centre"
 					/>

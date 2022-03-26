@@ -6,7 +6,7 @@ export const EXPERIENCE = [
 		company: 'Freelance',
 		from: 'Jan 2020',
 		to: 'Present',
-		imgUrl: '/logo-blue.png',
+		imgUrl: '/logo-blue.webp',
 		description: [
 			<Text>
 				<strong>Developed multiple web applications</strong> used in
