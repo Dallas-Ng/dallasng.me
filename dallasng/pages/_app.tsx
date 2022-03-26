@@ -1,32 +1,27 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import type { GetServerSidePropsContext } from 'next/types';
 import { useState } from 'react';
-import { getCookie, setCookies } from 'cookies-next';
 import Head from 'next/head';
 import {
 	MantineProvider,
 	ColorScheme,
 	ColorSchemeProvider
 } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
-interface IProps extends AppProps {
-	colorScheme: ColorScheme;
-}
-
-const App = (props: IProps): JSX.Element => {
+const App = (props: AppProps): JSX.Element => {
 	const { Component, pageProps } = props;
-	const [colorScheme, setColorScheme] = useState<ColorScheme>(
-		props.colorScheme
-	);
+	const [storeScheme, setStoredScheme] = useLocalStorage<ColorScheme>({
+		key: 'scheme',
+		defaultValue: 'dark'
+	});
+	const [colorScheme, setColorScheme] = useState<ColorScheme>(storeScheme);
 
 	const toggleColorScheme = (value?: ColorScheme) => {
 		const nextColorScheme =
 			value || (colorScheme === 'dark' ? 'light' : 'dark');
 		setColorScheme(nextColorScheme);
-		setCookies('mantine-color-scheme', nextColorScheme, {
-			maxAge: 60 * 60 * 24 * 30
-		});
+		setStoredScheme(nextColorScheme);
 	};
 
 	return (
@@ -53,9 +48,5 @@ const App = (props: IProps): JSX.Element => {
 		</>
 	);
 };
-
-App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
-	colorScheme: getCookie('mantine-color-scheme', ctx) || 'dark'
-});
 
 export default App;
