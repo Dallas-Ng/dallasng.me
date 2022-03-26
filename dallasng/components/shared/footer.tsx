@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
 						className={c.footerLink}
 						component={NextLink}
 						href="https://github.com/dallas-ng">
-						View Source Code
+						Source Code
 					</Anchor>
 				</Grid.Col>
 
