@@ -62,7 +62,7 @@ const useStyles = createStyles(theme => ({
 	},
 	imgContainer: {
 		position: 'relative',
-		height: 100,
+		height: 80,
 		background:
 			theme.colorScheme === 'dark' ? theme.colors.gray[8] : theme.colors.gray[2]
 	},

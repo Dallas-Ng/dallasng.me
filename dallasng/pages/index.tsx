@@ -1,5 +1,6 @@
 import {
 	Anchor,
+	Button,
 	Center,
 	createStyles,
 	Divider,
@@ -13,6 +14,7 @@ import Layout from '../components/shared/layout';
 import { NextPage } from 'next';
 import { NextLink } from '@mantine/next';
 import { EXPERIENCE } from '../data/experience.data';
+import { IconFileDownload } from '@tabler/icons';
 
 const IndexPage: NextPage = () => {
 	const c = useStyles().classes;
@@ -55,9 +57,21 @@ const IndexPage: NextPage = () => {
 					))}
 				</div>
 
-				<Center mt="md">
+				<Center>
+					<Button
+						component="a"
+						download
+						href="/dallas_ng_resume.pdf"
+						leftIcon={<IconFileDownload size={16} />}
+						variant="outline"
+						my="md">
+						Download My Resume
+					</Button>
+				</Center>
+
+				<Center>
 					<Anchor href="/resume" component={NextLink}>
-						<Text size="sm">View My Resume</Text>
+						<Text size="sm">View Online Resume</Text>
 					</Anchor>
 				</Center>
 
@@ -90,15 +104,8 @@ const IndexPage: NextPage = () => {
 					<ProjectCard
 						imgSrc="/images/tuick.webp"
 						title="Tuick"
+						imgFit="contain"
 						desc="School management system that you will ever need to run and manage your tuition centre"
-					/>
-
-					<ProjectCard
-						href="https://github.com/Randycje/TeamWater"
-						imgSrc="/images/shbc.webp"
-						title="Small Habits Big Change"
-						desc="PUB Competition Initiative to Get People to Save Water"
-						skills={['HTML/CSS', 'JavaScript']}
 					/>
 				</SimpleGrid>
 
