@@ -15,6 +15,7 @@ import { NextPage } from 'next';
 import { NextLink } from '@mantine/next';
 import { EXPERIENCE } from '../data/experience.data';
 import { IconFileDownload } from '@tabler/icons';
+import BlogCard from '../components/blog-card';
 
 const IndexPage: NextPage = () => {
 	const c = useStyles().classes;
@@ -115,7 +116,7 @@ const IndexPage: NextPage = () => {
 					</Anchor>
 				</Center>
 
-				{/* <Title order={2} mt="xl" mb="md">
+				<Title order={2} mt="xl" mb="md">
 					Blogs
 				</Title>
 
@@ -124,11 +125,11 @@ const IndexPage: NextPage = () => {
 						{ cols: 3, spacing: 'md' },
 						{ cols: 1, spacing: 'xs' }
 					]}>
-					<BlogCard
+					{/* <BlogCard
 						title="Optimising SEO"
 						category="learning"
 						image="/images/google.jpg"
-					/>
+					/> */}
 
 					<BlogCard
 						title="Handling Millions of Pages"
@@ -136,18 +137,18 @@ const IndexPage: NextPage = () => {
 						image="/images/scale.jpg"
 					/>
 
-					<BlogCard
+					{/* <BlogCard
 						title="intern house"
 						category="project"
 						image="/images/burn.jpg"
-					/>
+					/> */}
 				</SimpleGrid>
 
 				<Center mt="xl">
-					<Anchor href="https://github.com/dallas-ng">
-						<Text size="sm">View More Blogs</Text>
-					</Anchor>
-				</Center> */}
+					{/* <Anchor href="https://github.com/dallas-ng"> */}
+					<Text size="sm">Blogs Under Construction</Text>
+					{/* </Anchor> */}
+				</Center>
 			</Layout>
 		</>
 	);

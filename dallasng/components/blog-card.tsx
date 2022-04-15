@@ -27,8 +27,8 @@ const BlogCard: React.FC<IProps> = props => {
 				</Title>
 			</div>
 
-			<Button variant="white" color="dark">
-				Read more
+			<Button variant="white" color="dark" disabled fullWidth>
+				Coming oon
 			</Button>
 		</Paper>
 	);
