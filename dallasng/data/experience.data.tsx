@@ -62,7 +62,7 @@ export const EXPERIENCE = [
 				apps and backend operations
 			</Text>,
 			<Text>
-				<strong>Built development team</strong>, conducted resume screenings and
+				<strong>Built development team</strong>, conducted resume screenings,
 				hiring interviews and coordinated team structure
 			</Text>
 		],
@@ -113,7 +113,7 @@ export const EXPERIENCE = [
 		technologies: ['ASP.NET', '.NET', '.NET Core', 'MVC', 'C#', 'SQL', 'TFS']
 	},
 	{
-		title: 'Frontend Engineer Intern',
+		title: 'Frontend Engineer',
 		company: 'Clickr Media',
 		from: 'Aug 2019',
 		to: 'Jan 2020',

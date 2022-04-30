@@ -32,15 +32,16 @@ const IndexPage: NextPage = () => {
 				</Title>
 
 				<p>
-					Hey! I enjoy tinkering around with technologies and creating different
-					projects. I started my journey back in 2008 by trying to jailbreak my
-					iPod touch as well as mod a bunch of different games.
+					Hey! I am a full-stack engineer capable of building end-to-end
+					products. I enjoy converting dreams to reality and working in
+					fast-paced environments.
 				</p>
 
 				<p>
-					Fast-foward today, I have developed strong web development skills
-					through working with in startups and with big name clients. I love
-					working in fast-paced environments where I where many hats.
+					I have been working for the past few years for agencies, corporations
+					and start ups. Through experience, I developed a skillset that allows
+					me to jump into different parts of the product such as marketing, SEO,
+					user-testing and more.
 				</p>
 
 				<p>
