@@ -125,7 +125,7 @@ const IndexPage: NextPage = () => {
 				</Title>
 
 				<Text mb="md">
-					Blogs are still under construction, it's not done yet!
+					Blogs are still under construction, it&apos;s not done yet!
 				</Text>
 
 				<Grid>
