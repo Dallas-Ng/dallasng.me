@@ -96,7 +96,11 @@ const ResumePage: NextPage = () => {
 					</ul>
 
 					<Text>
-						<em>Technologies: {exp.technologies.join(', ')}</em>
+						<em>
+							{exp.technologies.length >= 1 && (
+								<>Technologies: {exp.technologies.join(', ')}</>
+							)}
+						</em>
 					</Text>
 				</div>
 			))}

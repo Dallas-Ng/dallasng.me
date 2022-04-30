@@ -4,6 +4,8 @@ import {
 	Center,
 	createStyles,
 	Divider,
+	Grid,
+	Group,
 	SimpleGrid,
 	Text,
 	Title
@@ -16,6 +18,7 @@ import { NextLink } from '@mantine/next';
 import { EXPERIENCE } from '../data/experience.data';
 import { IconFileDownload } from '@tabler/icons';
 import BlogCard from '../components/blog-card';
+import SmallBlogCard from '../components/small-blog-card';
 
 const IndexPage: NextPage = () => {
 	const c = useStyles().classes;
@@ -121,29 +124,36 @@ const IndexPage: NextPage = () => {
 					Blogs
 				</Title>
 
-				<SimpleGrid
-					breakpoints={[
-						{ cols: 3, spacing: 'md' },
-						{ cols: 1, spacing: 'xs' }
-					]}>
-					{/* <BlogCard
-						title="Optimising SEO"
-						category="learning"
-						image="/images/google.jpg"
-					/> */}
+				<Text mb="md">
+					Blogs are still under construction, it's not done yet!
+				</Text>
 
-					<BlogCard
-						title="Handling Millions of Pages"
-						category="learning"
-						image="/images/scale.jpg"
-					/>
+				<Grid>
+					<Grid.Col xs={12} md={8}>
+						<BlogCard
+							title="Handling Millions of Pages"
+							category="learning"
+							image="/images/scale.jpg"
+							status="writing"
+						/>
+					</Grid.Col>
 
-					{/* <BlogCard
-						title="intern house"
-						category="project"
-						image="/images/burn.jpg"
-					/> */}
-				</SimpleGrid>
+					<Grid.Col xs={12} md={4}>
+						<Group position="apart">
+							<SmallBlogCard title="SEO TL;DR" category="learning" />
+
+							<SmallBlogCard
+								title="intern.house"
+								category="project discussion"
+							/>
+
+							<SmallBlogCard
+								title="The Frontend Migration Checklist"
+								category="docs"
+							/>
+						</Group>
+					</Grid.Col>
+				</Grid>
 
 				<Center mt="xl">
 					{/* <Anchor href="https://github.com/dallas-ng"> */}

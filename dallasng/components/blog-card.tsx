@@ -1,14 +1,17 @@
 import { createStyles, Paper, Text, Title, Button } from '@mantine/core';
 
+type BlogStatus = 'writing' | 'planned';
+
 interface IProps {
 	image: string;
 	title: string;
 	category: string;
+	status?: BlogStatus;
 }
 
 const BlogCard: React.FC<IProps> = props => {
 	const c = useStyles().classes;
-	const { image, title, category } = props;
+	const { image, title, category, status = 'planned' } = props;
 
 	return (
 		<Paper
@@ -28,7 +31,7 @@ const BlogCard: React.FC<IProps> = props => {
 			</div>
 
 			<Button variant="white" color="dark" disabled fullWidth>
-				Coming soon
+				{status === 'planned' ? 'Coming Soon' : 'Being Written'}
 			</Button>
 		</Paper>
 	);
@@ -36,7 +39,7 @@ const BlogCard: React.FC<IProps> = props => {
 
 const useStyles = createStyles(theme => ({
 	card: {
-		height: 350,
+		height: 320,
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',
