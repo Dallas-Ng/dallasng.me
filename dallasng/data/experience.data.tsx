@@ -2,34 +2,38 @@ import { Text } from '@mantine/core';
 
 export const EXPERIENCE = [
 	{
-		title: 'Software Engineer',
-		company: 'Freelance',
+		title: 'Technical Advisor / Consultant',
+		company: 'WorkClass',
+		from: 'Sep 2021',
+		to: 'Present',
+		imgUrl: 'https://workclass.co/images/workclass/workclass-icon.svg',
+		website: 'https://workclass.co',
+		description: [
+			<Text>
+				Manage the company but from afar, no longer involved in the day to day
+				operations.
+			</Text>,
+			<Text>
+				Main concerns are with the company's SEO, tech debt and architecture.
+			</Text>
+		],
+		technologies: []
+	},
+	{
+		title: 'Freelance Software Engineer',
+		company: 'dallasng.dev',
 		from: 'Jan 2020',
 		to: 'Present',
 		imgUrl: '/logo-blue.webp',
+		website: 'https://dallasng.dev',
 		description: [
 			<Text>
-				<strong>Developed multiple web applications</strong> used in
-				team-competitions, businesses and personal portfolios
+				Build client's dreams into reality. This can be anything from creating
+				hosting for servers, web applications and proof of concepts.
 			</Text>,
-			<Text>
-				Set up and administered{' '}
-				<strong>hosting, domains and deployments</strong> of applications
-			</Text>,
-			<Text>
-				Collaborated with clients through an{' '}
-				<strong>iterative process to understand requirements</strong>
-			</Text>
+			<Text>Mainly offer software development/consultancy services.</Text>
 		],
-		technologies: [
-			'React',
-			'Python',
-			'JavaScript',
-			'AWS',
-			'Firebase',
-			'Linux',
-			'Nginx'
-		]
+		technologies: ['Upon Project']
 	},
 	{
 		title: 'Technical Lead',

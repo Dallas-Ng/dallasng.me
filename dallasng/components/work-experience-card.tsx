@@ -8,15 +8,18 @@ import {
 } from '@mantine/core';
 import { NextLink } from '@mantine/next';
 import { IconChevronRight } from '@tabler/icons';
+import { toSanitisedLink } from '../utils/format';
 
 interface IProps {
 	imgUrl: string;
 	title: string;
 	company: string;
+	from: string;
+	to: string;
 }
 
 const WorkExpCard: React.FC<IProps> = props => {
-	const { imgUrl, title, company } = props;
+	const { imgUrl, title, company, from, to } = props;
 	const { classes, theme } = useStyles();
 
 	return (
@@ -28,9 +31,12 @@ const WorkExpCard: React.FC<IProps> = props => {
 					<Text size="sm" weight={500}>
 						{title}
 					</Text>
-
 					<Text color="dimmed" size="xs">
 						{company}
+					</Text>
+
+					<Text color="dimmed" size="xs">
+						{from} - {to}
 					</Text>
 				</div>
 
@@ -38,7 +44,7 @@ const WorkExpCard: React.FC<IProps> = props => {
 					variant={theme.colorScheme === 'dark' ? 'default' : 'light'}
 					radius="xl"
 					component={NextLink}
-					href={`/resume#${company.toLowerCase().replace(/ /g, '-')}`}>
+					href={`/resume#${toSanitisedLink(company)}`}>
 					<Center>
 						View
 						<IconChevronRight />
