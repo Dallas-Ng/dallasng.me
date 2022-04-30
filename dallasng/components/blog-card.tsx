@@ -28,7 +28,7 @@ const BlogCard: React.FC<IProps> = props => {
 			</div>
 
 			<Button variant="white" color="dark" disabled fullWidth>
-				Coming oon
+				Coming soon
 			</Button>
 		</Paper>
 	);
