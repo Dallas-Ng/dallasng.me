@@ -44,7 +44,7 @@ const WorkExpCard: React.FC<IProps> = props => {
 					variant={theme.colorScheme === 'dark' ? 'default' : 'light'}
 					radius="xl"
 					component={NextLink}
-					href={`/resume#${toSanitisedLink(company)}`}>
+					href={`/resume#${toSanitisedLink(`${company}-${title}`)}`}>
 					<Center>
 						View
 						<IconChevronRight />

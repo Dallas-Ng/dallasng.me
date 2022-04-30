@@ -1,2 +1,2 @@
 export const toSanitisedLink = (input: string) =>
-	input.toLowerCase().replace(/ /g, '-');
+	input.toLowerCase().replace(/ /g, '-').replace(/\//g, '-');
