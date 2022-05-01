@@ -8,10 +8,19 @@ interface IProps {
 	title: string;
 	desc: string;
 	skills?: string[];
+	target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
 const ProjectCard: React.FC<IProps> = props => {
-	const { href, imgSrc, imgFit = 'cover', title, desc, skills = [] } = props;
+	const {
+		href,
+		imgSrc,
+		imgFit = 'cover',
+		title,
+		desc,
+		skills = [],
+		target = '_blank'
+	} = props;
 	const c = useStyles().classes;
 
 	return (
@@ -25,7 +34,7 @@ const ProjectCard: React.FC<IProps> = props => {
 			disabled={!!href}>
 			<Card
 				{...(href
-					? { component: 'a', target: '_blank', href }
+					? { component: 'a', target: target, href }
 					: { component: 'div' })}
 				className={c.card}
 				shadow="sm"

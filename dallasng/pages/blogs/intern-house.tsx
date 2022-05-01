@@ -1,4 +1,4 @@
-import { IconExclamationMark } from '@tabler/icons';
+import { IconExclamationMark, IconExternalLink } from '@tabler/icons';
 import {
 	Title,
 	Text,
@@ -6,7 +6,8 @@ import {
 	Paper,
 	Center,
 	Anchor,
-	Blockquote
+	Blockquote,
+	Button
 } from '@mantine/core';
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -34,7 +35,9 @@ const BlogPage: NextPage = () => {
 
 	return (
 		<BlogLayout meta={meta}>
-			<Paper className={c.imgContainer} style={{ height: 120 }}>
+			<Title my="xl">intern.house</Title>
+
+			<Paper className={c.imgContainer} style={{ height: 100 }} mb="md">
 				<Image
 					src="/images/blogs/intern-house/intern-house.webp"
 					alt="intern.house"
@@ -42,6 +45,15 @@ const BlogPage: NextPage = () => {
 					objectFit="contain"
 				/>
 			</Paper>
+
+			<Button
+				component="a"
+				href="https://intern.house"
+				target="_blank"
+				variant="outline"
+				leftIcon={<IconExternalLink size={14} />}>
+				Visit Website
+			</Button>
 
 			<Title order={3} mt={40} mb={5}>
 				Preface

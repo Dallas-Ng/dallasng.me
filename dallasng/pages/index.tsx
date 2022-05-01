@@ -95,12 +95,13 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
-						href="https://intern.house"
+						href="/blogs/intern-house"
 						imgSrc="/images/internhouse.webp"
 						imgFit="contain"
 						title="intern.house"
 						desc="No longer in development - A website that connects interns to accomodations"
 						skills={['React', 'Django']}
+						target="_self"
 					/>
 
 					<ProjectCard
