@@ -2,6 +2,7 @@ import { Container, createStyles } from '@mantine/core';
 import Head from 'next/head';
 import BackButton from './back-button';
 import Footer from './footer';
+import GoToTopButton from './go-to-top-button';
 import Navigation from './navigation';
 
 type Meta = { title?: string; desc?: string; author?: string };
@@ -25,7 +26,7 @@ const BlogLayout: React.FC<IProps> = ({ meta, children }) => {
 			<Container size="sm" className={c.main}>
 				<main>{children}</main>
 
-				<BackButton />
+				<GoToTopButton />
 			</Container>
 
 			<Container>
