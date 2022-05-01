@@ -22,7 +22,7 @@ const ResumePage: NextPage = () => {
 	const { classes } = useStyles();
 
 	return (
-		<Layout>
+		<Layout headerText="Resume">
 			<Head>
 				<title>Dallas Ng - Resume</title>
 				<meta

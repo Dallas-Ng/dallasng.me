@@ -6,18 +6,20 @@ import Navigation from './navigation';
 interface IProps {
 	backBtn?: boolean;
 	containerSize?: MantineNumberSize;
+	headerText?: string;
 }
 
 const Layout: React.FC<IProps> = ({
 	backBtn = true,
 	containerSize = 'sm',
+	headerText,
 	children
 }) => {
 	const c = useStyles().classes;
 
 	return (
 		<>
-			<Navigation containerSize={containerSize} />
+			<Navigation containerSize={containerSize} headerText={headerText} />
 
 			<Container size={containerSize} className={c.main}>
 				<main>{children}</main>

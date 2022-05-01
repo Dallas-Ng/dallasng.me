@@ -11,9 +11,13 @@ import ColorSchemeToggle from './color-scheme-toggle';
 
 interface IProps {
 	containerSize?: MantineNumberSize;
+	headerText?: string;
 }
 
-const Navigation: React.FC<IProps> = ({ containerSize }) => {
+const Navigation: React.FC<IProps> = ({
+	containerSize,
+	headerText = 'Portfolio'
+}) => {
 	const c = useStyles().classes;
 
 	return (
@@ -32,7 +36,7 @@ const Navigation: React.FC<IProps> = ({ containerSize }) => {
 						</div>
 					</Anchor>
 
-					<span className={c.text}>Portfolio</span>
+					<span className={c.text}>{headerText}</span>
 				</Group>
 
 				<ColorSchemeToggle />
