@@ -162,8 +162,8 @@ const BlogPage: NextPage = () => {
 				and India, we had to stagger how meetings were conducted and how the
 				project would be planned. The biggest time zone difference was about 3-4
 				hours, albeit not that huge but as we were students and/or working it
-				wasn't really an option to schedule during the mid-day as we might have
-				things on-going.
+				wasn&apos;t really an option to schedule during the mid-day as we might
+				have things on-going.
 			</Text>
 
 			<Text mb="md">
@@ -187,9 +187,9 @@ const BlogPage: NextPage = () => {
 				this, we started to use Trello, a kanban board where each developer
 				would see the tickets they owned and any additional information they
 				needed. To create additional features, we would impose a “put it in a
-				chat and let's think about it” mentality so that not all features would
-				instantly get into the pipeline but all features would be at least taken
-				into consideration.
+				chat and let&apos;s think about it” mentality so that not all features
+				would instantly get into the pipeline but all features would be at least
+				taken into consideration.
 			</Text>
 
 			<Title order={4} mb={5}>
@@ -207,8 +207,8 @@ const BlogPage: NextPage = () => {
 				<strong>Project Management</strong>; As a rule of thumb, I broke down
 				big features into smaller features where each developer could have 1
 				main focus. It is very easy for me to just tell someone to “build the
-				login system” but that wouldn't be beneficial as they might get lost
-				along the way or just be overwhelmed with what to do.
+				login system” but that wouldn&apos;t be beneficial as they might get
+				lost along the way or just be overwhelmed with what to do.
 			</Text>
 
 			{ImageWithCaption(
@@ -247,7 +247,9 @@ const BlogPage: NextPage = () => {
 
 			<ul>
 				<li>Problem: What is wrong with the highlighted area</li>
-				<li>Solution: What I would've done or things you can explore to do</li>
+				<li>
+					Solution: What I would&apos;ve done or things you can explore to do
+				</li>
 				<li>
 					Others: Things that are related but not directly related to the
 					problem or solution
