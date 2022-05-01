@@ -122,9 +122,9 @@ const IndexPage: NextPage = () => {
 				</Title>
 
 				<BlogCard
-					title="Handling Millions of Pages"
+					title="Intern.House"
 					category="learning"
-					image="/images/scale.jpg"
+					image="/images/burn.jpg"
 				/>
 			</Layout>
 		</>

@@ -17,7 +17,7 @@ const BlogLayout: React.FC<IProps> = ({ meta, children }) => {
 	return (
 		<>
 			<Head>
-				<title>{meta.title} - Dallas Ng</title>
+				<title>{meta.title} - Dallas Ng's Blogs</title>
 				<meta name="description" content={meta.desc} />
 			</Head>
 

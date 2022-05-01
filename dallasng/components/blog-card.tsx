@@ -12,7 +12,7 @@ const BlogCard: React.FC<IProps> = props => {
 	const { image, title, category } = props;
 
 	return (
-		<NextLink href="/blogs/millions-of-pages" style={{ cursor: 'pointer' }}>
+		<NextLink href="/blogs/intern-house" style={{ cursor: 'pointer' }}>
 			<Paper
 				shadow="md"
 				p="xl"
@@ -35,7 +35,7 @@ const BlogCard: React.FC<IProps> = props => {
 
 const useStyles = createStyles(theme => ({
 	card: {
-		height: 180,
+		height: 200,
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',

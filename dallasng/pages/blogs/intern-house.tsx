@@ -36,7 +36,7 @@ const BlogPage: NextPage = () => {
 		<BlogLayout meta={meta}>
 			<Paper className={c.imgContainer} style={{ height: 120 }}>
 				<Image
-					src="/blogs/intern-house/intern-house.webp"
+					src="/images/blogs/intern-house/intern-house.webp"
 					alt="intern.house"
 					layout="fill"
 					objectFit="contain"
@@ -73,7 +73,7 @@ const BlogPage: NextPage = () => {
 			</Text>
 
 			{ImageWithCaption(
-				'/blogs/intern-house/idea-diagram.webp',
+				'/images/blogs/intern-house/idea-diagram.webp',
 				'My cool diagram explaining what I mean.'
 			)}
 
@@ -140,7 +140,7 @@ const BlogPage: NextPage = () => {
 			</Text>
 
 			{ImageWithCaption(
-				'/blogs/intern-house/architecture.webp',
+				'/images/blogs/intern-house/architecture.webp',
 				"A short synopsis of our architecture - As this blog is meant to explain overall about the project, I didn't dive much into the tech side of things."
 			)}
 
@@ -175,7 +175,7 @@ const BlogPage: NextPage = () => {
 			</Text>
 
 			{ImageWithCaption(
-				'/blogs/intern-house/world-clock.webp',
+				'/images/blogs/intern-house/world-clock.webp',
 				'How we would plan to meet',
 				200
 			)}
@@ -212,7 +212,7 @@ const BlogPage: NextPage = () => {
 			</Text>
 
 			{ImageWithCaption(
-				'/blogs/intern-house/trello.webp',
+				'/images/blogs/intern-house/trello.webp',
 				'Our trello board at a point of time'
 			)}
 
@@ -255,7 +255,7 @@ const BlogPage: NextPage = () => {
 			</ul>
 
 			{ImageWithCaption(
-				'/blogs/intern-house/github-comment.webp',
+				'/images/blogs/intern-house/github-comment.webp',
 				'A real PR comment, that I should have elaborated more on'
 			)}
 
