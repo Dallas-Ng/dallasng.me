@@ -99,7 +99,7 @@ const IndexPage: NextPage = () => {
 						imgSrc="/images/internhouse.webp"
 						imgFit="contain"
 						title="intern.house"
-						desc="No longer in development - A website that connects interns to accomodations"
+						desc="A website that connects interns to accomodations, click to read the blog!"
 						skills={['React', 'Django']}
 						target="_self"
 					/>
