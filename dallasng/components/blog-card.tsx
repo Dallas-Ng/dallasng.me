@@ -1,50 +1,46 @@
-import { createStyles, Paper, Text, Title, Button } from '@mantine/core';
-
-type BlogStatus = 'writing' | 'planned';
+import { createStyles, Paper, Text, Title } from '@mantine/core';
+import { NextLink } from '@mantine/next';
 
 interface IProps {
 	image: string;
 	title: string;
 	category: string;
-	status?: BlogStatus;
 }
 
 const BlogCard: React.FC<IProps> = props => {
 	const c = useStyles().classes;
-	const { image, title, category, status = 'planned' } = props;
+	const { image, title, category } = props;
 
 	return (
-		<Paper
-			shadow="md"
-			p="xl"
-			radius="md"
-			sx={{ backgroundImage: `url(${image})` }}
-			className={c.card}>
-			<div>
-				<Text className={c.category} size="xs">
-					{category}
-				</Text>
+		<NextLink href="/blogs/millions-of-pages" style={{ cursor: 'pointer' }}>
+			<Paper
+				shadow="md"
+				p="xl"
+				radius="md"
+				sx={{ backgroundImage: `url(${image})` }}
+				className={c.card}>
+				<div>
+					<Text className={c.category} size="xs">
+						{category}
+					</Text>
 
-				<Title order={3} className={c.title}>
-					{title}
-				</Title>
-			</div>
-
-			<Button variant="white" color="dark" disabled fullWidth>
-				{status === 'planned' ? 'Coming Soon' : 'Being Written'}
-			</Button>
-		</Paper>
+					<Title order={3} className={c.title}>
+						{title}
+					</Title>
+				</div>
+			</Paper>
+		</NextLink>
 	);
 };
 
 const useStyles = createStyles(theme => ({
 	card: {
-		height: 320,
+		height: 180,
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
-		backgroundSize: 'cover',
+		backgroundSize: 'center',
 		backgroundPosition: 'center'
 	},
 	title: {
