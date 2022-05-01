@@ -24,7 +24,7 @@ const ResumePage: NextPage = () => {
 	return (
 		<Layout headerText="Resume">
 			<Head>
-				<title>Dallas Ng - Resume</title>
+				<title>Resume - Dallas Ng</title>
 				<meta
 					name="description"
 					content="View my work experience, education and skills"
