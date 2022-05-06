@@ -1,12 +1,10 @@
-import { IconExclamationMark, IconExternalLink } from '@tabler/icons';
+import {  IconExternalLink } from '@tabler/icons';
 import {
 	Title,
 	Text,
 	createStyles,
 	Paper,
-	Center,
 	Anchor,
-	Blockquote,
 	Button
 } from '@mantine/core';
 import { NextPage } from 'next';
