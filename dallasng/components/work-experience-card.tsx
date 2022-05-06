@@ -22,36 +22,38 @@ const WorkExpCard: React.FC<IProps> = props => {
 	const { imgUrl, title, company, from, to } = props;
 	const { classes, theme } = useStyles();
 
+	const href = `/resume#${toSanitisedLink(`${company}-${title}`)}`;
+
 	return (
-		<div className={classes.btn}>
-			<Group>
-				<Avatar src={imgUrl} radius="xl" />
+		<NextLink href={href} style={{ cursor: 'pointer' }}>
+			<div className={classes.btn}>
+				<Group>
+					<Avatar src={imgUrl} radius="xl" />
 
-				<div style={{ flex: 1 }}>
-					<Text size="sm" weight={500}>
-						{title}
-					</Text>
-					<Text color="dimmed" size="xs">
-						{company}
-					</Text>
+					<div style={{ flex: 1 }}>
+						<Text size="sm" weight={500}>
+							{title}
+						</Text>
+						<Text color="dimmed" size="xs">
+							{company}
+						</Text>
 
-					<Text color="dimmed" size="xs">
-						{from} - {to}
-					</Text>
-				</div>
+						<Text color="dimmed" size="xs">
+							{from} - {to}
+						</Text>
+					</div>
 
-				<Button
-					variant={theme.colorScheme === 'dark' ? 'default' : 'light'}
-					radius="xl"
-					component={NextLink}
-					href={`/resume#${toSanitisedLink(`${company}-${title}`)}`}>
-					<Center>
-						View
-						<IconChevronRight />
-					</Center>
-				</Button>
-			</Group>
-		</div>
+					<Button
+						variant={theme.colorScheme === 'dark' ? 'default' : 'light'}
+						radius="xl">
+						<Center>
+							View
+							<IconChevronRight />
+						</Center>
+					</Button>
+				</Group>
+			</div>
+		</NextLink>
 	);
 };
 
