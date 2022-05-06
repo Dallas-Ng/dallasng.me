@@ -3,7 +3,8 @@ import BlogLayout from '../../components/shared/blog-layout';
 
 const meta = {
 	title: 'Millions of Pages',
-	desc: 'How and why we switch to Next.js'
+	desc: 'How and why we switch to Next.js',
+	date: ''
 };
 
 const BlogPage: NextPage = () => (

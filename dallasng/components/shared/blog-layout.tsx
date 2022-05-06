@@ -1,10 +1,10 @@
-import { Container, createStyles } from '@mantine/core';
+import { Container, createStyles, Title, Text } from '@mantine/core';
 import Head from 'next/head';
 import Footer from './footer';
 import GoToTopButton from './go-to-top-button';
 import Navigation from './navigation';
 
-type Meta = { title?: string; desc?: string; author?: string };
+type Meta = { title?: string; desc?: string; author?: string; date: string };
 
 interface IProps {
 	meta: Meta;
@@ -12,6 +12,7 @@ interface IProps {
 
 const BlogLayout: React.FC<IProps> = ({ meta, children }) => {
 	const c = useStyles().classes;
+	const { title, date } = meta;
 
 	return (
 		<>
@@ -23,7 +24,14 @@ const BlogLayout: React.FC<IProps> = ({ meta, children }) => {
 			<Navigation containerSize="sm" headerText="Blogs" />
 
 			<Container size="sm" className={c.main}>
-				<main>{children}</main>
+				<main>
+					<Title>{title}</Title>
+					<Text mb="xl" size="sm">
+						{date}
+					</Text>
+
+					{children}
+				</main>
 
 				<GoToTopButton />
 			</Container>

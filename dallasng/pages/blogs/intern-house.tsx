@@ -1,4 +1,4 @@
-import {  IconExternalLink } from '@tabler/icons';
+import { IconExternalLink } from '@tabler/icons';
 import {
 	Title,
 	Text,
@@ -10,31 +10,19 @@ import {
 import { NextPage } from 'next';
 import Image from 'next/image';
 import BlogLayout from '../../components/shared/blog-layout';
+import BlogImage from '../../components/blog/blog-image';
 
 const meta = {
 	title: 'intern.house',
-	desc: 'The journey of intern.house'
+	desc: 'The journey of intern.house',
+	date: '5 May 2022'
 };
 
 const BlogPage: NextPage = () => {
 	const c = useStyles().classes;
 
-	const ImageWithCaption = (src: string, caption: string, height = 400) => (
-		<>
-			<Paper className={c.imgContainer} style={{ height: height }}>
-				<Image src={src} alt={caption} layout="fill" objectFit="contain" />
-			</Paper>
-
-			<Text color="gray" my="sm" style={{ fontSize: 14, textAlign: 'center' }}>
-				<em>{caption}</em>
-			</Text>
-		</>
-	);
-
 	return (
 		<BlogLayout meta={meta}>
-			<Title my="xl">intern.house</Title>
-
 			<Paper className={c.imgContainer} style={{ height: 100 }} mb="md">
 				<Image
 					src="/images/blogs/intern-house/intern-house.webp"
@@ -82,10 +70,11 @@ const BlogPage: NextPage = () => {
 				network effect amongst each other.
 			</Text>
 
-			{ImageWithCaption(
-				'/images/blogs/intern-house/idea-diagram.webp',
-				'My cool diagram explaining what I mean.'
-			)}
+			<BlogImage
+				src="/images/blogs/intern-house/idea-diagram.webp"
+				alt="A diagram explaining what I mean"
+				caption="My cool diagram explaining what I mean."
+			/>
 
 			<Title order={3} mt={40} mb={5}>
 				Platform Idea
@@ -149,10 +138,11 @@ const BlogPage: NextPage = () => {
 				and python scripts running on lambda functions.
 			</Text>
 
-			{ImageWithCaption(
-				'/images/blogs/intern-house/architecture.webp',
-				"A short synopsis of our architecture - As this blog is meant to explain overall about the project, I didn't dive much into the tech side of things."
-			)}
+			<BlogImage
+				src="/images/blogs/intern-house/architecture.webp"
+				caption="A short synopsis of our architecture - As this blog is meant to explain overall about the project, I didn't dive much into the tech side of things."
+				alt="A diagram of our system architecture"
+			/>
 
 			<Title order={3} mt={40} mb={5}>
 				Problems and Setbacks
@@ -184,11 +174,12 @@ const BlogPage: NextPage = () => {
 				list of what to talk about.
 			</Text>
 
-			{ImageWithCaption(
-				'/images/blogs/intern-house/world-clock.webp',
-				'How we would plan to meet',
-				200
-			)}
+			<BlogImage
+				src="/images/blogs/intern-house/world-clock.webp"
+				alt="How we would plan to meet"
+				caption="How we would plan to meet"
+				height={200}
+			/>
 
 			<Text mb="md">
 				The initial project development was gung-ho, this meant that any idea
@@ -221,10 +212,11 @@ const BlogPage: NextPage = () => {
 				lost along the way or just be overwhelmed with what to do.
 			</Text>
 
-			{ImageWithCaption(
-				'/images/blogs/intern-house/trello.webp',
-				'Our trello board at a point of time'
-			)}
+			<BlogImage
+				src="/images/blogs/intern-house/trello.webp"
+				alt="Our trello board at a point of time"
+				caption="Our trello board at a point of time"
+			/>
 
 			<Text mb="md">
 				<strong>Managing Code Quality</strong>; One biggest learning curve for
@@ -266,10 +258,11 @@ const BlogPage: NextPage = () => {
 				</li>
 			</ul>
 
-			{ImageWithCaption(
-				'/images/blogs/intern-house/github-comment.webp',
-				'A real PR comment, that I should have elaborated more on'
-			)}
+			<BlogImage
+				src="/images/blogs/intern-house/github-comment.webp"
+				alt="A real PR comment, that I should have elaborated more on"
+				caption="A real PR comment, that I should have elaborated more on"
+			/>
 
 			<Text mb="md">
 				Another method I tried was pair-coding, we would hop on discord and
