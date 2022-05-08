@@ -1,22 +1,18 @@
 import { createStyles, Paper, Text, Title, Tooltip } from '@mantine/core';
+import { NextLink } from '@mantine/next';
 
 interface IProps {
 	title: string;
 	category: string;
+	href: string;
 }
 
 const SmallBlogCard: React.FC<IProps> = props => {
 	const c = useStyles().classes;
-	const { title, category } = props;
+	const { title, category, href } = props;
 
 	return (
-		<Tooltip
-			withArrow
-			color="dark"
-			transition="fade"
-			transitionDuration={200}
-			style={{ width: '100%' }}
-			label="Planned blog to write, not currently writing yet.">
+		<NextLink href={href}>
 			<Paper shadow="md" p="md" radius="md" className={c.card} withBorder>
 				<div>
 					<Text className={c.category} size="xs">
@@ -28,7 +24,7 @@ const SmallBlogCard: React.FC<IProps> = props => {
 					</Title>
 				</div>
 			</Paper>
-		</Tooltip>
+		</NextLink>
 	);
 };
 

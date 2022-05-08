@@ -38,7 +38,7 @@ const BlogPage: NextPage = () => (
 
 		<Text mb="md">
 			This application is quite old; developed in 2019. Steam Account Switcher
-			(SAS) is a windows application written in C# - WPF that allows users to
+			(SAS) is a windows application written in C# (WPF) that allows users to
 			easily switch accounts on Steam.
 		</Text>
 

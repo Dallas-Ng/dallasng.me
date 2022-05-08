@@ -4,6 +4,7 @@ import {
 	Center,
 	createStyles,
 	Divider,
+	Grid,
 	SimpleGrid,
 	Text,
 	Title
@@ -16,6 +17,7 @@ import { NextLink } from '@mantine/next';
 import { EXPERIENCE } from '../data/experience.data';
 import { IconFileDownload } from '@tabler/icons';
 import BlogCard from '../components/blog-card';
+import SmallBlogCard from '../components/small-blog-card';
 
 const IndexPage: NextPage = () => {
 	const c = useStyles().classes;
@@ -122,11 +124,23 @@ const IndexPage: NextPage = () => {
 					Blogs
 				</Title>
 
-				<BlogCard
-					title="Intern.House"
-					category="learning"
-					image="/images/burn.jpg"
-				/>
+				<Grid>
+					<Grid.Col md={8}>
+						<BlogCard
+							title="Intern.House"
+							category="learning"
+							image="/images/burn.jpg"
+						/>
+					</Grid.Col>
+
+					<Grid.Col md={4}>
+						<SmallBlogCard
+							title="Steam Account Switcher"
+							category="Project"
+							href="/blogs/steam-account-switcher"
+						/>
+					</Grid.Col>
+				</Grid>
 			</Layout>
 		</>
 	);
