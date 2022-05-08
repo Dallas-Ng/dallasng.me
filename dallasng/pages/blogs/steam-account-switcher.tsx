@@ -71,7 +71,7 @@ const BlogPage: NextPage = () => (
 
 		<Text mb="md">
 			For SAS, it was built using WPF. The main decision for choosing WPF was
-			becauseI was building a lot of web apps using ASP.NET at the time, so
+			because I was building a lot of web apps using ASP.NET at the time, so
 			naturally I continued on the ecosystem.
 		</Text>
 
@@ -114,10 +114,14 @@ const BlogPage: NextPage = () => (
 			this meant that the user has to be connected to the internet all the time.
 		</Text>
 
+		<Title order={4} mb={5}>
+			Presently
+		</Title>
+
 		<Text mb="md">
-			Presently, the project is finished and I will not be making any changes to
-			it. In the future, I might make an electron version of this application
-			that is cross platform compatible.
+			The project is finished and I will not be making any changes to it. In the
+			future, I might make an electron version of this application that is cross
+			platform compatible.
 		</Text>
 
 		<Button
