@@ -104,7 +104,7 @@ const ExpWorkClassPage: NextPage = () => {
 					to build anything under the sun that we needed, this ranged from
 					mobile apps, backend services to AWS infrastructure. As the company
 					grew, I adopted a more managerial role and started to manage the
-					company's product line and development team.
+					company&apos;s product line and development team.
 				</Text>
 
 				<Text mb="md">
@@ -123,7 +123,7 @@ const ExpWorkClassPage: NextPage = () => {
 					<li>Developing all of WorkClass core services</li>
 				</ul>
 
-				<Title order={2}>Projects I've Led</Title>
+				<Title order={2}>Projects I&apos;ve Led</Title>
 			</Container>
 
 			<Box my="lg">
@@ -131,8 +131,8 @@ const ExpWorkClassPage: NextPage = () => {
 					gradientColor={
 						colorScheme === 'dark' ? [26, 27, 30] : [255, 255, 255]
 					}>
-					{data.map(project => (
-						<Project {...project} />
+					{data.map((project, i) => (
+						<Project key={i} {...project} />
 					))}
 				</Marquee>
 			</Box>
