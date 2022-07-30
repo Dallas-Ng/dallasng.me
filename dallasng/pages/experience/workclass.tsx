@@ -5,11 +5,8 @@ import {
 	Title,
 	Text,
 	Box,
-	Group,
 	Badge,
-	useMantineColorScheme,
-	Grid,
-	Stack
+	useMantineColorScheme
 } from '@mantine/core';
 import ExperienceLayout from '../../components/shared/experience-layout';
 import Marquee from 'react-fast-marquee';
@@ -71,7 +68,7 @@ const ExpWorkClassPage: NextPage = () => {
 	const { colorScheme } = useMantineColorScheme();
 
 	return (
-		<ExperienceLayout meta={{ title: 'WorkClass', desc: 'teste' }}>
+		<ExperienceLayout meta={{ title: 'WorkClass', desc: 'WorkClass' }}>
 			<Container size="sm">
 				<div style={{ display: 'flex', alignItems: 'center' }}>
 					<Title mb={5} mr={5}>
