@@ -15,6 +15,7 @@ const BlogPage: NextPage = () => (
 	<BlogLayout meta={meta}>
 		<Button
 			mr="xs"
+			mb="xs"
 			component="a"
 			href="https://github.com/dallas-ng/steam-account-switcher"
 			target="_blank"
@@ -126,6 +127,7 @@ const BlogPage: NextPage = () => (
 
 		<Button
 			mr="xs"
+			mb="xs"
 			component="a"
 			href="https://github.com/Dallas-Ng/Steam-Account-Switcher/releases/tag/v2.0"
 			target="_blank"
