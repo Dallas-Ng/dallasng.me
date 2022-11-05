@@ -20,20 +20,14 @@ export const EXPERIENCE = [
 		technologies: []
 	},
 	{
-		title: 'Freelance Software Engineer',
-		company: 'dallasng.dev',
-		from: 'Jan 2020',
+		title: 'Artillery Officer',
+		company: 'Singapore Armed Forces',
+		from: 'Aug 2021',
 		to: 'Present',
-		imgUrl: '/logo-blue.webp',
-		website: 'https://dallasng.dev',
-		description: [
-			<Text>
-				Build client's dreams into reality. This can be anything from creating
-				hosting for servers, web applications and proof of concepts.
-			</Text>,
-			<Text>Mainly offer software development/consultancy services.</Text>
-		],
-		technologies: ['Upon Project']
+		imgUrl:
+			'https://upload.wikimedia.org/wikipedia/en/a/aa/Crest_of_the_Singapore_Armed_Forces.png',
+		description: [],
+		technologies: []
 	},
 	{
 		title: 'Technical Lead',
@@ -82,6 +76,22 @@ export const EXPERIENCE = [
 			'Agile',
 			'Scrum'
 		]
+	},
+	{
+		title: 'Freelance Software Engineer',
+		company: 'dallasng.dev',
+		from: 'Jan 2020',
+		to: 'Aug 2021',
+		imgUrl: '/logo-blue.webp',
+		website: 'https://dallasng.dev',
+		description: [
+			<Text>
+				Build client's dreams into reality. This can be anything from creating
+				hosting for servers, web applications and proof of concepts.
+			</Text>,
+			<Text>Mainly offer software development/consultancy services.</Text>
+		],
+		technologies: ['Upon Project']
 	},
 	{
 		title: 'Software Engineer Intern',
