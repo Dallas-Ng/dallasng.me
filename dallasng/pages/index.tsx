@@ -89,11 +89,12 @@ const IndexPage: NextPage = () => {
 						{ cols: 1, spacing: 'xs' }
 					]}>
 					<ProjectCard
-						href="https://github.com/Dallas-Ng/Steam-Account-Switcher"
+						href="/blogs/steam-account-switcher"
 						imgSrc="/images/steam.webp"
 						title="Steam Account Switcher"
 						desc="A windows application that helps switch in between steam accounts seamlessly"
 						skills={['c#', 'WPF']}
+						target="_self"
 					/>
 
 					<ProjectCard
