@@ -37,7 +37,7 @@ const BlogPage: NextPage = () => (
 			Preface
 		</Title>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			This application is quite old; developed in 2019. Steam Account Switcher
 			(SAS) is a windows application written in C# (WPF) that allows users to
 			easily switch accounts on Steam.
@@ -47,7 +47,7 @@ const BlogPage: NextPage = () => (
 			Why?
 		</Title>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			As gamers, my friends and I like to play different genres of games. We
 			might achieve different competitive ranks that prevent us from playing
 			with each other, to circumvent this, we would create new accounts.
@@ -55,7 +55,7 @@ const BlogPage: NextPage = () => (
 			others.
 		</Text>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			It quickly became repetitive and annoying to log into different accounts,
 			we would constantly have to retype and re-enter our credentials. Some of
 			our accounts could also be quite old and we might lose/forget the
@@ -70,13 +70,13 @@ const BlogPage: NextPage = () => (
 			How It Works
 		</Title>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			For SAS, it was built using WPF. The main decision for choosing WPF was
 			because I was building a lot of web apps using ASP.NET at the time, so
 			naturally I continued on the ecosystem.
 		</Text>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			Adding accounts allows the user to create profiles for easier logins. Upon
 			adding the accounts, the details would be encrypted and stored locally
 			into a XML file.
@@ -97,7 +97,7 @@ const BlogPage: NextPage = () => (
 			Cross Platform
 		</Title>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			One of the goals of this project was actually to make it cross platform.
 			At the time, Steam for linux was not a big thing yet and MacOS did not
 			support a lot of games. So I decided that I would make this a windows
@@ -108,7 +108,7 @@ const BlogPage: NextPage = () => (
 			Cloud Storage
 		</Title>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			I also wanted to build was to make the application handle cloud storage
 			(data being stored on a server securely). However, I decided against this
 			as this could lead the application to have security vulnerabilities and
@@ -119,7 +119,7 @@ const BlogPage: NextPage = () => (
 			Presently
 		</Title>
 
-		<Text mb="md">
+		<Text component="p" mb="md">
 			The project is finished and I will not be making any changes to it. In the
 			future, I might make an electron version of this application that is cross
 			platform compatible.
