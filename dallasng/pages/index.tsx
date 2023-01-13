@@ -6,6 +6,7 @@ import {
 	Divider,
 	Grid,
 	SimpleGrid,
+	Stack,
 	Text,
 	Title
 } from '@mantine/core';
@@ -80,6 +81,32 @@ const IndexPage: NextPage = () => {
 				</Center>
 
 				<Title order={2} mt="xl" mb="md">
+					Blogs
+				</Title>
+
+				<Grid>
+					<Grid.Col md={8}>
+						<BlogCard
+							title="Hard Truths of Front End Development"
+							category="learning"
+							image="/images/blogs/hard-truths/drugs.png"
+							href="/blogs/hard-truth-of-front-end-development"
+						/>
+					</Grid.Col>
+
+					<Grid.Col md={4}>
+						<Stack>
+							<BlogCard
+								title="Intern House"
+								category="learning"
+								image="/images/burn.jpg"
+								href="/blogs/steam-account-switcher"
+							/>
+						</Stack>
+					</Grid.Col>
+				</Grid>
+
+				<Title order={2} mt="xl" mb="md">
 					Projects
 				</Title>
 
@@ -108,10 +135,12 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
+						href="/blogs/tuick"
 						imgSrc="/images/tuick.webp"
 						title="Tuick"
 						imgFit="contain"
-						desc="School management system that you will ever need to run and manage your tuition centre"
+						desc="Backend management system to run and manage your tuition centre"
+						target="_self"
 					/>
 				</SimpleGrid>
 
@@ -120,28 +149,6 @@ const IndexPage: NextPage = () => {
 						<Text size="sm">View Other Projects</Text>
 					</Anchor>
 				</Center>
-
-				<Title order={2} mt="xl" mb="md">
-					Blogs
-				</Title>
-
-				<Grid>
-					<Grid.Col md={8}>
-						<BlogCard
-							title="Intern.House"
-							category="learning"
-							image="/images/burn.jpg"
-						/>
-					</Grid.Col>
-
-					<Grid.Col md={4}>
-						<SmallBlogCard
-							title="Steam Account Switcher"
-							category="Project"
-							href="/blogs/steam-account-switcher"
-						/>
-					</Grid.Col>
-				</Grid>
 			</Layout>
 		</>
 	);
