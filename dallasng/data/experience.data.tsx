@@ -2,10 +2,20 @@ import { Text } from '@mantine/core';
 
 export const EXPERIENCE = [
 	{
+		title: 'Artillery Officer',
+		company: 'Singapore Armed Forces',
+		from: 'Aug 2021',
+		to: 'Present',
+		imgUrl:
+			'https://upload.wikimedia.org/wikipedia/en/a/aa/Crest_of_the_Singapore_Armed_Forces.png',
+		description: [],
+		technologies: []
+	},
+	{
 		title: 'Technical Advisor / Consultant',
 		company: 'WorkClass',
 		from: 'Sep 2021',
-		to: 'Present',
+		to: 'Jan 2023',
 		imgUrl: 'https://workclass.co/images/workclass/workclass-icon.svg',
 		website: 'https://workclass.co',
 		description: [
@@ -17,16 +27,6 @@ export const EXPERIENCE = [
 				Main concerns are with the company's SEO, tech debt and architecture.
 			</Text>
 		],
-		technologies: []
-	},
-	{
-		title: 'Artillery Officer',
-		company: 'Singapore Armed Forces',
-		from: 'Aug 2021',
-		to: 'Present',
-		imgUrl:
-			'https://upload.wikimedia.org/wikipedia/en/a/aa/Crest_of_the_Singapore_Armed_Forces.png',
-		description: [],
 		technologies: []
 	},
 	{
