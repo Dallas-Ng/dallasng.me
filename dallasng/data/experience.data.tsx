@@ -16,7 +16,7 @@ export const EXPERIENCE = [
 		company: 'WorkClass',
 		from: 'Sep 2021',
 		to: 'Jan 2023',
-		imgUrl: 'https://workclass.co/images/workclass/workclass-icon.svg',
+		imgUrl: '/images/WorkClass.png',
 		website: 'https://workclass.co',
 		description: [
 			<Text>
@@ -34,7 +34,7 @@ export const EXPERIENCE = [
 		company: 'WorkClass',
 		from: 'Aug 2020',
 		to: 'Sep 2021',
-		imgUrl: 'https://workclass.co/images/workclass/workclass-icon.svg',
+		imgUrl: '/images/WorkClass.png',
 		website: 'https://workclass.co',
 		description: [
 			<Text>
