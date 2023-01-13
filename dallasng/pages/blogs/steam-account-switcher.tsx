@@ -12,7 +12,7 @@ const meta = {
 };
 
 const BlogPage: NextPage = () => (
-	<BlogLayout meta={meta}>
+	<BlogLayout meta={meta} header="Projects">
 		<Button
 			mr="xs"
 			mb="xs"

@@ -8,20 +8,23 @@ type Meta = { title?: string; desc?: string; author?: string; date: string };
 
 interface IProps {
 	meta: Meta;
+	header?: 'Blogs' | 'Projects';
 }
 
-const BlogLayout: React.FC<IProps> = ({ meta, children }) => {
+const BlogLayout: React.FC<IProps> = ({ meta, header = 'Blogs', children }) => {
 	const c = useStyles().classes;
 	const { title, date } = meta;
 
 	return (
 		<>
 			<Head>
-				<title>{meta.title} - Dallas Ng&apos;s Blogs</title>
+				<title>
+					{meta.title} - Dallas Ng&apos;s {header}
+				</title>
 				<meta name="description" content={meta.desc} />
 			</Head>
 
-			<Navigation containerSize="sm" headerText="Blogs" />
+			<Navigation containerSize="sm" headerText={header} />
 
 			<Container size="sm" className={c.main}>
 				<main>

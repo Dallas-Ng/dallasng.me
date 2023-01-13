@@ -5,14 +5,15 @@ interface IProps {
 	image: string;
 	title: string;
 	category: string;
+	href: string;
 }
 
 const BlogCard: React.FC<IProps> = props => {
 	const c = useStyles().classes;
-	const { image, title, category } = props;
+	const { image, title, category, href } = props;
 
 	return (
-		<NextLink href="/blogs/intern-house" style={{ cursor: 'pointer' }}>
+		<NextLink href={href} style={{ cursor: 'pointer' }}>
 			<Paper
 				shadow="md"
 				p="xl"
@@ -35,14 +36,17 @@ const BlogCard: React.FC<IProps> = props => {
 
 const useStyles = createStyles(theme => ({
 	card: {
-		height: 200,
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
 		backgroundSize: 'center',
-		backgroundPosition: 'center'
+		backgroundPosition: 'center',
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			height: 250
+		}
 	},
+
 	title: {
 		fontFamily: `Greycliff CF ${theme.fontFamily}`,
 		fontWeight: 900,

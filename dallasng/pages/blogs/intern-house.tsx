@@ -10,7 +10,7 @@ const meta = {
 };
 
 const BlogPage: NextPage = () => (
-	<BlogLayout meta={meta}>
+	<BlogLayout meta={meta} header="Projects">
 		<BlogImage
 			src="/images/blogs/intern-house/intern-house.webp"
 			alt="intern.house"
