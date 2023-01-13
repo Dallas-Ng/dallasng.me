@@ -1,5 +1,4 @@
-import { IconExternalLink } from '@tabler/icons';
-import { Title, Text, Anchor, Button } from '@mantine/core';
+import { Title, Text, Anchor, Divider } from '@mantine/core';
 import { NextPage } from 'next';
 import BlogLayout from '../../components/shared/blog-layout';
 import BlogImage from '../../components/blog/blog-image';
@@ -18,15 +17,20 @@ const BlogPage: NextPage = () => (
 			height={100}
 		/>
 
-		<Button
-			mt="md"
-			component="a"
-			href="https://intern.house"
-			target="_blank"
-			variant="outline"
-			leftIcon={<IconExternalLink size={14} />}>
-			Visit Website
-		</Button>
+		<Title order={3} mt={40} mb={5}>
+			Update Jan 2023
+		</Title>
+
+		<Text mb="md">
+			I recently sold the domain{' '}
+			<Anchor href="https://intern.house" target="_blank">
+				intern.house
+			</Anchor>{' '}
+			to another startup so the page that I built will not be hosted there
+			anymore.
+		</Text>
+
+		<Divider />
 
 		<Title order={3} mt={40} mb={5}>
 			Preface
