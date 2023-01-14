@@ -19,7 +19,7 @@ const meta = {
 
 const BlogPage: NextPage = () => (
 	<BlogLayout meta={meta} header="Projects">
-		<Image src="/images/tuick.png" height={100} fit="contain" />
+		<Image src="/images/tuick.webp" height={100} fit="contain" />
 
 		<Text component="p" align="center">
 			Backend management system for tuition centres
@@ -104,7 +104,7 @@ const BlogPage: NextPage = () => (
 		{/* <Text component="p" mb="sm"></Text> */}
 
 		<BlogImage
-			src="/images/blogs/tuick/name-brainstorms.png"
+			src="/images/blogs/tuick/name-brainstorms.webp"
 			alt="A bunch of ideation names"
 			caption="A bunch of ideation of the names"
 		/>
@@ -128,7 +128,7 @@ const BlogPage: NextPage = () => (
 		<SimpleGrid cols={2}>
 			<div>
 				<BlogImage
-					src="/images/blogs/tuick/business-logic-2.png"
+					src="/images/blogs/tuick/business-logic-2.webp"
 					alt="Some logic on how features need to be build"
 					caption="Some logic on how features need to be build"
 				/>
@@ -136,7 +136,7 @@ const BlogPage: NextPage = () => (
 
 			<div>
 				<BlogImage
-					src="/images/blogs/tuick/db-tables.png"
+					src="/images/blogs/tuick/db-tables.webp"
 					alt="Database tables"
 					caption="Database tables that we drafted up"
 				/>
@@ -152,7 +152,7 @@ const BlogPage: NextPage = () => (
 		</Text>
 
 		<BlogImage
-			src="/images/blogs/tuick/meme.png"
+			src="/images/blogs/tuick/meme.webp"
 			alt="How much content does this blog actually have"
 			caption="How much content does this blog actually have"
 		/>

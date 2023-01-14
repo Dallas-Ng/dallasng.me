@@ -74,7 +74,7 @@ const BlogPage: NextPage = () => (
 
 		<BlogImage
 			height={150}
-			src="/images/blogs/shbc/architecture.png"
+			src="/images/blogs/shbc/architecture.webp"
 			alt="The system architecture of this project"
 			caption="The system architecture of this project"
 		/>
@@ -102,13 +102,13 @@ const BlogPage: NextPage = () => (
 		</Text>
 
 		<BlogImage
-			src="/images/blogs/shbc/component.png"
+			src="/images/blogs/shbc/component.webp"
 			alt="A component to create the pledge card"
 			caption="A component to create the pledge card"
 		/>
 
 		<BlogImage
-			src="/images/blogs/shbc/admin.png"
+			src="/images/blogs/shbc/admin.webp"
 			alt="Admin backend"
 			caption="Backend - inputs are verified and checked before saving"
 		/>
@@ -131,7 +131,7 @@ const BlogPage: NextPage = () => (
 		</Text>
 
 		<BlogImage
-			src="/images/blogs/shbc/pledges.png"
+			src="/images/blogs/shbc/pledges.webp"
 			alt="Contributors of the project"
 			caption="Contributors of the project"
 		/>
