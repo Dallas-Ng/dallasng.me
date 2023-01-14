@@ -79,7 +79,7 @@ const IndexPage: NextPage = () => {
 					</Anchor>
 				</Center>
 
-				<Title order={2} mt="xl" mb="md">
+				{/* <Title order={2} mt="xl" mb="md">
 					Blogs
 				</Title>
 
@@ -103,7 +103,7 @@ const IndexPage: NextPage = () => {
 							/>
 						</Stack>
 					</Grid.Col>
-				</Grid>
+				</Grid> */}
 
 				<Title order={2} mt="xl" mb="md">
 					Projects
@@ -115,7 +115,7 @@ const IndexPage: NextPage = () => {
 						{ cols: 1, spacing: 'xs' }
 					]}>
 					<ProjectCard
-						href="/blogs/steam-account-switcher"
+						href="/projects/steam-account-switcher"
 						imgSrc="/images/steam.webp"
 						title="Steam Account Switcher"
 						desc="A windows application that helps switch in between steam accounts seamlessly"
@@ -124,7 +124,7 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
-						href="/blogs/intern-house"
+						href="/projects/intern-house"
 						imgSrc="/images/internhouse.webp"
 						imgFit="contain"
 						title="intern.house"
@@ -134,7 +134,7 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
-						href="/blogs/tuick"
+						href="/projects/tuick"
 						imgSrc="/images/tuick.webp"
 						title="Tuick"
 						imgFit="contain"
@@ -143,7 +143,7 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
-						href="/blogs/small-habits-big-change"
+						href="/projects/small-habits-big-change"
 						imgSrc="/images/shbc.webp"
 						title="Small Habits Big Change"
 						imgFit="contain"
