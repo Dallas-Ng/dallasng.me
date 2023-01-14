@@ -18,7 +18,6 @@ import { NextLink } from '@mantine/next';
 import { EXPERIENCE } from '../data/experience.data';
 import { IconFileDownload } from '@tabler/icons';
 import BlogCard from '../components/blog-card';
-import SmallBlogCard from '../components/small-blog-card';
 
 const IndexPage: NextPage = () => {
 	const c = useStyles().classes;
@@ -100,7 +99,7 @@ const IndexPage: NextPage = () => {
 								title="Intern House"
 								category="learning"
 								image="/images/burn.jpg"
-								href="/blogs/steam-account-switcher"
+								href="/blogs/intern-house"
 							/>
 						</Stack>
 					</Grid.Col>
@@ -140,6 +139,15 @@ const IndexPage: NextPage = () => {
 						title="Tuick"
 						imgFit="contain"
 						desc="Backend management system to run and manage your tuition centre"
+						target="_self"
+					/>
+
+					<ProjectCard
+						href="/blogs/small-habits-big-change"
+						imgSrc="/images/shbc.webp"
+						title="Small Habits Big Change"
+						imgFit="contain"
+						desc="A duct-taped project that was made for the lowest cost possible."
 						target="_self"
 					/>
 				</SimpleGrid>
