@@ -6,7 +6,7 @@ export const EXPERIENCE = [
 		company: 'SEO Copilot',
 		from: 'Jul 2023',
 		to: 'Present',
-		imgUrl: '/images/seocopilot.png',
+		imgUrl: '/images/seocopilot.jpg',
 		description: [],
 		technologies: ['React', 'Django']
 	},
@@ -15,7 +15,7 @@ export const EXPERIENCE = [
 		company: 'Singapore Armed Forces',
 		from: 'Aug 2021',
 		to: 'Aug 2023',
-		imgUrl: '/images/singapore-army.png',
+		imgUrl: '/images/singapore-army.webp',
 		description: [],
 		technologies: []
 	},
@@ -24,7 +24,7 @@ export const EXPERIENCE = [
 		company: 'WorkClass',
 		from: 'Sep 2021',
 		to: 'Jan 2023',
-		imgUrl: '/images/WorkClass.png',
+		imgUrl: '/images/WorkClass.jpg',
 		website: 'https://workclass.co',
 		description: [
 			<Text>
@@ -42,7 +42,7 @@ export const EXPERIENCE = [
 		company: 'WorkClass',
 		from: 'Aug 2020',
 		to: 'Sep 2021',
-		imgUrl: '/images/WorkClass.png',
+		imgUrl: '/images/WorkClass.jpg',
 		website: 'https://workclass.co',
 		description: [
 			<Text>
@@ -106,8 +106,7 @@ export const EXPERIENCE = [
 		company: 'Stone Forest IT',
 		from: 'Mar 2020',
 		to: 'Aug 2020',
-		imgUrl:
-			'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/debe06bdb8de41df0c8b',
+		imgUrl: '/images/stoneforest.jpg',
 		website: 'https://www.stoneforest.com.sg/stoneforestit',
 		description: [
 			<Text>
@@ -139,8 +138,7 @@ export const EXPERIENCE = [
 		company: 'Clickr Media',
 		from: 'Aug 2019',
 		to: 'Jan 2020',
-		imgUrl:
-			'https://media-exp1.licdn.com/dms/image/C560BAQEXyGmFKh05Dg/company-logo_200_200/0/1519879594183?e=2147483647&v=beta&t=yf7b9Pzl4qo-7S9-rwbU_DcrULgS5N5rrwggnZC029g',
+		imgUrl: '/images/clickr.jpg',
 		website: 'https://www.clickrmedia.com',
 		description: [
 			<Text>

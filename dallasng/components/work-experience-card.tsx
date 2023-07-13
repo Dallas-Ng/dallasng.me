@@ -9,6 +9,7 @@ import {
 import { NextLink } from '@mantine/next';
 import { IconChevronRight } from '@tabler/icons';
 import { toSanitisedLink } from '../utils/format';
+import Image from 'next/image';
 
 interface IProps {
 	imgUrl: string;
@@ -28,7 +29,9 @@ const WorkExpCard: React.FC<IProps> = props => {
 		<NextLink href={href} style={{ cursor: 'pointer' }}>
 			<div className={classes.btn}>
 				<Group>
-					<Avatar src={imgUrl} radius="xl" />
+					<div style={{ borderRadius: '50%' }}>
+						<Image src={imgUrl} width={40} height={40} objectFit="contain" />
+					</div>
 
 					<div style={{ flex: 1 }}>
 						<Text weight={500}>{title}</Text>
