@@ -49,17 +49,27 @@ const ResumePage: NextPage = () => {
 			</Title>
 
 			{EDUCATION.map((edu, i) => (
-				<Paper key={i}>
+				<Paper key={i} style={{ marginBottom: 30 }}>
 					<Group position="apart">
 						<div>
-							<Text weight="bold">{edu.institution}</Text>
-							<Text>{edu.specialisation}</Text>
+							<Text weight="bold">{edu.specialisation}</Text>
+							<Text>{edu.institution}</Text>
 						</div>
 
 						<Text>
 							{edu.from} - {edu.to}
 						</Text>
 					</Group>
+
+					{edu.bullets.length > 0 && (
+						<ul style={{ marginTop: 0 }}>
+							<Text>
+								{edu.bullets.map((pointer, i) => (
+									<li key={i}>{pointer}</li>
+								))}
+							</Text>
+						</ul>
+					)}
 				</Paper>
 			))}
 
