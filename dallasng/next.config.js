@@ -4,6 +4,10 @@
 const nextConfig = {
 	reactStrictMode: true,
 	trailingSlash: true,
+	i18n: {
+		locales: ['en'],
+		defaultLocale: 'en'
+	},
 	redirects: () => [
 		{
 			source: '/about/',

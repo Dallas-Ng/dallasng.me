@@ -30,7 +30,13 @@ const WorkExpCard: React.FC<IProps> = props => {
 			<div className={classes.btn}>
 				<Group>
 					<div style={{ borderRadius: '50%' }}>
-						<Image src={imgUrl} width={40} height={40} objectFit="contain" />
+						<Image
+							src={imgUrl}
+							width={40}
+							height={40}
+							objectFit="contain"
+							alt={title}
+						/>
 					</div>
 
 					<div style={{ flex: 1 }}>
