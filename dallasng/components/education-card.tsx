@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const EducationCard: React.FC<IProps> = props => {
-	const { institution, specialisation, from, to, bullets, imgUrl } = props;
+	const { institution, specialisation, from, to, imgUrl } = props;
 	const { classes } = useStyles();
 
 	return (
@@ -33,16 +33,6 @@ const EducationCard: React.FC<IProps> = props => {
 					<Text color="dimmed" size="xs">
 						{from} - {to}
 					</Text>
-
-					{bullets.length > 0 && (
-						<Text color="dimmed" size="xs">
-							<ul style={{ marginTop: 0, marginLeft: 0, paddingLeft: 30 }}>
-								{bullets.map(point => (
-									<li>{point}</li>
-								))}
-							</ul>
-						</Text>
-					)}
 				</div>
 			</Group>
 		</div>
