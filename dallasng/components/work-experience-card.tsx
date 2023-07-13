@@ -31,10 +31,8 @@ const WorkExpCard: React.FC<IProps> = props => {
 					<Avatar src={imgUrl} radius="xl" />
 
 					<div style={{ flex: 1 }}>
-						<Text size="sm" weight={500}>
-							{title}
-						</Text>
-						<Text color="dimmed" size="xs">
+						<Text weight={500}>{title}</Text>
+						<Text color="dimmed" size="sm">
 							{company}
 						</Text>
 
