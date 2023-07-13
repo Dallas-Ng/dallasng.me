@@ -18,7 +18,13 @@ const EducationCard: React.FC<IProps> = props => {
 		<div className={classes.btn}>
 			<Group align="start">
 				<span style={{ marginTop: 10 }}>
-					<Image src={imgUrl} objectFit="scale-down" height={40} width={40} />
+					<Image
+						src={imgUrl}
+						objectFit="scale-down"
+						height={40}
+						width={40}
+						alt={specialisation}
+					/>
 				</span>
 
 				<div style={{ flex: 1 }}>

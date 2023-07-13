@@ -19,7 +19,7 @@ const meta = {
 
 const BlogPage: NextPage = () => (
 	<BlogLayout meta={meta} header="Projects">
-		<Image src="/images/tuick.webp" height={100} fit="contain" />
+		<Image src="/images/tuick.webp" height={100} fit="contain" alt="Tuick" />
 
 		<Text component="p" align="center">
 			Backend management system for tuition centres

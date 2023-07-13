@@ -10,6 +10,7 @@ import {
 } from '@mantine/core';
 import ExperienceLayout from '../../components/shared/experience-layout';
 import Marquee from 'react-fast-marquee';
+import Image from 'next/image';
 
 const Project: React.FC<{ title: string; desc: string; tags: string[] }> = ({
 	title,
@@ -75,9 +76,9 @@ const ExpWorkClassPage: NextPage = () => {
 						WorkClass
 					</Title>
 
-					<img
+					<Image
 						alt="WorkClass Logo"
-						src="https://workclass.co/images/workclass/workclass-icon.png"
+						src="/images/WorkClass.png"
 						width={35}
 						height={35}
 					/>
