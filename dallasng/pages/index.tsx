@@ -16,8 +16,9 @@ import Layout from '../components/shared/layout';
 import { NextPage } from 'next';
 import { NextLink } from '@mantine/next';
 import { EXPERIENCE } from '../data/experience.data';
+import { EDUCATION } from '../data/education.data';
 import { IconFileDownload } from '@tabler/icons';
-import BlogCard from '../components/blog-card';
+import EducationCard from '../components/education-card';
 
 const IndexPage: NextPage = () => {
 	const c = useStyles().classes;
@@ -58,6 +59,16 @@ const IndexPage: NextPage = () => {
 				<div className={c.workContainer}>
 					{EXPERIENCE.map((exp, i) => (
 						<WorkExpCard key={i} {...exp} />
+					))}
+				</div>
+
+				<Title order={2} mt="xl" mb="md">
+					Education
+				</Title>
+
+				<div className={c.workContainer}>
+					{EDUCATION.map((exp, i) => (
+						<EducationCard key={i} {...exp} />
 					))}
 				</div>
 
@@ -149,6 +160,15 @@ const IndexPage: NextPage = () => {
 						imgFit="contain"
 						desc="A duct-taped project that was made for the lowest cost possible."
 						target="_self"
+					/>
+
+					<ProjectCard
+						href="https://github.com/Dallas-Ng/School-Projects"
+						imgSrc="/images/nyp.jpg"
+						title="Polytechnic School Projects"
+						imgFit="contain"
+						desc="Projects done during my diploma in Business and IT"
+						target="_blank"
 					/>
 				</SimpleGrid>
 
