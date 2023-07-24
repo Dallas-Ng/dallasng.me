@@ -4,9 +4,7 @@ import {
 	Center,
 	createStyles,
 	Divider,
-	Grid,
 	SimpleGrid,
-	Stack,
 	Text,
 	Title
 } from '@mantine/core';
@@ -35,16 +33,17 @@ const IndexPage: NextPage = () => {
 				</Title>
 
 				<p>
-					Hey! I am a full-stack engineer capable of building end-to-end
-					products. I enjoy converting dreams to reality and working in
-					fast-paced environments.
+					Hello there! I am a highly skilled and versatile full-stack engineer
+					with a passion for turning ideas into tangible, innovative products.
+					My expertise spans the entire development process, enabling me to
+					bring dreams to life in fast-paced environments.
 				</p>
 
 				<p>
-					I have been working for the past few years for agencies, corporations
-					and start ups. Through experience, I developed a skillset that allows
-					me to jump into different parts of the product such as marketing, SEO,
-					user-testing and more.
+					Over the years, I have had the privilege of collaborating with various
+					agencies, corporations, and start-ups, honing my abilities and gaining
+					valuable experience. My expertise lies in Frontend development / web
+					design and SEO.
 				</p>
 
 				<p>

@@ -1,15 +1,15 @@
 import { Text } from '@mantine/core';
 
 export const EXPERIENCE = [
-	{
-		title: 'CTO & Co-Founder',
-		company: 'SEO Copilot',
-		from: 'Jul 2023',
-		to: 'Present',
-		imgUrl: '/images/seocopilot.jpg',
-		description: [],
-		technologies: ['React', 'Django']
-	},
+	// {
+	// 	title: 'CTO & Co-Founder',
+	// 	company: 'SEO Copilot',
+	// 	from: 'Jul 2023',
+	// 	to: 'Present',
+	// 	imgUrl: '/images/seocopilot.jpg',
+	// 	description: [],
+	// 	technologies: ['React', 'Django']
+	// },
 	{
 		title: 'Artillery Officer',
 		company: 'Singapore Armed Forces',
