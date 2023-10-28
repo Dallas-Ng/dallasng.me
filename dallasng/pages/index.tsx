@@ -91,9 +91,9 @@ const IndexPage: NextPage = () => {
 
 				{/* <Title order={2} mt="xl" mb="md">
 					Blogs
-				</Title>
+				</Title> */}
 
-				<Grid>
+				{/* <Grid>
 					<Grid.Col md={8}>
 						<BlogCard
 							title="Hard Truths of Front End Development"
@@ -162,7 +162,7 @@ const IndexPage: NextPage = () => {
 					/>
 
 					<ProjectCard
-						href="https://github.com/Dallas-Ng/School-Projects"
+						href="https://github.com/Dallas-Ng/Polytechnic-School-Projects"
 						imgSrc="/images/nyp.jpg"
 						title="Polytechnic School Projects"
 						imgFit="contain"
