@@ -1,23 +1,31 @@
 import { Text } from '@mantine/core';
 
 export const EXPERIENCE = [
-	// {
-	// 	title: 'CTO & Co-Founder',
-	// 	company: 'SEO Copilot',
-	// 	from: 'Jul 2023',
-	// 	to: 'Present',
-	// 	imgUrl: '/images/seocopilot.jpg',
-	// 	description: [],
-	// 	technologies: ['React', 'Django']
-	// },
+	{
+		title: 'Software Engineer',
+		company: 'The SEO Copilot',
+		from: 'Dec 2023',
+		to: 'Present',
+		imgUrl: '/images/seocopilot.jpg',
+		website: 'https://theseocopilot.com',
+		description: ['Growing traffic for our clients'],
+		technologies: ['React', 'Python']
+	},
 	{
 		title: 'Artillery Officer',
 		company: 'Singapore Armed Forces',
 		from: 'Aug 2021',
 		to: 'Aug 2023',
 		imgUrl: '/images/singapore-army.webp',
-		description: [],
-		technologies: []
+		description: [
+			<Text>STORM Commander and Forward Observer in Admin and in ATEC</Text>,
+			<Text>
+				Developed a telegram bot with google spreadsheet integration to track
+				parade state (leaves, MCs, medical appointments), platoon movement
+				activity and forecasted weekly activities
+			</Text>
+		],
+		technologies: ['Python']
 	},
 	{
 		title: 'Technical Advisor / Consultant',
@@ -27,10 +35,6 @@ export const EXPERIENCE = [
 		imgUrl: '/images/WorkClass.jpg',
 		website: 'https://workclass.co',
 		description: [
-			<Text>
-				Manage the company but from afar, no longer involved in the day to day
-				operations.
-			</Text>,
 			<Text>
 				Main concerns are with the company's SEO, tech debt and architecture.
 			</Text>
@@ -68,8 +72,8 @@ export const EXPERIENCE = [
 				apps and backend operations
 			</Text>,
 			<Text>
-				<strong>Built development team</strong>, conducted resume screenings,
-				hiring interviews and coordinated team structure
+				<strong>Sourced and mentored</strong> 10 interns who went on to Meta, JP
+				Morgan, ByteDance, Shopee and Binance
 			</Text>
 		],
 		technologies: [
