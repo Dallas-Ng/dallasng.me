@@ -29,7 +29,13 @@ const WorkExpCard: React.FC<IProps> = props => {
 		<NextLink href={href} style={{ cursor: 'pointer' }}>
 			<div className={classes.btn}>
 				<Group>
-					<div style={{ borderRadius: '50%' }}>
+					<div
+						style={{
+							borderRadius: '8px',
+							overflow: 'hidden',
+							height: 40,
+							width: 40
+						}}>
 						<Image
 							src={imgUrl}
 							width={40}
@@ -74,8 +80,11 @@ const useStyles = createStyles(theme => ({
 		transitionDuration: '100ms',
 
 		':hover': {
-			backgroundColor: theme.colors.gray[0],
-			color: 'black'
+			backgroundColor:
+				theme.colorScheme === 'dark'
+					? theme.colors.gray[9]
+					: theme.colors.gray[3],
+			color: theme.colorScheme === 'dark' ? 'white' : 'black'
 		}
 	}
 }));

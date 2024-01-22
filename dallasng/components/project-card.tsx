@@ -66,14 +66,20 @@ const ProjectCard: React.FC<IProps> = props => {
 const useStyles = createStyles(theme => ({
 	card: {
 		':hover': {
-			boxShadow: theme.shadows.lg
+			boxShadow: theme.shadows.lg,
+			background:
+				theme.colorScheme === 'dark'
+					? theme.colors.gray[9]
+					: theme.colors.gray[3],
+			transition: 'ease-in',
+			transitionDuration: '200ms'
 		}
 	},
 	imgContainer: {
 		position: 'relative',
 		height: 80,
 		background:
-			theme.colorScheme === 'dark' ? theme.colors.gray[8] : theme.colors.gray[2]
+			theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.gray[2]
 	},
 	header: {
 		marginBottom: 5,

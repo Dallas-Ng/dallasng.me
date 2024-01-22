@@ -2,10 +2,26 @@ import { Text } from '@mantine/core';
 
 export const EXPERIENCE = [
 	{
+		title: 'Freelance Software Engineer',
+		company: 'dallasng.dev',
+		from: 'Jan 2020',
+		to: 'Present',
+		imgUrl: '/logo-blue.webp',
+		website: 'https://dallasng.dev',
+		description: [
+			<Text>
+				Build client's dreams into reality. This can be anything from creating
+				hosting for servers, web applications and proof of concepts.
+			</Text>,
+			<Text>Mainly offer software development/consultancy services.</Text>
+		],
+		technologies: ['Project Requirements']
+	},
+	{
 		title: 'Software Engineer',
 		company: 'The SEO Copilot',
 		from: 'Dec 2023',
-		to: 'Present',
+		to: 'Jan 2024',
 		imgUrl: '/images/seocopilot.jpg',
 		website: 'https://theseocopilot.com',
 		description: ['Growing traffic for our clients'],
@@ -88,22 +104,6 @@ export const EXPERIENCE = [
 			'Agile',
 			'Scrum'
 		]
-	},
-	{
-		title: 'Freelance Software Engineer',
-		company: 'dallasng.dev',
-		from: 'Jan 2020',
-		to: 'Aug 2021',
-		imgUrl: '/logo-blue.webp',
-		website: 'https://dallasng.dev',
-		description: [
-			<Text>
-				Build client's dreams into reality. This can be anything from creating
-				hosting for servers, web applications and proof of concepts.
-			</Text>,
-			<Text>Mainly offer software development/consultancy services.</Text>
-		],
-		technologies: ['Upon Project']
 	},
 	{
 		title: 'Software Engineer Intern',
