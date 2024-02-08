@@ -1,22 +1,22 @@
 import { Text } from '@mantine/core';
 
 export const EXPERIENCE = [
-	{
-		title: 'Freelance Software Engineer',
-		company: 'dallasng.dev',
-		from: 'Jan 2020',
-		to: 'Present',
-		imgUrl: '/logo-blue.webp',
-		website: 'https://dallasng.dev',
-		description: [
-			<Text>
-				Build client's dreams into reality. This can be anything from creating
-				hosting for servers, web applications and proof of concepts.
-			</Text>,
-			<Text>Mainly offer software development/consultancy services.</Text>
-		],
-		technologies: ['Project Requirements']
-	},
+	// {
+	// 	title: 'Freelance Software Engineer',
+	// 	company: 'dallasng.dev',
+	// 	from: 'Jan 2020',
+	// 	to: 'Present',
+	// 	imgUrl: '/logo-blue.webp',
+	// 	website: 'https://dallasng.dev',
+	// 	description: [
+	// 		<Text>
+	// 			Build client's dreams into reality. This can be anything from creating
+	// 			hosting for servers, web applications and proof of concepts.
+	// 		</Text>,
+	// 		<Text>Mainly offer software development/consultancy services.</Text>
+	// 	],
+	// 	technologies: ['Project Requirements']
+	// },
 	{
 		title: 'Software Engineer',
 		company: 'The SEO Copilot',
@@ -24,8 +24,8 @@ export const EXPERIENCE = [
 		to: 'Jan 2024',
 		imgUrl: '/images/seocopilot.jpg',
 		website: 'https://theseocopilot.com',
-		description: ['Growing traffic for our clients'],
-		technologies: ['React', 'Python']
+		description: ['Engineered automation tools to boost client SEO, optimizing indexing, analytics, and on-page/off-page strategies'],
+		technologies: ['React', 'Python', "AWS", "GAI", "GSC", "GCP"]
 	},
 	{
 		title: 'Artillery Officer',
@@ -34,7 +34,6 @@ export const EXPERIENCE = [
 		to: 'Aug 2023',
 		imgUrl: '/images/singapore-army.webp',
 		description: [
-			<Text>STORM Commander and Forward Observer in Admin and in ATEC</Text>,
 			<Text>
 				Developed a telegram bot with google spreadsheet integration to track
 				parade state (leaves, MCs, medical appointments), platoon movement
@@ -43,22 +42,22 @@ export const EXPERIENCE = [
 		],
 		technologies: ['Python']
 	},
+	// {
+	// 	title: 'Technical Advisor / Consultant',
+	// 	company: 'WorkClass',
+	// 	from: 'Sep 2021',
+	// 	to: 'Jan 2023',
+	// 	imgUrl: '/images/WorkClass.jpg',
+	// 	website: 'https://workclass.co',
+	// 	description: [
+	// 		<Text>
+	// 			Main concerns are with the company's SEO, tech debt and architecture.
+	// 		</Text>
+	// 	],
+	// 	technologies: []
+	// },
 	{
-		title: 'Technical Advisor / Consultant',
-		company: 'WorkClass',
-		from: 'Sep 2021',
-		to: 'Jan 2023',
-		imgUrl: '/images/WorkClass.jpg',
-		website: 'https://workclass.co',
-		description: [
-			<Text>
-				Main concerns are with the company's SEO, tech debt and architecture.
-			</Text>
-		],
-		technologies: []
-	},
-	{
-		title: 'Technical Lead',
+		title: 'Founding Engineer & Head of Engineering',
 		company: 'WorkClass',
 		from: 'Aug 2020',
 		to: 'Sep 2021',

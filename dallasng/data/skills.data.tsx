@@ -1,11 +1,11 @@
 export const SKILLS = [
 	{
 		type: 'Languages',
-		items: 'Javascript, Typescript, Python, C#, jQuery, HTML, CSS, SASS, Bash'
+		items: 'Javascript, Typescript, Python, C, C#, jQuery, HTML, CSS, SASS, Bash'
 	},
 	{
 		type: 'Technologies',
-		items: 'AWS, Azure, Nginx, GIT, TFS, SQL, GraphQL, Cypress, Selenium'
+		items: 'AWS, GCP, Azure, Nginx, GIT, TFS, SQL, GraphQL, Cypress, Selenium'
 	},
 	{
 		type: 'Frameworks',
