@@ -1,8 +1,9 @@
-import { Text, Title, Button, Anchor } from '@mantine/core';
+import { Text, Title, Button, Anchor, Paper } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons';
 import { NextPage } from 'next';
 import BlogImage from '../../components/blog/blog-image';
 import BlogLayout from '../../components/shared/blog-layout';
+import Image from 'next/image';
 
 const meta = {
 	title: 'Small Habits Big Change',
@@ -35,6 +36,14 @@ const BlogPage: NextPage = () => (
 		<Title order={3} mt={40} mb={5}>
 			Small Habits Big Change
 		</Title>
+
+		<Paper style={{ height: 330, width: '100%', overflowY: 'scroll' }}>
+			<img src="/images/smallhabitsbigfuture.webp" alt="Website" width="100%" />
+		</Paper>
+
+		<Text color="gray" my="sm" style={{ fontSize: 14, textAlign: 'center' }}>
+			<em>Psst, scroll on the image</em>
+		</Text>
 
 		<Text component="p">
 			This project was part of a PUB intitative competition by NYP business
