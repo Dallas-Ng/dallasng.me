@@ -125,7 +125,7 @@ const IndexPage: NextPage = () => {
 						{ cols: 1, spacing: 'xs' }
 					]}>
 					<ProjectCard
-						href="https://ntumods.com"
+						href="https://ntumods.com?ref=dallasng.me"
 						imgSrc="/images/ntumods.png"
 						title="NTU Mods"
 						desc="A platform for students to plan their modules and find courses easier"
