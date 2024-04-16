@@ -19,13 +19,25 @@ export const EXPERIENCE = [
 	// },
 	{
 		title: 'Software Engineer',
+		company: 'CoinMarketCap',
+		from: 'Mar 2024',
+		to: 'Present',
+		imgUrl: '/images/cmc.webp',
+		website: 'https://coinmarketcap.com',
+		description: [],
+		technologies: []
+	},
+	{
+		title: 'Software Engineer',
 		company: 'The SEO Copilot',
-		from: 'Dec 2023',
+		from: 'Aug 2023',
 		to: 'Jan 2024',
 		imgUrl: '/images/seocopilot.jpg',
 		website: 'https://theseocopilot.com',
-		description: ['Engineered automation tools to boost client SEO, optimizing indexing, analytics, and on-page/off-page strategies'],
-		technologies: ['React', 'Python', "AWS", "GAI", "GSC", "GCP"]
+		description: [
+			'Engineered automation tools to boost client SEO, optimizing indexing, analytics, and on-page/off-page strategies'
+		],
+		technologies: ['React', 'Python', 'AWS', 'GAI', 'GSC', 'GCP']
 	},
 	{
 		title: 'Artillery Officer',
@@ -105,7 +117,7 @@ export const EXPERIENCE = [
 		]
 	},
 	{
-		title: 'Software Engineer Intern',
+		title: 'Software Engineer (Intern)',
 		company: 'Stone Forest IT',
 		from: 'Mar 2020',
 		to: 'Aug 2020',
