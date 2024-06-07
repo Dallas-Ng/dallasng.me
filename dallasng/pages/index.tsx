@@ -24,7 +24,7 @@ const IndexPage: NextPage = () => {
 	return (
 		<>
 			<Layout backBtn={false}>
-				<h1>Hi, I&apos;m Dallas</h1>
+				{/* <h1>Hi, I&apos;m Dallas</h1> */}
 
 				<Divider />
 
