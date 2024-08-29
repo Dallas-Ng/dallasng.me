@@ -18,24 +18,49 @@ export const EXPERIENCE = [
 	// 	technologies: ['Project Requirements']
 	// },
 	{
-		title: 'Software Engineer',
-		company: 'CoinMarketCap',
-		from: 'Mar 2024',
+		title: 'Tech',
+		company: 'Embed Financial Group Holdings',
+		from: 'Aug 2024',
 		to: 'Present',
-		imgUrl: '/images/cmc.webp',
-		website: 'https://coinmarketcap.com',
-		description: [],
+		imgUrl: '/images/efgh.png',
+		website: 'https://efgh.xyz',
+		description: ['Responsible for tech for our subsidiary companies'],
 		technologies: []
 	},
 	{
-		title: 'Software Engineer',
+		title: 'Growth',
+		company: 'Embed Global',
+		from: 'Aug 2024',
+		to: 'Present',
+		imgUrl: '/images/embed-global.svg',
+		website: 'https://embed.global',
+		description: ['Responsible for growth, marketing and tech in the company'],
+		technologies: []
+	},
+	{
+		title: 'Full Stack Engineer',
+		company: 'CoinMarketCap',
+		from: 'Mar 2024',
+		to: 'Aug 2024',
+		imgUrl: '/images/cmc.webp',
+		website: 'https://coinmarketcap.com',
+		description: [
+			'Led and executed full-stack SEO development, collaborating with product managers, SEO teams, and technical departments to implement key features',
+			'Developed a SEO management system handling over 10 million pages, allowing custom metadata and  fine-tuned adjustments of single pages to determined categories',
+			'Rebuilt HTML Sitemap to enhance backlink quality and global components to improve on-page SEO metrics such as load speed and keyword density, including translation and localization for 38 languages'
+		],
+		technologies: ['React', 'Java', 'Python']
+	},
+	{
+		title: 'Full Stack Engineer',
 		company: 'The SEO Copilot',
 		from: 'Aug 2023',
 		to: 'Jan 2024',
 		imgUrl: '/images/seocopilot.jpg',
 		website: 'https://theseocopilot.com',
 		description: [
-			'Engineered automation tools to boost client SEO, optimizing indexing, analytics, and on-page/off-page strategies'
+			'Engineered core services and automation tools to boost client SEO metrics, optimise indexing, and sitemap health, improving both on-page/off-page strategies for over 2900 domains',
+			'Developed a pipeline to identify clients ranking keyword cluster into a multi-layer blog from YouTube videos, boosting niche ranking and driving organic search growth'
 		],
 		technologies: ['React', 'Python', 'AWS', 'GAI', 'GSC', 'GCP']
 	},
@@ -69,7 +94,7 @@ export const EXPERIENCE = [
 	// 	technologies: []
 	// },
 	{
-		title: 'Founding Engineer & Head of Engineering',
+		title: 'Founding Engineer & Lead Engineer',
 		company: 'WorkClass',
 		from: 'Aug 2020',
 		to: 'Sep 2021',
