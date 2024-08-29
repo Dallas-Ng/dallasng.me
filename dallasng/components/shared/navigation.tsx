@@ -27,7 +27,7 @@ const Navigation: React.FC<IProps> = ({
 					<Anchor href="/" component={NextLink}>
 						<div className={c.imgContainer}>
 							<Image
-								src="/logo.webp"
+								src="/logo.svg"
 								height={40}
 								width={40}
 								alt="Dallas Ng"
