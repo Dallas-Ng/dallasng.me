@@ -935,10 +935,10 @@ tbody tr:last-child td{border-bottom:none}
     
     <div class="topbar-right">
        <div class="quick-filters">
-        <button class="qf-btn" onclick="quickFilter('this-month',this)">This Month</button>
-        <button class="qf-btn" onclick="quickFilter('ytd',this)">YTD</button>
+        <button class="qf-btn" id="qf-this-month" onclick="quickFilter('this-month',this)">This Month</button>
+        <button class="qf-btn" id="qf-ytd" onclick="quickFilter('ytd',this)">YTD</button>
         <button class="qf-btn active" id="qf-this-year" onclick="quickFilter('this-year',this)">This Year</button>
-        <button class="qf-btn" onclick="quickFilter('all',this)">All</button>
+        <button class="qf-btn" id="qf-all" onclick="quickFilter('all',this)">All</button>
         <button class="qf-btn" id="qf-custom" onclick="quickFilter('custom',this)">
           <span class="qf-btn-label">Custom</span>
           <span class="qf-btn-clear" id="qf-custom-clear" onclick="resetCustomFilter(event)" onkeydown="handleCustomClearKey(event)" aria-label="Clear custom filter" role="button" tabindex="0">×</span>
@@ -1240,6 +1240,9 @@ const LAST_USER_KEY = 'ds_last_user_v1';
 const PAGE_SIZE_KEY = 'ds_page_size_v1';
 const ENTRY_FORM_COLLAPSED_KEY = 'ds_entry_form_collapsed_v1';
 const RECURRING_COLLAPSED_KEY = 'ds_recurring_collapsed_v1';
+const QUICK_FILTER_KEY = 'ds_quick_filter_v1';
+const CUSTOM_DATE_RANGE_KEY = 'ds_custom_date_range_v1';
+const MOBILE_VIEW_KEY = 'ds_mobile_view_v1';
 let trackerAuthUser = null;
 const TRACKER_VERSION_MARKER_KEY = 'ds_tracker_version_marker_v1';
 const TRACKER_VERSION_CHECK_DEBOUNCE_MS = 15000;
@@ -1253,6 +1256,8 @@ async function init() {
   const saved = localStorage.getItem('ds_currency') || 'SGD';
   const savedUser = localStorage.getItem(LAST_USER_KEY);
   const savedPageSize = parseInt(localStorage.getItem(PAGE_SIZE_KEY) || '50', 10);
+  const savedQuickFilter = localStorage.getItem(QUICK_FILTER_KEY);
+  const savedMobileView = localStorage.getItem(MOBILE_VIEW_KEY);
   const isEntryFormCollapsed = localStorage.getItem(ENTRY_FORM_COLLAPSED_KEY) === 'true';
   const isRecurringCollapsed = localStorage.getItem(RECURRING_COLLAPSED_KEY) === 'true';
   if (savedUser === 'Dallas' || savedUser === 'Shannon') currentUser = savedUser;
@@ -1261,7 +1266,7 @@ async function init() {
   document.getElementById('page-size-select').value = String(pageSize);
   setEntryFormCollapsed(isEntryFormCollapsed);
   setRecurringCollapsed(isRecurringCollapsed);
-  setMobileView(window.innerWidth <= 720 ? 'transactions' : 'cards');
+  setMobileView(window.innerWidth <= 720 && ['cards','graphs','transactions'].includes(savedMobileView) ? savedMobileView : (window.innerWidth <= 720 ? 'transactions' : 'cards'));
 
   // Populate year selector
   const yearSel = document.getElementById('year-filter');
@@ -1272,6 +1277,7 @@ async function init() {
     yearSel.appendChild(o);
   }
   yearSel.value = curYear;
+  restoreQuickFilter(savedQuickFilter);
   document.getElementById('date').valueAsDate = new Date();
   // Pre-seed categories from localStorage so dropdowns aren't empty before Firestore loads
   categories       = loadSharedCategories();
@@ -1435,6 +1441,35 @@ function setCustomButtonLabel(label, showClear = false) {
   const clearEl = document.getElementById('qf-custom-clear');
   labelEl.textContent = label;
   clearEl.style.display = showClear ? 'inline-flex' : 'none';
+}
+
+function persistQuickFilterState() {
+  localStorage.setItem(QUICK_FILTER_KEY, activeQuickFilter || 'this-year');
+  localStorage.setItem(CUSTOM_DATE_RANGE_KEY, JSON.stringify(customDateRange));
+}
+
+function restoreQuickFilter(savedQuickFilter) {
+  const savedRange = JSON.parse(localStorage.getItem(CUSTOM_DATE_RANGE_KEY) || '{"start":"","end":""}');
+  if (savedRange && savedRange.start && savedRange.end) {
+    customDateRange = savedRange;
+  }
+
+  const nextFilter = ['this-month', 'ytd', 'this-year', 'all', 'custom'].includes(savedQuickFilter)
+    ? savedQuickFilter
+    : 'this-year';
+
+  if (nextFilter === 'custom' && customDateRange.start && customDateRange.end) {
+    activeQuickFilter = 'custom';
+    document.querySelectorAll('.qf-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('qf-custom').classList.add('active');
+    setCustomButtonLabel(`${formatDateLabel(customDateRange.start)} to ${formatDateLabel(customDateRange.end)}`, true);
+    activeChart = 'bar';
+    syncChartControls();
+    persistQuickFilterState();
+    return;
+  }
+
+  quickFilter(nextFilter, document.getElementById(nextFilter === 'this-year' ? 'qf-this-year' : `qf-${nextFilter}`));
 }
 
 function syncChartControls() {
@@ -2189,6 +2224,7 @@ function quickFilter(mode, btn) {
   }
   syncChartControls();
   currentPage = 1;
+  persistQuickFilterState();
   updateDashboard();
 }
 
@@ -2221,6 +2257,7 @@ function applyCustomDateRange() {
   syncChartControls();
   closeModal('modal-custom-range');
   currentPage = 1;
+  persistQuickFilterState();
   updateDashboard();
 }
 
@@ -2233,11 +2270,13 @@ function clearQuickFilter() {
   setCustomButtonLabel('Custom', false);
   document.querySelectorAll('.qf-btn').forEach(b => b.classList.remove('active'));
   activeQuickFilter = null;
+  persistQuickFilterState();
 }
 
 function resetCustomFilter(event) {
   event.stopPropagation();
   customDateRange = { start: '', end: '' };
+  localStorage.removeItem(CUSTOM_DATE_RANGE_KEY);
   setCustomButtonLabel('Custom', false);
   quickFilter('this-year', document.getElementById('qf-this-year'));
 }
@@ -2348,8 +2387,10 @@ function toggleRecurringSection() {
 }
 
 function setMobileView(view) {
+  if (!['cards','graphs','transactions'].includes(view)) return;
   mobileView = view;
   document.body.setAttribute('data-mobile-view', view);
+  localStorage.setItem(MOBILE_VIEW_KEY, view);
   ['cards','graphs','transactions'].forEach(key => {
     const btn = document.getElementById(`mobile-tab-${key}`);
     if (btn) btn.classList.toggle('active', key === view);
