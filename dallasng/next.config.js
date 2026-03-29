@@ -8,11 +8,21 @@ const nextConfig = {
 		locales: ['en'],
 		defaultLocale: 'en'
 	},
-	redirects: () => [
+	redirects: async () => [
 		{
 			source: '/about/',
 			destination: '/',
 			permanent: true
+		}
+	],
+	headers: async () => [
+		{
+			source: '/tracker.html',
+			headers: [
+				{ key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, max-age=0' },
+				{ key: 'Pragma', value: 'no-cache' },
+				{ key: 'Expires', value: '0' }
+			]
 		}
 	]
 };
