@@ -10,6 +10,15 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJUE4Y23L9x-bX_V0w-PObGIBV_OMkxgQ",
@@ -22,31 +31,51 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+const auth = getAuth(app);
+const allowedTrackerEmails = ['ngdallas1@gmail.com', 'shannonyeooo@gmail.com'];
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+function isAllowedTrackerEmail(email) {
+  return !!email && allowedTrackerEmails.includes(String(email).toLowerCase());
+}
+
+function requireAllowedTrackerUser() {
+  const email = auth.currentUser?.email || '';
+  if (!auth.currentUser || !isAllowedTrackerEmail(email)) {
+    throw new Error('Unauthorized tracker access.');
+  }
+}
 
 window._db = {
   // ── Transactions ──────────────────────────────────────────
   /** Load all transactions for a user */
   async loadTransactions(user) {
+    requireAllowedTrackerUser();
     const snap = await getDocs(collection(db, 'users', user, 'transactions'));
     return snap.docs.map(d => d.data());
   },
   /** Upsert a single transaction document */
   async saveTransaction(user, tx) {
+    requireAllowedTrackerUser();
     await setDoc(doc(db, 'users', user, 'transactions', String(tx.id)), tx);
   },
   /** Delete a single transaction document */
   async deleteTransaction(user, txId) {
+    requireAllowedTrackerUser();
     await deleteDoc(doc(db, 'users', user, 'transactions', String(txId)));
   },
 
   // ── Shared settings (categories — global for all users) ──────────
   /** Save expense + income categories to the shared settings doc */
   async saveSharedSettings(categories, incomeCategories) {
+    requireAllowedTrackerUser();
     await setDoc(doc(db, 'shared', 'settings'),
       { categories, incomeCategories, updatedAt: new Date().toISOString() });
   },
   /** Load the shared settings doc */
   async loadSharedSettings() {
+    requireAllowedTrackerUser();
     const snap = await getDoc(doc(db, 'shared', 'settings'));
     return snap.exists() ? snap.data() : null;
   },
@@ -54,13 +83,44 @@ window._db = {
   // ── Per-user settings (budgets — individual per user) ─────────────
   /** Save this user's budgets to their own settings doc */
   async saveUserSettings(user, budgets) {
+    requireAllowedTrackerUser();
     await setDoc(doc(db, 'users', user, 'settings', 'main'),
       { budgets, updatedAt: new Date().toISOString() });
   },
   /** Load this user's settings doc */
   async loadUserSettings(user) {
+    requireAllowedTrackerUser();
     const snap = await getDoc(doc(db, 'users', user, 'settings', 'main'));
     return snap.exists() ? snap.data() : null;
+  }
+};
+
+window._auth = {
+  allowedEmails: [...allowedTrackerEmails],
+  async signIn() {
+    try {
+      return await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      const shouldRedirect = [
+        'auth/popup-blocked',
+        'auth/popup-closed-by-user',
+        'auth/cancelled-popup-request'
+      ].includes(error?.code);
+      if (shouldRedirect) {
+        await signInWithRedirect(auth, googleProvider);
+        return null;
+      }
+      throw error;
+    }
+  },
+  async signOut() {
+    await signOut(auth);
+  },
+  onAuthStateChanged(callback) {
+    return onAuthStateChanged(auth, callback);
+  },
+  async consumeRedirectResult() {
+    return await getRedirectResult(auth);
   }
 };
 
@@ -434,9 +494,12 @@ tbody tr:last-child td{border-bottom:none}
 .lock-mark{width:44px;height:44px;border-radius:14px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;letter-spacing:-.3px}
 .lock-title{font-size:18px;font-weight:700;letter-spacing:-.4px}
 .lock-copy{font-size:11px;color:var(--text2);line-height:1.4}
+.lock-status{font-size:10px;font-weight:700;color:var(--text2)}
 .lock-error{display:none;font-size:10px;font-weight:700;color:var(--danger)}
 .lock-error.show{display:block}
 .lock-actions{display:flex;flex-direction:column;gap:8px}
+.btn-google{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.auth-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
 /* ── LOADING ── */
 .loading-overlay{position:fixed;inset:0;background:rgba(240,242,247,.68);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100000}
@@ -580,16 +643,13 @@ tbody tr:last-child td{border-bottom:none}
   <div class="lock-card" role="dialog" aria-modal="true" aria-labelledby="lock-title">
     <div class="lock-mark">D&S</div>
     <div>
-      <div class="lock-title" id="lock-title">Enter Passcode</div>
-      <div class="lock-copy">This app is locked. Enter the passcode to continue. The unlocked state will be cached on this device.</div>
+      <div class="lock-title" id="lock-title">Sign In With Google</div>
+      <div class="lock-copy">Only approved accounts can open this tracker. Sign in with Google to continue.</div>
     </div>
-    <div>
-      <label class="field-label" for="passcode-input">Passcode</label>
-      <input type="password" id="passcode-input" placeholder="Enter passcode" autocomplete="current-password">
-      <div class="lock-error" id="lock-error">Incorrect passcode.</div>
-    </div>
+    <div class="lock-status" id="lock-status">Waiting for sign-in.</div>
+    <div class="lock-error" id="lock-error">Only approved accounts can access this tracker.</div>
     <div class="lock-actions">
-      <button class="btn btn-primary btn-full" onclick="unlockApp()">Unlock</button>
+      <button class="btn btn-primary btn-full btn-google" id="sign-in-btn" onclick="startGoogleSignIn()">Continue with Google</button>
     </div>
   </div>
 </div>
@@ -859,6 +919,7 @@ tbody tr:last-child td{border-bottom:none}
       <button class="btn btn-ghost btn-icon" onclick="openSettingsModal()" title="Settings" aria-label="Settings">⚙️</button>
       <button class="btn btn-ghost btn-icon" onclick="openModal('modal-export')" title="Export" aria-label="Export">📁</button>
       <button class="btn btn-ghost btn-icon" id="currency-btn" onclick="cycleCurrency()" title="Currency" aria-label="Cycle currency">💱</button>
+      <button class="btn btn-ghost btn-sm" id="sidebar-sign-out-btn" onclick="signOutTracker()" style="display:none">Sign Out</button>
     </div>
   </div>
 </aside>
@@ -1115,6 +1176,7 @@ tbody tr:last-child td{border-bottom:none}
       <button class="mobile-dock-btn" onclick="openModal('modal-export'); collapseMobileDock();" title="Export" aria-label="Export">📁</button>
       <button class="mobile-dock-btn" onclick="cycleCurrency(); collapseMobileDock();" title="Currency" aria-label="Cycle currency">💱</button>
       <button class="mobile-dock-btn" onclick="openMobileRecurringPanel(); collapseMobileDock();" title="Recurring" aria-label="Open recurring transactions">🔁</button>
+      <button class="mobile-dock-btn" id="mobile-sign-out-btn" onclick="signOutTracker(); collapseMobileDock();" title="Sign out" aria-label="Sign out" style="display:none">⇥</button>
     </div>
     <button class="mobile-dock-btn mobile-dock-toggle" id="mobile-dock-toggle" onclick="toggleMobileDock()" title="Show mobile actions" aria-label="Show mobile actions">⌃</button>
     <button class="mobile-fab mobile-fab-primary" onclick="openMobileEntryPanel()" title="New entry" aria-label="Open new entry">＋</button>
@@ -1169,19 +1231,19 @@ const DEFAULT_CATS        = ['Food','Rent','Transport','Groceries','Leisure','He
 const DEFAULT_INCOME_CATS = ['Salary','Bonus','Top Up','Freelance','Investment','Other'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const RECURRENCE_LABELS = {daily:'Daily', weekly:'Weekly', monthly:'Monthly', yearly:'Yearly'};
+const ALLOWED_EMAILS = ['ngdallas1@gmail.com', 'shannonyeooo@gmail.com'];
 const SHARED_CATEGORIES_KEY        = 'ds_cats_v17_shared';
 const SHARED_INCOME_CATS_KEY       = 'ds_income_cats_v1_shared';
-const APP_PASSCODE_HASH = '2a1a49d7cfccb16e6e06df186302a1c3712fc1fc83edfadfdabadbe0b332cb3e';
-const APP_UNLOCK_KEY = 'ds_app_unlocked_v1';
 const LAST_USER_KEY = 'ds_last_user_v1';
 const PAGE_SIZE_KEY = 'ds_page_size_v1';
 const ENTRY_FORM_COLLAPSED_KEY = 'ds_entry_form_collapsed_v1';
 const RECURRING_COLLAPSED_KEY = 'ds_recurring_collapsed_v1';
+let trackerAuthUser = null;
 
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-(function init() {
+async function init() {
   const saved = localStorage.getItem('ds_currency') || 'SGD';
   const savedUser = localStorage.getItem(LAST_USER_KEY);
   const savedPageSize = parseInt(localStorage.getItem(PAGE_SIZE_KEY) || '50', 10);
@@ -1208,13 +1270,13 @@ const RECURRING_COLLAPSED_KEY = 'ds_recurring_collapsed_v1';
   // Pre-seed categories from localStorage so dropdowns aren't empty before Firestore loads
   categories       = loadSharedCategories();
   incomeCategories = loadSharedIncomeCategories();
-  if (localStorage.getItem(APP_UNLOCK_KEY) === 'true') {
-    setAppLocked(false);
-    switchUser(currentUser);
-  } else {
-    setAppLocked(true);
-  }
-})();
+  setAuthUi(null);
+  setAppLocked(false);
+  setAuthLoadingState(true, `Loading ${currentUser}`, 'Checking your session before showing the tracker.');
+  await initAuthGate();
+}
+
+init();
 
 // ══════════════════════════════════════════
 // CURRENCY
@@ -1411,34 +1473,140 @@ function nextRecurringDate(dateStr, freq) {
   if (freq === 'yearly') return formatDateInput(addYearsClamped(base, 1));
   return formatDateInput(addMonthsClamped(base, 1));
 }
+function isAllowedEmail(email) {
+  return !!email && ALLOWED_EMAILS.includes(String(email).toLowerCase());
+}
+function setLockMessage(message = '', isError = false) {
+  const statusEl = document.getElementById('lock-status');
+  const errorEl = document.getElementById('lock-error');
+  statusEl.textContent = message || 'Waiting for sign-in.';
+  errorEl.textContent = message || 'Only approved accounts can access this tracker.';
+  errorEl.classList.toggle('show', !!message && isError);
+}
 function setAppLocked(locked) {
   document.body.classList.toggle('app-locked', locked);
   const overlay = document.getElementById('lock-overlay');
   overlay.classList.toggle('show', locked);
   overlay.setAttribute('aria-hidden', locked ? 'false' : 'true');
   if (locked) {
-    document.getElementById('passcode-input').value = '';
-    document.getElementById('lock-error').classList.remove('show');
-    setTimeout(() => document.getElementById('passcode-input').focus(), 30);
+    setTimeout(() => document.getElementById('sign-in-btn').focus(), 30);
   }
 }
-async function hashText(value) {
-  const bytes = new TextEncoder().encode(value);
-  const digest = await crypto.subtle.digest('SHA-256', bytes);
-  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+function setAuthUi(user) {
+  const showSignOut = !!user;
+  ['sidebar-sign-out-btn', 'mobile-sign-out-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = showSignOut ? '' : 'none';
+  });
 }
-async function unlockApp() {
-  const input = document.getElementById('passcode-input');
-  const error = document.getElementById('lock-error');
-  const hash = await hashText(input.value);
-  if (hash === APP_PASSCODE_HASH) {
-    localStorage.setItem(APP_UNLOCK_KEY, 'true');
-    setAppLocked(false);
-    switchUser(currentUser || 'Dallas');
+function setAuthLoadingState(loading, title = `Loading ${currentUser}`, copy = 'Checking your session before showing the tracker.') {
+  setLoadingState(loading, title, copy);
+}
+async function waitForFirebaseAuth(maxWaitMs = 15000) {
+  const start = Date.now();
+  while (!window._auth) {
+    if (Date.now() - start > maxWaitMs) {
+      throw new Error('Firebase Auth did not finish loading.');
+    }
+    await new Promise(resolve => setTimeout(resolve, 50));
+  }
+  return window._auth;
+}
+async function applyAuthenticatedUser(user) {
+  trackerAuthUser = user;
+  setAuthUi(user);
+  setLockMessage('');
+  setAppLocked(false);
+  await switchUser(currentUser || 'Dallas');
+}
+function clearTrackerData() {
+  txs = [];
+  budgets = {};
+  currentPage = 1;
+  assignColors();
+  renderRecurringSidebar();
+  updateDashboard();
+}
+async function handleAuthState(user) {
+  if (!user) {
+    setAuthLoadingState(false);
+    trackerAuthUser = null;
+    setAuthUi(null);
+    clearTrackerData();
+    setLockMessage('Sign in with Google to continue.');
+    setAppLocked(true);
     return;
   }
-  error.classList.add('show');
-  input.select();
+
+  const email = String(user.email || '').toLowerCase();
+  if (!isAllowedEmail(email)) {
+    setAuthLoadingState(false);
+    trackerAuthUser = null;
+    setAuthUi(null);
+    clearTrackerData();
+    setLockMessage(`Access denied for ${email || 'this account'}. Use one of the approved Gmail accounts.`, true);
+    try {
+      await window._auth.signOut();
+    } catch (err) {
+      console.error('[Auth] sign-out after denied access failed:', err);
+    }
+    setAppLocked(true);
+    return;
+  }
+
+  setAuthLoadingState(true, 'Loading tracker', 'Access confirmed. Pulling your latest tracker data now.');
+  await applyAuthenticatedUser(user);
+  setAuthLoadingState(false);
+}
+async function initAuthGate() {
+  try {
+    setAuthLoadingState(true, `Loading ${currentUser}`, 'Checking your session before showing the tracker.');
+    const authApi = await waitForFirebaseAuth();
+    setLockMessage('Checking your sign-in session...');
+    try {
+      await authApi.consumeRedirectResult();
+    } catch (err) {
+      console.error('[Auth] redirect result error:', err);
+    }
+    authApi.onAuthStateChanged(user => {
+      handleAuthState(user).catch(err => {
+        console.error('[Auth] state handler error:', err);
+        setAuthLoadingState(false);
+        trackerAuthUser = null;
+        setAuthUi(null);
+        setLockMessage('Unable to verify your account right now. Please try again.', true);
+        setAppLocked(true);
+      });
+    });
+  } catch (err) {
+    console.error('[Auth] init error:', err);
+    setAuthLoadingState(false);
+    setLockMessage('Google sign-in could not be loaded. Please refresh and try again.', true);
+    setAppLocked(true);
+  }
+}
+async function startGoogleSignIn() {
+  try {
+    setAuthLoadingState(true, 'Starting Google sign-in', 'Opening Google so we can verify your account.');
+    setLockMessage('Opening Google sign-in...');
+    const authApi = await waitForFirebaseAuth();
+    await authApi.signIn();
+  } catch (err) {
+    console.error('[Auth] sign-in error:', err);
+    setAuthLoadingState(false);
+    setLockMessage('Google sign-in failed. Please try again.', true);
+  }
+}
+async function signOutTracker() {
+  try {
+    setAuthLoadingState(true, 'Signing out', 'Clearing your session and locking the tracker.');
+    const authApi = await waitForFirebaseAuth();
+    await authApi.signOut();
+  } catch (err) {
+    console.error('[Auth] sign-out error:', err);
+    setAuthLoadingState(false);
+    toast('Unable to sign out right now', 'warning', 3500);
+  }
 }
 function setLoadingState(loading, title='Loading data', copy='Please wait while the app syncs with Firestore.') {
   isLoading = loading;
@@ -1493,6 +1661,11 @@ async function syncUserBudgetsToFirestore() {
 // USER
 // ══════════════════════════════════════════
 async function switchUser(name) {
+  if (!trackerAuthUser) {
+    setLockMessage('Sign in with Google to continue.');
+    setAppLocked(true);
+    return;
+  }
   setLoadingState(true, `Loading ${name}`, 'Pulling the latest entries and refreshing the dashboard.');
   try {
   currentUser = name;
@@ -3089,7 +3262,7 @@ function escHtml(s) {
 // ══════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (document.body.classList.contains('app-locked')) {
-    if (e.key === 'Enter' && document.activeElement.id === 'passcode-input') unlockApp();
+    if (e.key === 'Enter' && document.activeElement.id === 'sign-in-btn') startGoogleSignIn();
     return;
   }
   if (e.key === 'Enter' && document.activeElement.id === 'new-cat') addCategory();
