@@ -1241,6 +1241,10 @@ const PAGE_SIZE_KEY = 'ds_page_size_v1';
 const ENTRY_FORM_COLLAPSED_KEY = 'ds_entry_form_collapsed_v1';
 const RECURRING_COLLAPSED_KEY = 'ds_recurring_collapsed_v1';
 let trackerAuthUser = null;
+const TRACKER_VERSION_MARKER_KEY = 'ds_tracker_version_marker_v1';
+const TRACKER_VERSION_CHECK_DEBOUNCE_MS = 15000;
+let trackerVersionCheckInFlight = null;
+let lastTrackerVersionCheckAt = 0;
 
 // ══════════════════════════════════════════
 // INIT
@@ -1279,6 +1283,8 @@ async function init() {
 }
 
 init();
+
+setupTrackerVersionChecks();
 
 // ══════════════════════════════════════════
 // CURRENCY
@@ -1618,6 +1624,100 @@ function setLoadingState(loading, title='Loading data', copy='Please wait while 
   overlay.setAttribute('aria-hidden', loading ? 'false' : 'true');
   document.getElementById('loading-title').textContent = title;
   document.getElementById('loading-copy').textContent = copy;
+}
+
+function isStandaloneTrackerApp() {
+  return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+}
+
+function simpleHash(input = '') {
+  let hash = 5381;
+  for (let i = 0; i < input.length; i++) {
+    hash = ((hash << 5) + hash) + input.charCodeAt(i);
+    hash = hash >>> 0;
+  }
+  return hash.toString(16);
+}
+
+async function fetchTrackerVersionMarker() {
+  const url = `/tracker.html?trackerVersionCheck=${Date.now()}`;
+  try {
+    const headResponse = await fetch(url, {
+      method: 'HEAD',
+      cache: 'no-store',
+      credentials: 'same-origin'
+    });
+    if (headResponse.ok) {
+      const headerMarker = headResponse.headers.get('etag') || headResponse.headers.get('last-modified');
+      if (headerMarker) return headerMarker;
+    }
+  } catch (err) {
+    console.warn('[Tracker] HEAD version check failed:', err);
+  }
+
+  const getResponse = await fetch(url, {
+    method: 'GET',
+    cache: 'no-store',
+    credentials: 'same-origin'
+  });
+  if (!getResponse.ok) throw new Error(`Tracker version check failed with ${getResponse.status}`);
+  const body = await getResponse.text();
+  return `body:${simpleHash(body)}`;
+}
+
+async function primeTrackerVersionMarker() {
+  try {
+    const marker = await fetchTrackerVersionMarker();
+    if (marker) localStorage.setItem(TRACKER_VERSION_MARKER_KEY, marker);
+  } catch (err) {
+    console.warn('[Tracker] Unable to prime version marker:', err);
+  }
+}
+
+async function checkForTrackerUpdate(reason = 'resume') {
+  if (!isStandaloneTrackerApp()) return;
+  if (document.visibilityState === 'hidden') return;
+  const now = Date.now();
+  if (now - lastTrackerVersionCheckAt < TRACKER_VERSION_CHECK_DEBOUNCE_MS) return;
+  if (trackerVersionCheckInFlight) return trackerVersionCheckInFlight;
+
+  trackerVersionCheckInFlight = (async () => {
+    lastTrackerVersionCheckAt = Date.now();
+    const previousMarker = localStorage.getItem(TRACKER_VERSION_MARKER_KEY);
+    const latestMarker = await fetchTrackerVersionMarker();
+    if (!latestMarker) return;
+
+    localStorage.setItem(TRACKER_VERSION_MARKER_KEY, latestMarker);
+    if (!previousMarker || previousMarker === latestMarker) return;
+
+    console.info(`[Tracker] New version detected during ${reason}. Reloading tracker.`);
+    setLoadingState(true, 'Updating tracker', 'A newer version is available. Refreshing now.');
+    window.location.replace(`/tracker.html?refresh=${Date.now()}`);
+  })()
+    .catch(err => {
+      console.warn('[Tracker] Version check failed:', err);
+    })
+    .finally(() => {
+      trackerVersionCheckInFlight = null;
+    });
+
+  return trackerVersionCheckInFlight;
+}
+
+function scheduleTrackerVersionCheck(reason) {
+  window.setTimeout(() => {
+    checkForTrackerUpdate(reason);
+  }, 250);
+}
+
+function setupTrackerVersionChecks() {
+  if (!isStandaloneTrackerApp()) return;
+  primeTrackerVersionMarker();
+  window.addEventListener('pageshow', () => scheduleTrackerVersionCheck('pageshow'));
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') scheduleTrackerVersionCheck('visibilitychange');
+  });
+  window.addEventListener('focus', () => scheduleTrackerVersionCheck('focus'));
 }
 // ══════════════════════════════════════════
 // FIRESTORE SYNC
