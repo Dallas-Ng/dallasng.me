@@ -1116,7 +1116,7 @@ window.openCalDay = function(dateStr) {
   document.getElementById('calDayGoal').textContent  = goal ? 'of ' + goal + 'g goal' : 'no goal set';
 
   document.getElementById('calDayBody').innerHTML = dayEntries.length
-    ? dayEntries.map(e => entryCardHTML(e, false)).join('')
+    ? `<div class="entries">${dayEntries.map(e => entryCardHTML(e, false)).join('')}</div>`
     : `<div style="text-align:center;padding:40px 0;color:var(--ink3);font-size:14px;">Nothing logged this day.</div>`;
 
   openOverlay('calDayOverlay');
