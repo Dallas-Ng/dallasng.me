@@ -260,10 +260,10 @@ body {
 .r-bg { fill: none; stroke: var(--surface2); stroke-width: 8; }
 .r-fg {
   fill: none; stroke: var(--orange); stroke-width: 8;
-  stroke-linecap: round; stroke-dasharray: 226.2; stroke-dashoffset: 226.2;
+  stroke-linecap: round; stroke-dasharray: 288.97; stroke-dashoffset: 288.97;
   transition: stroke-dashoffset 0.5s cubic-bezier(.4,0,.2,1), stroke 0.3s;
 }
-.r-fg.done { stroke: var(--green); }
+.r-fg.done { stroke: var(--green); stroke-linecap: butt; }
 .ring-inner {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -996,9 +996,10 @@ function renderDaily() {
   const total      = dayEntries.reduce((s, e) => s + e.grams, 0);
   const g          = goal;
 
-  const circ = 226.2, arc = document.getElementById('ringArc');
+  const circ = 288.97, arc = document.getElementById('ringArc');
   arc.style.strokeDashoffset = circ - Math.min(total / (g || 1), 1) * circ;
   arc.classList.toggle('done', !!g && total >= g);
+  arc.style.opacity = total === 0 ? '0' : '1';
   document.getElementById('ringG').textContent = fmt(total);
 
   document.getElementById('goalChip').textContent = g ? 'Goal: ' + g + 'g' : 'Set goal';
