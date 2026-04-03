@@ -674,7 +674,7 @@ body {
         <div class="type-opt"    data-t="lunch"     onclick="pickType(this)"><span class="t-ico">🥗</span><span class="t-name">Lunch</span></div>
         <div class="type-opt"    data-t="dinner"    onclick="pickType(this)"><span class="t-ico">🍽️</span><span class="t-name">Dinner</span></div>
         <div class="type-opt"    data-t="snack"     onclick="pickType(this)"><span class="t-ico">🍎</span><span class="t-name">Snack</span></div>
-        <div class="type-opt"    data-t="others"    onclick="pickType(this)"><span class="t-ico">✨</span><span class="t-name">Others</span></div>
+        <div class="type-opt"    data-t="yogurt"    onclick="pickType(this)"><span class="t-ico">🫙</span><span class="t-name">Yogurt</span></div>
       </div>
     </div>
     <div class="field">
@@ -756,7 +756,7 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 
 const ALLOWED_EMAILS  = ['ngdallas1@gmail.com', 'shannonyeooo@gmail.com'];
-const ICONS           = { shake:'🥤', breakfast:'🍳', lunch:'🥗', dinner:'🍽️', snack:'🍎', others:'✨' };
+const ICONS           = { shake:'🥤', breakfast:'🍳', lunch:'🥗', dinner:'🍽️', snack:'🍎', yogurt:'🫙' };
 const TABS            = ['daily', 'weekly', 'monthly'];
 
 const googleProvider = new GoogleAuthProvider();
@@ -1136,7 +1136,7 @@ window.openEntry = function() {
 
 window.editEntry = function(id) {
   const e = entries.find(x => x.id === id); if (!e) return;
-  editId = id; selType = e.type || 'others';
+  editId = id; selType = e.type || 'yogurt';
   document.getElementById('sheetTitle').textContent = 'Edit entry';
   document.getElementById('fGrams').value = e.grams;
   document.getElementById('fNote').value  = e.note || '';
