@@ -189,7 +189,43 @@ body {
   font-family: 'Fraunces', serif;
   font-size: 28px; font-weight: 700;
   color: var(--ink); letter-spacing: -0.5px;
+  cursor: pointer; user-select: none;
 }
+.hd-title:active { opacity: 0.7; }
+.app-switch-list { display: flex; flex-direction: column; gap: 8px; }
+.app-switch-item {
+  width: 100%;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--rsm);
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.app-switch-item:active { background: var(--surface2); }
+.app-switch-name {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.app-switch-item.current {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 2px var(--border);
+}
+.app-switch-item.current.protein {
+  background: var(--orange-bg);
+  border-color: var(--orange-border);
+  box-shadow: inset 0 0 0 1px var(--orange-border);
+}
+.app-switch-item.current.lift {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  box-shadow: inset 0 0 0 1px #bfdbfe;
+}
+.app-switch-item.protein .app-switch-name { color: var(--orange); }
+.app-switch-item.lift .app-switch-name { color: #1d4ed8; }
 .goal-chip {
   display: flex; align-items: center; gap: 5px;
   background: var(--orange-bg); border: 1px solid var(--orange-border);
@@ -527,7 +563,7 @@ body {
 <header class="hd" id="appHeader" style="display:none">
   <div class="hd-row">
     <div class="hd-left">
-      <div class="hd-title">Protein</div>
+      <div class="hd-title" onclick="openAppMenu()">Protein</div>
       <span class="sync-dot" id="syncDot" title="Synced"></span>
     </div>
     <div class="hd-right">
@@ -729,6 +765,22 @@ body {
     <div class="signout-email" id="signoutEmail"></div>
     <div class="signout-actions">
       <button class="btn-pri" style="background:var(--red);" onclick="doSignOut()">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- App switcher -->
+<div class="overlay" id="appMenuOverlay" onclick="bgClose(event,'appMenuOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Apps</div>
+    <div class="app-switch-list">
+      <button class="app-switch-item protein current" type="button" onclick="closeOverlay('appMenuOverlay')">
+        <div class="app-switch-name">Protein</div>
+      </button>
+      <button class="app-switch-item lift" type="button" onclick="goToApp('lift-tracker.html')">
+        <div class="app-switch-name">Lift</div>
+      </button>
     </div>
   </div>
 </div>
@@ -1183,6 +1235,8 @@ window.saveGoal = async function() {
 window.openOverlay  = function(id) { document.getElementById(id).classList.add('on'); document.body.style.overflow = 'hidden'; };
 window.closeOverlay = function(id) { document.getElementById(id).classList.remove('on'); if (!document.querySelector('.overlay.on')) document.body.style.overflow = ''; };
 window.bgClose      = function(e, id) { if (e.target === document.getElementById(id)) closeOverlay(id); };
+window.openAppMenu  = function() { openOverlay('appMenuOverlay'); };
+window.goToApp      = function(path) { window.location.href = path; };
 
 </script>
 </body>

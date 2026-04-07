@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lift</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300&family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg:#f5f2ec; --surface:#ffffff; --surface2:#ede9e2; --border:#e0dbd2;
+  --ink:#1c1917; --ink2:#57534e; --ink3:#a8a29e;
+  --accent:#1d4ed8; --accent-bg:#eff6ff; --accent-border:#bfdbfe;
+  --green:#15803d; --green-bg:#f0fdf4; --green-border:#bbf7d0;
+  --red:#b91c1c; --red-bg:#fef2f2; --red-border:#fecaca;
+  --r:14px; --rsm:10px;
+}
+html { height:100%; background:var(--bg); overflow-x:hidden; }
+body {
+  height:100%; background:var(--bg); color:var(--ink);
+  font-family:'Geist',sans-serif; font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; max-width:480px; margin:0 auto;
+  display:flex; flex-direction:column;
+}
+#loadingScreen {
+  position:fixed; inset:0; background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; z-index:300;
+}
+#loadingScreen.hidden { display:none; }
+.spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.loading-txt { font-size:14px; color:var(--ink3); }
+#authScreen {
+  position:fixed; inset:0; background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:32px 28px; z-index:200;
+}
+#authScreen.hidden { display:none; }
+.auth-logo { font-family:'Fraunces',serif; font-size:52px; font-weight:700; color:var(--accent); margin-bottom:4px; letter-spacing:-1px; }
+.auth-sub { font-size:15px; color:var(--ink3); margin-bottom:40px; text-align:center; }
+.auth-card { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:28px 24px; }
+.auth-card-title { font-family:'Fraunces',serif; font-size:22px; font-weight:500; color:var(--ink); margin-bottom:20px; }
+.auth-err { font-size:13px; color:var(--red); background:var(--red-bg); border:1px solid var(--red-border); border-radius:var(--rsm); padding:10px 14px; margin-bottom:14px; display:none; }
+.auth-err.show { display:block; }
+.btn-google { width:100%; height:50px; background:var(--surface); color:var(--ink); border:1.5px solid var(--border); border-radius:100px; font-family:'Geist',sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:background .15s; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-google:active { background:var(--surface2); }
+.btn-google:disabled { opacity:.5; cursor:not-allowed; }
+.sync-dot { width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block; transition:background .3s; }
+.sync-dot.syncing { background:var(--accent); animation:pulse 1s infinite; }
+.sync-dot.error { background:var(--red); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.user-chip { cursor:pointer; padding:4px; border-radius:50%; border:1px solid var(--border); background:var(--bg); transition:background .12s; }
+.user-chip:active { background:var(--surface2); }
+.user-avatar { width:28px; height:28px; border-radius:50%; background:var(--accent-bg); border:1px solid var(--accent-border); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; overflow:hidden; }
+.user-avatar img { width:100%; height:100%; object-fit:cover; }
+.signout-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(3px); z-index:150; display:flex; align-items:flex-end; opacity:0; pointer-events:none; transition:opacity .22s; }
+.signout-overlay.on { opacity:1; pointer-events:all; }
+.signout-sheet { background:var(--surface); border-radius:20px 20px 0 0; padding:0 20px 40px; width:100%; max-width:480px; margin:0 auto; transform:translateY(100%); transition:transform .28s cubic-bezier(.4,0,.2,1); }
+.signout-overlay.on .signout-sheet { transform:translateY(0); }
+.signout-title { font-family:'Fraunces',serif; font-size:22px; font-weight:500; color:var(--ink); margin-bottom:8px; }
+.signout-email { font-size:13px; color:var(--ink3); margin-bottom:24px; }
+.hd { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 20px 0; flex-shrink:0; position:sticky; top:0; z-index:50; }
+.hd-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.hd-left { display:flex; align-items:center; gap:10px; }
+.hd-right { display:flex; align-items:center; gap:8px; }
+.hd-title { font-family:'Fraunces',serif; font-size:28px; font-weight:700; color:var(--ink); letter-spacing:-.5px; cursor:pointer; user-select:none; }
+.hd-title:active { opacity:.7; }
+.app-switch-list { display:flex; flex-direction:column; gap:8px; }
+.app-switch-item { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--rsm); padding:16px 18px; text-align:left; cursor:pointer; transition:background .12s; }
+.app-switch-item:active { background:var(--surface2); }
+.app-switch-name { font-family:'Fraunces',serif; font-size:28px; font-weight:500; line-height:1.1; }
+.app-switch-item.current { background:var(--surface); box-shadow:inset 0 0 0 2px var(--border); }
+.app-switch-item.current.protein { background:#fff7ed; border-color:#fed7aa; box-shadow:inset 0 0 0 1px #fed7aa; }
+.app-switch-item.current.lift { background:var(--accent-bg); border-color:var(--accent-border); box-shadow:inset 0 0 0 1px var(--accent-border); }
+.app-switch-item.protein .app-switch-name { color:#c2410c; }
+.app-switch-item.lift .app-switch-name { color:var(--accent); }
+.tabs { display:flex; }
+.tab { flex:1; text-align:center; padding:10px 0 11px; font-size:14px; font-weight:500; color:var(--ink3); cursor:pointer; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }
+.tab.on { color:var(--accent); border-bottom-color:var(--accent); }
+.main { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:20px 20px 100px; }
+.day-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; margin-bottom:10px; cursor:pointer; transition:opacity .12s; animation:fadeUp .18s ease; display:flex; align-items:center; gap:12px; }
+.day-card:active { opacity:.7; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.day-cat-bar { width:4px; border-radius:100px; flex-shrink:0; align-self:stretch; min-height:36px; }
+.day-card-body { flex:1; min-width:0; }
+.day-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:3px; }
+.day-card-date { font-size:14px; font-weight:500; color:var(--ink); }
+.day-cat-badge { font-size:11px; font-weight:500; padding:2px 10px; border-radius:100px; white-space:nowrap; }
+.day-card-preview { font-size:12px; color:var(--ink3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.empty { text-align:center; padding:60px 20px; color:var(--ink3); }
+.empty-ico { font-size:44px; margin-bottom:12px; }
+.empty-txt { font-size:14px; line-height:1.7; }
+.fab { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); width:calc(100% - 40px); max-width:440px; height:52px; background:var(--accent); color:#fff; border:none; border-radius:100px; font-family:'Geist',sans-serif; font-size:15px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 20px rgba(29,78,216,.3); transition:opacity .15s,transform .15s; z-index:40; }
+.fab:active { opacity:.88; transform:translateX(-50%) scale(.98); }
+.log-day-head { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; margin-bottom:10px; }
+.log-day-head:active { opacity:.78; }
+.log-day-kicker { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--ink3); margin-bottom:8px; }
+.log-day-main { font-family:'Fraunces',serif; font-size:30px; font-weight:500; color:var(--ink); line-height:1.05; margin-bottom:10px; }
+.session-meta { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,.08); min-width:0; }
+.session-meta-main { min-width:0; flex:1; display:flex; align-items:center; gap:8px; color:var(--ink2); }
+.session-meta-location { font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.session-meta-icon { font-size:14px; line-height:1; flex-shrink:0; opacity:.82; }
+.session-meta-side { display:flex; align-items:center; gap:2px; flex-shrink:0; }
+.session-pill.icon { width:30px; height:30px; padding:0; display:flex; align-items:center; justify-content:center; font-size:15px; background:transparent; border:none; color:var(--ink2); }
+.option-row { display:flex; gap:8px; flex-wrap:wrap; }
+.option-btn { flex:1; min-width:88px; border:1.5px solid var(--border); background:var(--bg); color:var(--ink2); border-radius:var(--rsm); padding:12px 10px; text-align:center; cursor:pointer; transition:background .12s,border-color .12s,color .12s; }
+.option-btn.on { background:var(--accent-bg); border-color:var(--accent-border); color:var(--accent); }
+.option-emoji { display:block; font-size:22px; line-height:1; margin-bottom:6px; }
+.option-label { display:block; font-size:12px; font-weight:500; }
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(3px); z-index:100; display:flex; align-items:flex-end; opacity:0; pointer-events:none; transition:opacity .22s; }
+.overlay.on { opacity:1; pointer-events:all; }
+.sheet { background:var(--surface); border-radius:20px 20px 0 0; padding:0 20px 40px; width:100%; max-width:480px; margin:0 auto; transform:translateY(100%); transition:transform .28s cubic-bezier(.4,0,.2,1); max-height:92dvh; overflow-y:auto; }
+.overlay.on .sheet { transform:translateY(0); }
+.sheet-handle { width:36px; height:4px; border-radius:100px; background:var(--border); margin:14px auto 20px; }
+.sheet-title { font-family:'Fraunces',serif; font-size:22px; font-weight:500; color:var(--ink); margin-bottom:20px; }
+.sheet--tall { height:80dvh; max-height:80dvh; display:flex; flex-direction:column; padding:0; overflow:hidden; }
+.sheet-hd-fixed { flex-shrink:0; padding:0 20px 16px; border-bottom:1px solid var(--border); }
+.sheet-hd-fixed .sheet-title { margin-bottom:4px; }
+.sheet-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:16px 20px 40px; }
+.field { margin-bottom:16px; }
+.field-label { display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--ink3); margin-bottom:7px; }
+.field input[type=text],.field input[type=number],.field select,.field textarea { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--rsm); padding:13px 14px; font-family:'Geist',sans-serif; font-size:16px; color:var(--ink); outline:none; -webkit-appearance:none; appearance:none; transition:border-color .15s; }
+.field input[type=text]:focus,.field input[type=number]:focus,.field select:focus,.field textarea:focus { border-color:var(--accent); }
+.field select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8a29e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:38px; }
+.field textarea { resize:none; height:72px; font-size:15px; }
+.field-row { display:flex; gap:10px; }
+.field-row .field { flex:1; }
+.btn-row { display:flex; gap:10px; margin-top:20px; }
+.btn-pri { flex:1; height:50px; background:var(--accent); color:#fff; border:none; border-radius:100px; font-family:'Geist',sans-serif; font-size:15px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+.btn-pri:active { opacity:.85; }
+.btn-pri.danger { background:var(--red); }
+.btn-sec { height:50px; padding:0 20px; background:var(--bg); color:var(--ink2); border:1.5px solid var(--border); border-radius:100px; font-family:'Geist',sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:background .15s; }
+.btn-sec:active { background:var(--surface2); }
+.day-view-meta { display:flex; align-items:center; gap:10px; }
+.day-view-cat-badge { font-size:12px; font-weight:500; padding:3px 12px; border-radius:100px; cursor:pointer; }
+.day-view-cat-badge:active { opacity:.75; }
+.entry-row { background:var(--surface); border:1px solid var(--border); border-radius:var(--rsm); padding:12px 14px; margin-bottom:8px; display:flex; align-items:flex-start; gap:12px; animation:fadeUp .15s ease; }
+.entry-row-body { flex:1; min-width:0; }
+.entry-name { font-size:15px; font-weight:500; color:var(--ink); }
+.entry-stats { font-family:'Geist Mono',monospace; font-size:12px; color:var(--ink3); margin-top:2px; }
+.entry-set-list { display:flex; flex-direction:column; gap:4px; margin-top:8px; }
+.entry-set-line { font-family:'Geist Mono',monospace; font-size:11px; color:var(--ink2); }
+.entry-comment { font-size:12px; color:var(--ink3); margin-top:3px; font-style:italic; }
+.entry-acts { display:flex; gap:5px; flex-shrink:0; }
+.act-btn { width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:var(--bg); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; transition:background .12s; }
+.act-btn:active { background:var(--surface2); }
+.add-entry-btn { width:100%; padding:13px; border:1.5px dashed var(--border); border-radius:var(--rsm); background:none; font-size:14px; color:var(--ink3); cursor:pointer; font-family:'Geist',sans-serif; transition:border-color .15s,color .15s; margin-top:4px; }
+.add-entry-btn:hover { border-color:var(--accent); color:var(--accent); }
+.add-entry-btn:active { opacity:.7; }
+.set-rows { display:flex; flex-direction:column; gap:10px; }
+.set-row { background:var(--bg); border:1.5px solid var(--border); border-radius:var(--rsm); padding:12px; }
+.set-row-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.set-row-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--ink3); }
+.set-remove-btn { border:none; background:none; color:var(--red); font-size:12px; font-weight:600; cursor:pointer; font-family:'Geist',sans-serif; }
+.set-remove-btn:disabled { opacity:.35; cursor:default; }
+
+/* ── CALENDAR ── */
+.date-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; gap:8px; background:var(--surface); border-radius:var(--r); padding:10px 12px; }
+.date-center { text-align:center; flex:1; min-width:0; }
+.date-main { font-family:'Fraunces',serif; font-size:20px; font-weight:500; color:var(--ink); line-height:1.2; }
+.date-sub { font-size:12px; color:var(--ink3); margin-top:1px; }
+.nav-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--bg); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--ink2); flex-shrink:0; transition:background .12s; }
+.nav-btn:active { background:var(--surface2); }
+.today-btn { display:none; position:sticky; top:10px; z-index:10; margin:0 auto 16px; background:var(--accent-bg); border:1px solid var(--accent-border); border-radius:100px; color:var(--accent); font-family:'Geist',sans-serif; font-size:13px; font-weight:500; padding:6px 16px; cursor:pointer; transition:opacity .15s; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.today-btn.visible { display:block; width:fit-content; }
+.today-btn:active { opacity:.7; }
+.cal-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; margin-bottom:18px; }
+.cal-dow { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); margin-bottom:6px; }
+.cal-dow-cell { text-align:center; font-size:11px; font-weight:600; color:var(--ink3); text-transform:uppercase; letter-spacing:.05em; padding:4px 0; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px; }
+.cal-cell { aspect-ratio:1; border-radius:8px; display:flex; align-items:center; justify-content:center; min-width:0; overflow:hidden; border:2px solid var(--surface2); }
+.cal-d { font-size:13px; font-weight:500; color:var(--ink); line-height:1; }
+.cal-cell.no-log .cal-d { color:var(--ink3); }
+.cal-cell.future .cal-d { color:var(--ink3); }
+.cal-cell.has-log { cursor:pointer; transition:opacity .12s; }
+.cal-cell.has-log:active { opacity:.75; }
+.cal-cell.today-ring { border-color:var(--surface2); }
+.cal-cell.today-ring .cal-d { font-weight:700; }
+.cal-legend { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+.leg-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--ink2); }
+.leg-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+
+/* ── STATS ── */
+.stats-exercise-select { width:100%; padding:13px 38px 13px 14px; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--rsm); font-family:'Geist',sans-serif; font-size:16px; color:var(--ink); outline:none; -webkit-appearance:none; appearance:none; cursor:pointer; transition:border-color .15s; margin-bottom:20px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8a29e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; }
+.stats-exercise-select:focus { border-color:var(--accent); }
+.stats-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:20px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--rsm); padding:14px 10px; text-align:center; }
+.stat-card-val { font-family:'Geist Mono',monospace; font-size:18px; font-weight:500; color:var(--accent); line-height:1; margin-bottom:4px; }
+.stat-card-lbl { font-size:10px; color:var(--ink3); text-transform:uppercase; letter-spacing:.05em; }
+.stats-chart-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; margin-bottom:16px; }
+.stats-chart-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--ink3); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.chart-area { width:100%; }
+.chart-area svg { display:block; width:100%; }
+.stats-history-row { display:flex; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); }
+.stats-history-row:last-child { border-bottom:none; }
+.stats-hist-date { font-size:12px; color:var(--ink3); width:76px; flex-shrink:0; }
+.stats-hist-val { font-family:'Geist Mono',monospace; font-size:13px; font-weight:500; color:var(--ink); flex:1; min-width:0; }
+.stats-hist-badge { font-size:10px; font-weight:600; padding:2px 7px; border-radius:100px; background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); white-space:nowrap; }
+
+/* ── CATEGORIES ── */
+.cat-list { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+.cat-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--rsm); padding:12px 14px; display:flex; align-items:center; gap:12px; }
+.cat-swatch { width:20px; height:20px; border-radius:6px; flex-shrink:0; }
+.cat-item-name { flex:1; font-size:14px; font-weight:500; color:var(--ink); }
+.cat-item-acts { display:flex; gap:6px; }
+.cat-act-btn { font-size:12px; color:var(--ink3); cursor:pointer; padding:4px 8px; border:1px solid var(--border); border-radius:20px; background:var(--bg); font-family:'Geist',sans-serif; transition:background .12s; }
+.cat-act-btn:active { background:var(--surface2); }
+.cat-act-btn.del { color:var(--red); border-color:var(--red-border); }
+.color-swatches { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.color-swatch { width:32px; height:32px; border-radius:8px; cursor:pointer; border:2px solid transparent; transition:transform .12s,border-color .12s; flex-shrink:0; }
+.color-swatch:active { transform:scale(.9); }
+.color-swatch.selected { border-color:var(--ink); transform:scale(1.1); }
+.confirm-msg { font-size:15px; color:var(--ink2); margin-bottom:20px; line-height:1.6; }
+.icon-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--bg); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--ink2); transition:background .12s; flex-shrink:0; }
+.icon-btn:active { background:var(--surface2); }
+</style>
+</head>
+<body>
+
+<div id="loadingScreen">
+  <div class="spinner"></div>
+  <div class="loading-txt">Loading…</div>
+</div>
+
+<div id="authScreen" class="hidden">
+  <div class="auth-logo">Lift</div>
+  <div class="auth-sub">Simple workout logging</div>
+  <div class="auth-card">
+    <div class="auth-card-title">Sign in</div>
+    <div id="authError" class="auth-err"></div>
+    <button class="btn-google" id="authGoogleBtn" onclick="doGoogleAuth()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+  </div>
+</div>
+
+<header class="hd" id="appHeader" style="display:none">
+  <div class="hd-row">
+    <div class="hd-left">
+      <div class="hd-title" onclick="openAppMenu()">Lift</div>
+      <span class="sync-dot" id="syncDot"></span>
+    </div>
+    <div class="hd-right">
+      <button class="icon-btn" onclick="openSettings()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M3 12H1M23 12h-2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M12 3V1M12 23v-2"/></svg>
+      </button>
+      <div class="user-chip" onclick="openSignOut()">
+        <div class="user-avatar" id="userAvatar">👤</div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab on"  onclick="switchTab('log')">Log</div>
+    <div class="tab"     onclick="switchTab('calendar')">Calendar</div>
+    <div class="tab"     onclick="switchTab('stats')">Stats</div>
+  </div>
+</header>
+
+<div class="main" id="appMain" style="display:none">
+  <div id="v-log">
+    <div class="date-nav">
+      <button class="nav-btn" onclick="shiftLogDay(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="date-center">
+        <div class="date-main" id="logDayLabel">Today</div>
+        <div class="date-sub" id="logDaySub"></div>
+      </div>
+      <button class="nav-btn" id="logDayFwdBtn" onclick="shiftLogDay(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <button class="today-btn" id="logTodayBtn" onclick="goLogToday()">↩ Back to today</button>
+    <div id="logList"></div>
+  </div>
+  <div id="v-calendar" style="display:none">
+    <div class="date-nav">
+      <button class="nav-btn" onclick="shiftMonth(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="date-center"><div class="date-main" id="calMonthLabel"></div></div>
+      <button class="nav-btn" onclick="shiftMonth(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="cal-box">
+      <div class="cal-dow" id="calDow"></div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend" id="calLegend"></div>
+    </div>
+  </div>
+  <div id="v-stats" style="display:none">
+    <select class="stats-exercise-select" id="statsExerciseSelect" onchange="renderStats()">
+      <option value="">— select an exercise —</option>
+    </select>
+    <div id="statsContent"></div>
+  </div>
+</div>
+
+<button class="fab" id="fabBtn" style="display:none" onclick="handleLogFab()">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  <span id="fabLabel">New day</span>
+</button>
+
+<!-- New Day sheet -->
+<div class="overlay" id="newDayOverlay" onclick="bgClose(event,'newDayOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">New training day</div>
+    <div class="field">
+      <label class="field-label">Date</label>
+      <input type="text" id="fDayDate" readonly style="color:var(--ink3);cursor:default;">
+    </div>
+    <div class="field">
+      <label class="field-label">Category</label>
+      <select id="fDayCat"></select>
+    </div>
+    <div id="newCatInline" style="display:none;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--rsm);padding:14px;margin-top:-8px;margin-bottom:16px;">
+      <div class="field" style="margin-bottom:10px;"><label class="field-label">Category name</label><input type="text" id="fNewCatName" placeholder="e.g. Push, Legs, Swim…"></div>
+      <div class="field" style="margin-bottom:0;"><label class="field-label">Colour</label><div class="color-swatches" id="newCatSwatches"></div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-pri" onclick="saveNewDay()">Start</button>
+    </div>
+  </div>
+</div>
+
+<!-- Day View sheet -->
+<div class="overlay" id="dayViewOverlay" onclick="bgClose(event,'dayViewOverlay')">
+  <div class="sheet sheet--tall">
+    <div class="sheet-hd-fixed">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" id="dvTitle">—</div>
+      <div class="day-view-meta">
+        <span class="day-view-cat-badge" id="dvCatBadge" onclick="openChangeCat()">—</span>
+        <span style="font-size:12px;color:var(--ink3)" id="dvEntryCount"></span>
+      </div>
+    </div>
+    <div class="sheet-scroll">
+      <div id="dvEntries"></div>
+      <button class="add-entry-btn" onclick="openEntry(null)">+ Add exercise</button>
+    </div>
+  </div>
+</div>
+
+<!-- Entry sheet -->
+<div class="overlay" id="entryOverlay" onclick="bgClose(event,'entryOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="entrySheetTitle">Add exercise</div>
+    <div class="field"><label class="field-label">Exercise</label><select id="fExercise" onchange="onExerciseSelect()"></select></div>
+    <div id="newExerciseWrap" class="field" style="display:none"><label class="field-label">New exercise name</label><input type="text" id="fNewExercise" placeholder="e.g. Romanian deadlift"></div>
+    <div class="field">
+      <label class="field-label">Sets</label>
+      <div class="set-rows" id="setRows"></div>
+      <button class="add-entry-btn" type="button" onclick="addSetRow()">+ Add set</button>
+    </div>
+    <div class="field"><label class="field-label">Comment (optional)</label><textarea id="fComment" placeholder="e.g. felt heavy, paused reps…"></textarea></div>
+    <div class="btn-row">
+      <button class="btn-pri" onclick="saveEntry()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change category sheet -->
+<div class="overlay" id="changeCatOverlay" onclick="bgClose(event,'changeCatOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Change category</div>
+    <div class="field"><label class="field-label">Category</label><select id="fChangeCat"></select></div>
+    <div id="changeCatNewInline" style="display:none;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--rsm);padding:14px;margin-top:-8px;margin-bottom:16px;">
+      <div class="field" style="margin-bottom:10px;"><label class="field-label">Category name</label><input type="text" id="fChangeCatName" placeholder="e.g. Cardio"></div>
+      <div class="field" style="margin-bottom:0;"><label class="field-label">Colour</label><div class="color-swatches" id="changeCatSwatches"></div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-pri" onclick="saveChangeCat()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="sessionOverlay" onclick="bgClose(event,'sessionOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Session details</div>
+    <div class="field">
+      <label class="field-label">Location</label>
+      <select id="fSessionLocation" onchange="onSessionLocationSelect()"></select>
+    </div>
+    <div id="newSessionLocationWrap" class="field" style="display:none">
+      <label class="field-label">New location</label>
+      <input type="text" id="fNewSessionLocation" placeholder="e.g. Anytime Fitness Holland V">
+    </div>
+    <div class="field">
+      <label class="field-label">Mood</label>
+      <div class="option-row" id="sessionMoodOptions">
+        <button class="option-btn" type="button" data-value="sad" onclick="pickSessionOption('mood','sad')">
+          <span class="option-emoji">☹️</span>
+          <span class="option-label">Sad</span>
+        </button>
+        <button class="option-btn" type="button" data-value="normal" onclick="pickSessionOption('mood','normal')">
+          <span class="option-emoji">🙂</span>
+          <span class="option-label">Normal</span>
+        </button>
+        <button class="option-btn" type="button" data-value="happy" onclick="pickSessionOption('mood','happy')">
+          <span class="option-emoji">😄</span>
+          <span class="option-label">Happy</span>
+        </button>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Tiredness</label>
+      <div class="option-row" id="sessionTirednessOptions">
+        <button class="option-btn" type="button" data-value="low" onclick="pickSessionOption('tiredness','low')">
+          <span class="option-emoji">🥱</span>
+          <span class="option-label">Low</span>
+        </button>
+        <button class="option-btn" type="button" data-value="medium" onclick="pickSessionOption('tiredness','medium')">
+          <span class="option-emoji">🙂</span>
+          <span class="option-label">Medium</span>
+        </button>
+        <button class="option-btn" type="button" data-value="high" onclick="pickSessionOption('tiredness','high')">
+          <span class="option-emoji">🫨</span>
+          <span class="option-label">High</span>
+        </button>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-pri" onclick="saveSessionDetails()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Calendar day detail -->
+<div class="overlay" id="calDayOverlay" onclick="bgClose(event,'calDayOverlay')">
+  <div class="sheet sheet--tall">
+    <div class="sheet-hd-fixed">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" id="calDayTitle">—</div>
+      <div class="day-view-meta">
+        <span class="day-view-cat-badge" id="calDayCatBadge"></span>
+        <span style="font-size:12px;color:var(--ink3)" id="calDayCount"></span>
+      </div>
+    </div>
+    <div class="sheet-scroll" id="calDayBody"></div>
+  </div>
+</div>
+
+<!-- Settings sheet -->
+<div class="overlay" id="settingsOverlay" onclick="bgClose(event,'settingsOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Categories</div>
+    <div class="cat-list" id="catList"></div>
+    <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--rsm);padding:14px;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">New category</div>
+      <div class="field" style="margin-bottom:10px;"><label class="field-label">Name</label><input type="text" id="fSettingsCatName" placeholder="e.g. Push, Run, Swim…"></div>
+      <div class="field" style="margin-bottom:12px;"><label class="field-label">Colour</label><div class="color-swatches" id="settingsCatSwatches"></div></div>
+      <button class="btn-pri" style="width:100%;height:44px;font-size:14px;" onclick="saveNewCatFromSettings()">Add category</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit category sheet -->
+<div class="overlay" id="editCatOverlay" onclick="bgClose(event,'editCatOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Edit category</div>
+    <div class="field"><label class="field-label">Name</label><input type="text" id="fEditCatName" placeholder="Category name"></div>
+    <div class="field"><label class="field-label">Colour</label><div class="color-swatches" id="editCatSwatches"></div></div>
+    <div class="btn-row">
+      <button class="btn-pri" onclick="saveEditCat()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm sheet -->
+<div class="overlay" id="confirmOverlay" onclick="bgClose(event,'confirmOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="confirmTitle">Are you sure?</div>
+    <div class="confirm-msg" id="confirmMsg"></div>
+    <div class="btn-row">
+      <button class="btn-pri danger" id="confirmOkBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sign out sheet -->
+<div class="signout-overlay" id="signoutOverlay" onclick="bgCloseSignout(event)">
+  <div class="signout-sheet">
+    <div class="sheet-handle"></div>
+    <div class="signout-title">Account</div>
+    <div class="signout-email" id="signoutEmail"></div>
+    <div class="btn-row" style="margin-top:0"><button class="btn-pri danger" onclick="doSignOut()">Sign out</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="appMenuOverlay" onclick="bgClose(event,'appMenuOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Apps</div>
+    <div class="app-switch-list">
+      <button class="app-switch-item protein" type="button" onclick="goToApp('protein-tracker.html')">
+        <div class="app-switch-name">Protein</div>
+      </button>
+      <button class="app-switch-item lift current" type="button" onclick="closeOverlay('appMenuOverlay')">
+        <div class="app-switch-name">Lift</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+const firebaseConfig = {
+  apiKey:"AIzaSyCJUE4Y23L9x-bX_V0w-PObGIBV_OMkxgQ",
+  authDomain:"expense-tracker-4dc0c.firebaseapp.com",
+  projectId:"expense-tracker-4dc0c",
+  storageBucket:"expense-tracker-4dc0c.firebasestorage.app",
+  messagingSenderId:"1051482835080",
+  appId:"1:1051482835080:web:5f5c5f703b444a925f373d"
+};
+import{initializeApp}from'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+import{getAuth,onAuthStateChanged,signOut,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult}from'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+import{getFirestore,doc,collection,setDoc,deleteDoc,onSnapshot,query,orderBy}from'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const ALLOWED=['ngdallas1@gmail.com','shannonyeooo@gmail.com'];
+const COLORS=['#993C1D','#185FA5','#3B6D11','#854F0B','#534AB7','#0F6E56','#993556','#3C4A5C','#5C6B1E','#B85C1A'];
+
+let currentUser=null,days=[],categories=[],exercises=[];
+let unsubDays=null,unsubCats=null;
+let activeTab='log',moOffset=0,logViewDate='';
+let activeDayId=null,editEntryId=null,editCatId=null;
+
+/* ── helpers ── */
+const pad=n=>String(n).padStart(2,'0');
+const toDateStr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const todayStr=()=>toDateStr(new Date());
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const catById=id=>categories.find(c=>c.id===id)||null;
+const dayById=id=>days.find(d=>d.id===id)||null;
+const dayByDate=s=>days.find(d=>d.date===s)||null;
+const setSyncing=s=>{const e=document.getElementById('syncDot');if(e)e.className='sync-dot'+(s?' syncing':'');};
+const hexToRgba=(h,a)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;};
+const fmtDate=s=>{const d=new Date(s+'T00:00:00'),t=todayStr(),y=toDateStr(new Date(Date.now()-86400000));if(s===t)return'Today';if(s===y)return'Yesterday';return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});};
+const fmtDateLong=s=>new Date(s+'T00:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const fmtDateShort=s=>new Date(s+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+logViewDate=todayStr();
+const entrySets=e=>{
+  if(Array.isArray(e?.setsData)&&e.setsData.length)return e.setsData.map(s=>({weight:Number(s.weight)||0,reps:Number(s.reps)||0}));
+  if(Array.isArray(e?.sets)&&e.sets.length&&typeof e.sets[0]==='object')return e.sets.map(s=>({weight:Number(s.weight)||0,reps:Number(s.reps)||0}));
+  const count=Math.max(1,Number(e?.sets)||1),weight=Number(e?.weight)||0,reps=Number(e?.reps)||0;
+  return Array.from({length:count},()=>({weight,reps}));
+};
+const entryBestSet=e=>entrySets(e).reduce((best,set)=>!best||set.weight>best.weight?set:best,null)||{weight:0,reps:0};
+const entrySummary=e=>{
+  const sets=entrySets(e),best=entryBestSet(e),count=sets.length;
+  return `${best.weight}kg x ${best.reps} · ${count} set${count===1?'':'s'}`;
+};
+const entrySetLinesHTML=e=>entrySets(e).map((set,i)=>`<div class="entry-set-line">Set ${i+1} · ${set.weight}kg x ${set.reps}</div>`).join('');
+const sessionLocations=()=>Array.from(new Set(days.map(d=>d.location).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+const sessionEmoji=(group,value)=>{
+  if(group==='mood')return {sad:'☹️',normal:'🙂',happy:'😄'}[value]||'';
+  if(group==='tiredness')return {low:'🥱',medium:'🙂',high:'🫨'}[value]||'';
+  return '';
+};
+
+function renderSwatches(id,sel,onPick){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=COLORS.map(c=>`<div class="color-swatch${c===sel?' selected':''}" style="background:${c}" data-color="${c}" onclick="(${onPick.toString()})(this)"></div>`).join('');
+}
+function setRowHTML(i,set,count){
+  return `<div class="set-row">
+    <div class="set-row-top">
+      <span class="set-row-label">Set ${i+1}</span>
+      <button class="set-remove-btn" type="button" onclick="removeSetRow(${i})"${count===1?' disabled':''}>Remove</button>
+    </div>
+    <div class="field-row" style="margin-bottom:0">
+      <div class="field" style="margin-bottom:0"><label class="field-label">Weight (kg)</label><input type="number" data-set-weight="${i}" value="${set.weight||''}" placeholder="0" min="0" step="0.5" inputmode="decimal"></div>
+      <div class="field" style="margin-bottom:0"><label class="field-label">Reps</label><input type="number" data-set-reps="${i}" value="${set.reps||''}" placeholder="0" min="1" max="999" inputmode="numeric"></div>
+    </div>
+  </div>`;
+}
+let draftSets=[{weight:0,reps:0}];
+function readDraftSetsFromDOM(){
+  const rows=[...document.querySelectorAll('#setRows .set-row')];
+  if(!rows.length)return draftSets;
+  draftSets=rows.map((_,i)=>({
+    weight:parseFloat(document.querySelector(`[data-set-weight="${i}"]`)?.value)||0,
+    reps:parseInt(document.querySelector(`[data-set-reps="${i}"]`)?.value)||0
+  }));
+  return draftSets;
+}
+function renderSetRows(sets){
+  draftSets=(sets&&sets.length?sets:[{weight:0,reps:0}]).map(s=>({weight:Number(s.weight)||0,reps:Number(s.reps)||0}));
+  const el=document.getElementById('setRows');if(!el)return;
+  el.innerHTML=draftSets.map((set,i)=>setRowHTML(i,set,draftSets.length)).join('');
+}
+window.addSetRow=function(){
+  const sets=readDraftSetsFromDOM();
+  sets.push({weight:0,reps:0});
+  renderSetRows(sets);
+};
+window.removeSetRow=function(i){
+  const sets=readDraftSetsFromDOM();
+  if(sets.length<=1)return;
+  sets.splice(i,1);
+  renderSetRows(sets);
+};
+function renderSessionOption(group,value){
+  const id=group==='mood'?'sessionMoodOptions':'sessionTirednessOptions';
+  document.querySelectorAll(`#${id} .option-btn`).forEach(btn=>btn.classList.toggle('on',btn.dataset.value===value));
+}
+
+/* ── auth ── */
+getRedirectResult(auth).catch(()=>{});
+onAuthStateChanged(auth,user=>{
+  document.getElementById('loadingScreen').classList.add('hidden');
+  if(user&&ALLOWED.includes(user.email?.toLowerCase())){currentUser=user;showApp(user);subscribeFirestore(user.uid);}
+  else{if(user)signOut(auth);currentUser=null;teardown();showAuth();}
+});
+function showAuth(){
+  document.getElementById('authScreen').classList.remove('hidden');
+  ['appHeader','appMain','fabBtn'].forEach(id=>document.getElementById(id).style.display='none');
+}
+function showApp(user){
+  document.getElementById('authScreen').classList.add('hidden');
+  ['appHeader','appMain','fabBtn'].forEach(id=>document.getElementById(id).style.display='');
+  document.getElementById('signoutEmail').textContent=user.email;
+  const av=document.getElementById('userAvatar');
+  if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" alt="">`;
+  else av.textContent=(user.displayName||user.email).charAt(0).toUpperCase();
+}
+window.doGoogleAuth=async function(){
+  clearAuthErr();const btn=document.getElementById('authGoogleBtn');btn.disabled=true;
+  try{await signInWithPopup(auth,new GoogleAuthProvider());}
+  catch(e){const R=['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request'];if(R.includes(e?.code)){await signInWithRedirect(auth,new GoogleAuthProvider());}else{showAuthErr(e.message||'Sign in failed.');btn.disabled=false;}}
+};
+window.doSignOut=async function(){closeSignOut();teardown();await signOut(auth);};
+function showAuthErr(m){const e=document.getElementById('authError');e.textContent=m;e.classList.add('show');}
+function clearAuthErr(){document.getElementById('authError').classList.remove('show');}
+
+/* ── firestore ── */
+function subscribeFirestore(uid){
+  unsubDays=onSnapshot(query(collection(db,'users',uid,'lift_days'),orderBy('date','desc')),snap=>{
+    days=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderActive();
+    if(activeDayId&&document.getElementById('dayViewOverlay').classList.contains('on'))renderDayView(activeDayId);
+  });
+  unsubCats=onSnapshot(collection(db,'users',uid,'lift_categories'),snap=>{
+    categories=snap.docs.map(d=>({id:d.id,...d.data()}));renderActive();
+  });
+}
+function teardown(){if(unsubDays){unsubDays();unsubDays=null;}if(unsubCats){unsubCats();unsubCats=null;}days=[];categories=[];exercises=[];}
+async function persistDay(day){setSyncing(true);try{const{id,...data}=day;await setDoc(doc(db,'users',currentUser.uid,'lift_days',id),data);}finally{setSyncing(false);}}
+async function removeDay(id){setSyncing(true);try{await deleteDoc(doc(db,'users',currentUser.uid,'lift_days',id));}finally{setSyncing(false);}}
+async function persistCat(cat){setSyncing(true);try{const{id,...data}=cat;await setDoc(doc(db,'users',currentUser.uid,'lift_categories',id),data);}finally{setSyncing(false);}}
+async function removeCat(id){setSyncing(true);try{await deleteDoc(doc(db,'users',currentUser.uid,'lift_categories',id));}finally{setSyncing(false);}}
+
+function buildExerciseList(){const s=new Set();days.forEach(d=>(d.entries||[]).forEach(e=>{if(e.exercise)s.add(e.exercise);}));exercises=Array.from(s).sort((a,b)=>a.localeCompare(b));}
+
+/* ── tab / render ── */
+function renderActive(){
+  if(activeTab==='log')      renderLog();
+  if(activeTab==='calendar') renderCalendar();
+  if(activeTab==='stats')    renderStatsExerciseSelect();
+}
+window.switchTab=function(t){
+  activeTab=t;
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('on',['log','calendar','stats'][i]===t));
+  document.getElementById('v-log').style.display       =t==='log'     ?'':'none';
+  document.getElementById('v-calendar').style.display  =t==='calendar'?'':'none';
+  document.getElementById('v-stats').style.display     =t==='stats'   ?'':'none';
+  document.getElementById('fabBtn').style.display      =t==='log'     ?'':'none';
+  renderActive();
+};
+
+/* ── log tab ── */
+function maxLogViewDate(){const t=new Date();t.setDate(t.getDate()+1);return toDateStr(t);}
+window.goLogToday=function(){logViewDate=todayStr();renderLog();};
+window.shiftLogDay=function(d){
+  const dt=new Date(logViewDate);dt.setDate(dt.getDate()+d);
+  const next=toDateStr(dt);if(next>maxLogViewDate())return;
+  logViewDate=next;renderLog();
+};
+async function ensureLogDay(dateStr){
+  let day=dayByDate(dateStr);
+  if(day)return day;
+  day={id:uid(),date:dateStr,categoryId:'',entries:[]};
+  await persistDay(day);
+  return day;
+}
+window.handleLogFab=async function(){
+  if(activeTab!=='log'){openNewDay();return;}
+  const day=dayByDate(logViewDate);
+  const targetDay=day||await ensureLogDay(logViewDate);
+  activeDayId=targetDay.id;
+  if(!targetDay.categoryId){openChangeCat();return;}
+  openEntry();
+};
+function renderLog(){
+  const el=document.getElementById('logList');
+  const today=todayStr(),isToday=logViewDate===today,dt=new Date(logViewDate+'T00:00:00');
+  document.getElementById('logDayLabel').textContent=isToday?'Today':dt.toLocaleDateString('en-GB',{weekday:'long'});
+  document.getElementById('logDaySub').textContent=dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('logTodayBtn').classList.toggle('visible',!isToday);
+  document.getElementById('logDayFwdBtn').style.visibility=logViewDate>=maxLogViewDate()?'hidden':'visible';
+
+  const day=dayByDate(logViewDate);
+  if(!day){
+    activeDayId=null;
+    document.getElementById('fabLabel').textContent='Set category';
+    el.innerHTML=`<div class="empty"><div class="empty-ico">🏋️</div><div class="empty-txt">No category selected yet.<br>Tap Set category to start this session.</div></div>`;
+    return;
+  }
+
+  const cat=catById(day.categoryId),color=cat?cat.color:'#a8a29e',label=cat?cat.label:'No category';
+  document.getElementById('fabLabel').textContent=day.categoryId?'Add exercise':'Set category';
+  const entries=day.entries||[];
+  activeDayId=day.id;
+  const mainSummary=label;
+  const metaMain=day.location?`<div class="session-meta-main"><span class="session-meta-icon">📍</span><span class="session-meta-location">${day.location}</span></div>`:'';
+  const metaSide=[
+    day.mood?`<span class="session-pill icon" aria-label="${day.mood} mood">${sessionEmoji('mood',day.mood)}</span>`:'',
+    day.tiredness?`<span class="session-pill icon" aria-label="${day.tiredness} tiredness">${sessionEmoji('tiredness',day.tiredness)}</span>`:''
+  ].filter(Boolean).join('');
+  const meta=(metaMain||metaSide)?`<div class="session-meta">${metaMain||'<div></div>'}${metaSide?`<div class="session-meta-side">${metaSide}</div>`:''}</div>`:'';
+  el.innerHTML=`<div class="log-day-head" onclick="openSessionDetails()" style="background:${hexToRgba(color,.08)};border-color:${hexToRgba(color,.2)};cursor:pointer">
+    <div class="log-day-kicker">${isToday?"Today's session":fmtDateLong(day.date)}</div>
+    <div class="log-day-main" style="color:${color}">${mainSummary}</div>
+    ${meta}
+  </div>
+  ${entries.length?entries.map(e=>entryRowHTML(e,true)).join(''):`<div class="empty"><div class="empty-ico">🏋️</div><div class="empty-txt">${day.categoryId?'No exercises logged yet.<br>Tap Add exercise to continue this session.':'No category selected yet.<br>Tap Set category to start this session.'}</div></div>`}`;
+}
+
+/* ── calendar tab ── */
+window.shiftMonth=function(d){moOffset+=d;renderCalendar();};
+function renderCalendar(){
+  const base=new Date();base.setDate(1);base.setMonth(base.getMonth()+moOffset);
+  const yr=base.getFullYear(),mo=base.getMonth(),dim=new Date(yr,mo+1,0).getDate(),today=todayStr();
+  document.getElementById('calMonthLabel').textContent=base.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  document.getElementById('calDow').innerHTML=['M','T','W','T','F','S','S'].map(d=>`<div class="cal-dow-cell">${d}</div>`).join('');
+  const firstDow=new Date(yr,mo,1).getDay(),blanks=firstDow===0?6:firstDow-1;
+  const cells=Array(blanks).fill(`<div class="cal-cell"></div>`);
+  const legendCats=new Map();
+  for(let i=1;i<=dim;i++){
+    const ds=toDateStr(new Date(yr,mo,i)),day=dayByDate(ds),isFuture=ds>today,isToday=ds===today,ring=isToday?' today-ring':'';
+    if(day){
+      const cat=catById(day.categoryId),color=cat?cat.color:'#a8a29e';
+      if(cat)legendCats.set(cat.id,cat);
+      cells.push(`<div class="cal-cell has-log${ring}" style="background:${hexToRgba(color,.22)}" onclick="openCalDay('${ds}')"><span class="cal-d" style="color:${color};font-weight:700">${i}</span></div>`);
+    } else if(isFuture){
+      cells.push(`<div class="cal-cell future${ring}"><span class="cal-d">${i}</span></div>`);
+    } else {
+      cells.push(`<div class="cal-cell no-log${ring}"><span class="cal-d">${i}</span></div>`);
+    }
+  }
+  document.getElementById('calGrid').innerHTML=cells.join('');
+  const legEl=document.getElementById('calLegend');
+  if(legendCats.size){
+    legEl.innerHTML=Array.from(legendCats.values()).map(c=>`<div class="leg-item"><div class="leg-dot" style="background:${c.color}"></div>${c.label}</div>`).join('');
+    legEl.style.display='';
+  } else legEl.style.display='none';
+}
+
+/* ── stats tab ── */
+function renderStatsExerciseSelect(){
+  buildExerciseList();
+  const sel=document.getElementById('statsExerciseSelect'),cur=sel.value;
+  sel.innerHTML=`<option value="">— select an exercise —</option>`+exercises.map(e=>`<option value="${e}"${e===cur?' selected':''}>${e}</option>`).join('');
+  if(cur&&exercises.includes(cur))renderStats();
+  else document.getElementById('statsContent').innerHTML=`<div class="empty"><div class="empty-ico">📈</div><div class="empty-txt">Pick an exercise above<br>to see your strength progress.</div></div>`;
+}
+
+window.renderStats=function(){
+  const name=document.getElementById('statsExerciseSelect').value;
+  const el=document.getElementById('statsContent');
+  if(!name){el.innerHTML=`<div class="empty"><div class="empty-ico">📈</div><div class="empty-txt">Pick an exercise above<br>to see your strength progress.</div></div>`;return;}
+
+  // best weight per day
+  const dataMap=new Map();
+  [...days].sort((a,b)=>a.date.localeCompare(b.date)).forEach(day=>{
+    (day.entries||[]).filter(e=>e.exercise===name).forEach(e=>{
+      const bestSet=entryBestSet(e),setCount=entrySets(e).length,ex=dataMap.get(day.date);
+      if(!ex||bestSet.weight>ex.weight)dataMap.set(day.date,{date:day.date,weight:bestSet.weight||0,reps:bestSet.reps||0,setCount,comment:e.comment||''});
+    });
+  });
+  const data=Array.from(dataMap.values()).sort((a,b)=>a.date.localeCompare(b.date));
+  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-ico">🔍</div><div class="empty-txt">No entries found for<br><strong>${name}</strong></div></div>`;return;}
+
+  const weights=data.map(d=>d.weight),pr=Math.max(...weights);
+  const last=data[data.length-1],first=data[0];
+  const diff=last.weight-first.weight,pct=first.weight>0?Math.round((diff/first.weight)*100):0;
+  let trendHTML='';
+  if(data.length>=2){
+    if(diff>0)trendHTML=`<span style="color:var(--green);font-size:11px;font-weight:500">▲ +${diff} kg (${pct}%)</span>`;
+    else if(diff<0)trendHTML=`<span style="color:var(--red);font-size:11px;font-weight:500">▼ ${diff} kg (${Math.abs(pct)}%)</span>`;
+    else trendHTML=`<span style="color:var(--ink3);font-size:11px">→ No change</span>`;
+  }
+
+  const summary=`<div class="stats-summary">
+    <div class="stat-card"><div class="stat-card-val">${pr} kg</div><div class="stat-card-lbl">Best weight</div></div>
+    <div class="stat-card"><div class="stat-card-val">${data.length}</div><div class="stat-card-lbl">Sessions</div></div>
+    <div class="stat-card"><div class="stat-card-val">${fmtDateShort(last.date)}</div><div class="stat-card-lbl">Last session</div></div>
+  </div>`;
+
+  const chart=buildLineChart(data);
+
+  const histRows=[...data].reverse().map((d,i,arr)=>{
+    const isPR=d.weight===pr;
+    const prevInArr=arr[i+1];
+    const delta=prevInArr?d.weight-prevInArr.weight:null;
+    let dHTML='';
+    if(delta!==null&&delta!==0){
+      const sign=delta>0?'▲ +':'▼ ',col=delta>0?'var(--green)':'var(--red)';
+      dHTML=`<span style="font-size:10px;color:${col};margin-left:6px">${sign}${Math.abs(delta)}</span>`;
+    }
+    return`<div class="stats-history-row">
+      <span class="stats-hist-date">${fmtDateShort(d.date)}</span>
+      <span class="stats-hist-val">${d.weight}kg x ${d.reps} · ${d.setCount} set${d.setCount===1?'':'s'}${dHTML}</span>
+      ${isPR&&i===arr.findIndex(x=>x.weight===pr)?'<span class="stats-hist-badge">PR</span>':''}
+    </div>`;
+  }).join('');
+
+  el.innerHTML=summary+chart+`<div class="stats-chart-box"><div class="stats-chart-title">History ${trendHTML}</div><div>${histRows}</div></div>`;
+};
+
+function buildLineChart(data){
+  if(data.length<2)return`<div class="stats-chart-box"><div class="stats-chart-title">Weight over time</div><div style="text-align:center;padding:28px 0;font-size:13px;color:var(--ink3)">Log at least 2 sessions to see a chart.</div></div>`;
+  const W=300,H=110,pL=28,pR=8,pT=10,pB=22,cW=W-pL-pR,cH=H-pT-pB;
+  const ws=data.map(d=>d.weight),mn=Math.min(...ws),mx=Math.max(...ws),rng=mx-mn||1;
+  const pts=data.map((d,i)=>({x:Math.round((pL+(i/(data.length-1))*cW)*10)/10,y:Math.round((pT+cH-((d.weight-mn)/rng)*cH)*10)/10,d}));
+  const line=pts.map((p,i)=>(i===0?'M':'L')+p.x+','+p.y).join(' ');
+  const area=line+` L${pts[pts.length-1].x},${pT+cH} L${pL},${pT+cH} Z`;
+  const dots=pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="var(--accent)" stroke="white" stroke-width="1.5"/>`).join('');
+  const xLabs=[];
+  xLabs.push({x:pts[0].x,l:fmtDateShort(data[0].date)});
+  if(data.length>=5){const m=Math.floor(data.length/2);xLabs.push({x:pts[m].x,l:fmtDateShort(data[m].date)});}
+  xLabs.push({x:pts[pts.length-1].x,l:fmtDateShort(data[data.length-1].date)});
+  const yMid=pT+cH/2;
+  return`<div class="stats-chart-box">
+    <div class="stats-chart-title">Weight over time (kg)</div>
+    <div class="chart-area">
+      <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <line x1="${pL}" y1="${pT}" x2="${pL+cW}" y2="${pT}" stroke="#e0dbd2" stroke-width=".5"/>
+        <line x1="${pL}" y1="${yMid}" x2="${pL+cW}" y2="${yMid}" stroke="#e0dbd2" stroke-width=".5" stroke-dasharray="2 2"/>
+        <line x1="${pL}" y1="${pT+cH}" x2="${pL+cW}" y2="${pT+cH}" stroke="#e0dbd2" stroke-width=".5"/>
+        <text x="${pL-3}" y="${pT}" text-anchor="end" dominant-baseline="middle" fill="#a8a29e" font-size="8" font-family="monospace">${mx}</text>
+        <text x="${pL-3}" y="${pT+cH}" text-anchor="end" dominant-baseline="middle" fill="#a8a29e" font-size="8" font-family="monospace">${mn}</text>
+        <path d="${area}" fill="var(--accent)" fill-opacity=".08"/>
+        <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+        ${dots}
+        ${xLabs.map(l=>`<text x="${l.x}" y="${H-1}" text-anchor="middle" fill="#a8a29e" font-size="8" font-family="sans-serif">${l.l}</text>`).join('')}
+      </svg>
+    </div>
+  </div>`;
+}
+
+/* ── day view ── */
+window.openDayView=function(id){activeDayId=id;renderDayView(id);openOverlay('dayViewOverlay');};
+function renderDayView(dayId){
+  const day=dayById(dayId);if(!day)return;
+  const cat=catById(day.categoryId),color=cat?cat.color:'#a8a29e',label=cat?cat.label:'No category';
+  document.getElementById('dvTitle').textContent=fmtDateLong(day.date);
+  const b=document.getElementById('dvCatBadge');b.textContent=label;b.style.background=hexToRgba(color,.15);b.style.color=color;
+  const entries=day.entries||[];
+  document.getElementById('dvEntryCount').textContent=entries.length===1?'1 exercise':`${entries.length} exercises`;
+  document.getElementById('dvEntries').innerHTML=entries.map(e=>entryRowHTML(e,true)).join('');
+}
+function entryRowHTML(e,showActs){
+  const acts=showActs?`<div class="entry-acts"><button class="act-btn" onclick="openEntry('${e.id}')">✏️</button><button class="act-btn" onclick="confirmDeleteEntry('${e.id}')">🗑</button></div>`:'';
+  return`<div class="entry-row"><div class="entry-row-body"><div class="entry-name">${e.exercise}</div><div class="entry-stats">${entrySummary(e)}</div><div class="entry-set-list">${entrySetLinesHTML(e)}</div>${e.comment?`<div class="entry-comment">${e.comment}</div>`:''}</div>${acts}</div>`;
+}
+
+/* ── cal day detail ── */
+window.openCalDay=function(ds){
+  const day=dayByDate(ds);if(!day)return;
+  const cat=catById(day.categoryId),color=cat?cat.color:'#a8a29e',label=cat?cat.label:'No category',entries=day.entries||[];
+  document.getElementById('calDayTitle').textContent=fmtDateLong(ds);
+  const b=document.getElementById('calDayCatBadge');b.textContent=label;b.style.background=hexToRgba(color,.15);b.style.color=color;
+  document.getElementById('calDayCount').textContent=entries.length===1?'1 exercise':`${entries.length} exercises`;
+  document.getElementById('calDayBody').innerHTML=entries.length?entries.map(e=>entryRowHTML(e,false)).join(''):`<div style="text-align:center;padding:48px 0;color:var(--ink3);font-size:14px;">No exercises logged this day.</div>`;
+  openOverlay('calDayOverlay');
+};
+
+/* ── new day ── */
+window.openNewDay=function(){
+  const targetDate=activeTab==='log'?logViewDate:todayStr();
+  const ex=dayByDate(targetDate);if(ex){openDayView(ex.id);return;}
+  document.getElementById('fDayDate').value=new Date(targetDate+'T00:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  populateCatSelect('fDayCat');
+  document.getElementById('newCatInline').style.display='none';
+  renderSwatches('newCatSwatches',COLORS[0],sw=>{document.querySelectorAll('#newCatSwatches .color-swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');});
+  openOverlay('newDayOverlay');
+};
+function populateCatSelect(sid){
+  const el=document.getElementById(sid);
+  el.innerHTML=`<option value="">— select or create —</option>`+categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('')+`<option value="__new__">+ New category…</option>`;
+  el.onchange=function(){const iid=sid==='fDayCat'?'newCatInline':'changeCatNewInline';document.getElementById(iid).style.display=this.value==='__new__'?'block':'none';};
+}
+window.saveNewDay=async function(){
+  let cid=document.getElementById('fDayCat').value;
+  if(cid==='__new__'){const name=document.getElementById('fNewCatName').value.trim(),color=document.querySelector('#newCatSwatches .color-swatch.selected')?.dataset.color||COLORS[0];if(!name){document.getElementById('fNewCatName').focus();return;}const nc={id:uid(),label:name,color};await persistCat(nc);cid=nc.id;}
+  const nd={id:uid(),date:activeTab==='log'?logViewDate:todayStr(),categoryId:cid||'',entries:[]};
+  await persistDay(nd);closeOverlay('newDayOverlay');
+  setTimeout(()=>{activeDayId=nd.id;openDayView(nd.id);},300);
+};
+
+/* ── change cat ── */
+window.openChangeCat=function(){
+  populateCatSelect('fChangeCat');document.getElementById('changeCatNewInline').style.display='none';
+  renderSwatches('changeCatSwatches',COLORS[0],sw=>{document.querySelectorAll('#changeCatSwatches .color-swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');});
+  openOverlay('changeCatOverlay');
+};
+window.saveChangeCat=async function(){
+  let cid=document.getElementById('fChangeCat').value;const day=dayById(activeDayId);if(!day)return;
+  if(cid==='__new__'){const name=document.getElementById('fChangeCatName').value.trim(),color=document.querySelector('#changeCatSwatches .color-swatch.selected')?.dataset.color||COLORS[0];if(!name){document.getElementById('fChangeCatName').focus();return;}const nc={id:uid(),label:name,color};await persistCat(nc);cid=nc.id;}
+  if(!cid)return;day.categoryId=cid;await persistDay(day);closeOverlay('changeCatOverlay');renderDayView(activeDayId);if(activeTab==='log')renderLog();
+};
+function populateSessionLocationSelect(selected=''){
+  const el=document.getElementById('fSessionLocation');
+  const locations=sessionLocations();
+  el.innerHTML=`<option value="">— select or add —</option>`+locations.map(loc=>`<option value="${loc}">${loc}</option>`).join('')+`<option value="__new__">+ New location…</option>`;
+  el.value=selected&&locations.includes(selected)?selected:selected?'__new__':'';
+  document.getElementById('newSessionLocationWrap').style.display=el.value==='__new__'?'block':'none';
+  if(el.value==='__new__')document.getElementById('fNewSessionLocation').value=selected||'';
+  else document.getElementById('fNewSessionLocation').value='';
+}
+window.onSessionLocationSelect=function(){
+  const isNew=document.getElementById('fSessionLocation').value==='__new__';
+  document.getElementById('newSessionLocationWrap').style.display=isNew?'block':'none';
+  if(isNew)setTimeout(()=>document.getElementById('fNewSessionLocation').focus(),80);
+};
+window.pickSessionOption=function(group,value){renderSessionOption(group,value);};
+window.openSessionDetails=function(){
+  const day=dayById(activeDayId);if(!day)return;
+  populateSessionLocationSelect(day.location||'');
+  renderSessionOption('mood',day.mood||'');
+  renderSessionOption('tiredness',day.tiredness||'');
+  openOverlay('sessionOverlay');
+};
+window.saveSessionDetails=async function(){
+  const day=dayById(activeDayId);if(!day)return;
+  let location=document.getElementById('fSessionLocation').value;
+  if(location==='__new__')location=document.getElementById('fNewSessionLocation').value.trim();
+  const mood=document.querySelector('#sessionMoodOptions .option-btn.on')?.dataset.value||'';
+  const tiredness=document.querySelector('#sessionTirednessOptions .option-btn.on')?.dataset.value||'';
+  day.location=location||'';
+  day.mood=mood;
+  day.tiredness=tiredness;
+  await persistDay(day);
+  closeOverlay('sessionOverlay');
+  if(document.getElementById('dayViewOverlay').classList.contains('on'))renderDayView(activeDayId);
+  if(activeTab==='log')renderLog();
+};
+
+/* ── entry ── */
+window.openEntry=function(entryId){
+  buildExerciseList();editEntryId=entryId;const isEdit=!!entryId;
+  document.getElementById('entrySheetTitle').textContent=isEdit?'Edit exercise':'Add exercise';
+  const sel=document.getElementById('fExercise');
+  sel.innerHTML=`<option value="">— select or new —</option>`+exercises.map(e=>`<option value="${e}">${e}</option>`).join('')+`<option value="__new__">+ New exercise…</option>`;
+  const nw=document.getElementById('newExerciseWrap');
+  if(isEdit){
+    const day=dayById(activeDayId),entry=(day?.entries||[]).find(e=>e.id===entryId);
+    if(entry){
+      const known=exercises.includes(entry.exercise);
+      sel.value=known?entry.exercise:'__new__';
+      document.getElementById('fNewExercise').value=known?'':entry.exercise;
+      nw.style.display=known?'none':'block';
+      renderSetRows(entrySets(entry));
+      document.getElementById('fComment').value=entry.comment||'';
+    }
+  } else {
+    sel.value='';document.getElementById('fNewExercise').value='';nw.style.display='none';
+    renderSetRows([{weight:0,reps:0}]);
+    document.getElementById('fComment').value='';
+  }
+  openOverlay('entryOverlay');setTimeout(()=>document.getElementById('fExercise').focus(),320);
+};
+window.onExerciseSelect=function(){
+  const val=document.getElementById('fExercise').value;
+  document.getElementById('newExerciseWrap').style.display=val==='__new__'?'block':'none';
+  if(val==='__new__'){setTimeout(()=>document.getElementById('fNewExercise').focus(),100);return;}
+};
+window.saveEntry=async function(){
+  let name=document.getElementById('fExercise').value;
+  if(name==='__new__')name=document.getElementById('fNewExercise').value.trim();
+  if(!name){document.getElementById('fExercise').focus();return;}
+  const setsData=readDraftSetsFromDOM().filter(set=>set.weight>0||set.reps>0);
+  if(!setsData.length){const firstWeight=document.querySelector('[data-set-weight="0"]');if(firstWeight)firstWeight.focus();return;}
+  const comment=document.getElementById('fComment').value.trim();
+  const day=dayById(activeDayId);if(!day)return;
+  if(editEntryId){const e=(day.entries||[]).find(e=>e.id===editEntryId);if(e){e.exercise=name;e.setsData=setsData;e.comment=comment;delete e.weight;delete e.reps;delete e.sets;}}
+  else{if(!day.entries)day.entries=[];day.entries.push({id:uid(),exercise:name,setsData,comment});}
+  await persistDay(day);closeOverlay('entryOverlay');renderDayView(activeDayId);if(activeTab==='log')renderLog();
+};
+window.confirmDeleteEntry=function(entryId){
+  const day=dayById(activeDayId),entry=(day?.entries||[]).find(e=>e.id===entryId);if(!entry)return;
+  document.getElementById('confirmTitle').textContent='Delete exercise?';
+  document.getElementById('confirmMsg').textContent=`Remove "${entry.exercise}" from this session?`;
+  document.getElementById('confirmOkBtn').onclick=async()=>{day.entries=day.entries.filter(e=>e.id!==entryId);await persistDay(day);closeOverlay('confirmOverlay');renderDayView(activeDayId);if(activeTab==='log')renderLog();};
+  openOverlay('confirmOverlay');
+};
+
+/* ── settings ── */
+window.openSettings=function(){
+  renderCatList();
+  renderSwatches('settingsCatSwatches',COLORS[0],sw=>{document.querySelectorAll('#settingsCatSwatches .color-swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');});
+  document.getElementById('fSettingsCatName').value='';openOverlay('settingsOverlay');
+};
+function renderCatList(){
+  const el=document.getElementById('catList');
+  if(!categories.length){el.innerHTML=`<div style="font-size:13px;color:var(--ink3);padding:8px 0;">No categories yet. Add one below.</div>`;return;}
+  el.innerHTML=categories.map(cat=>`<div class="cat-item"><div class="cat-swatch" style="background:${cat.color}"></div><div class="cat-item-name">${cat.label}</div><div class="cat-item-acts"><button class="cat-act-btn" onclick="openEditCat('${cat.id}')">Edit</button><button class="cat-act-btn del" onclick="confirmDeleteCat('${cat.id}')">Delete</button></div></div>`).join('');
+}
+window.saveNewCatFromSettings=async function(){
+  const name=document.getElementById('fSettingsCatName').value.trim(),color=document.querySelector('#settingsCatSwatches .color-swatch.selected')?.dataset.color||COLORS[0];
+  if(!name){document.getElementById('fSettingsCatName').focus();return;}
+  await persistCat({id:uid(),label:name,color});document.getElementById('fSettingsCatName').value='';renderCatList();
+};
+window.openEditCat=function(catId){
+  editCatId=catId;const cat=catById(catId);if(!cat)return;
+  document.getElementById('fEditCatName').value=cat.label;
+  renderSwatches('editCatSwatches',cat.color,sw=>{document.querySelectorAll('#editCatSwatches .color-swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');});
+  openOverlay('editCatOverlay');
+};
+window.saveEditCat=async function(){
+  const cat=catById(editCatId);if(!cat)return;
+  const name=document.getElementById('fEditCatName').value.trim(),color=document.querySelector('#editCatSwatches .color-swatch.selected')?.dataset.color||cat.color;
+  if(!name){document.getElementById('fEditCatName').focus();return;}
+  cat.label=name;cat.color=color;await persistCat(cat);closeOverlay('editCatOverlay');renderCatList();renderActive();
+};
+window.confirmDeleteCat=function(catId){
+  const cat=catById(catId),count=days.filter(d=>d.categoryId===catId).length;
+  document.getElementById('confirmTitle').textContent='Delete category?';
+  document.getElementById('confirmMsg').textContent=count?`"${cat?.label}" is used by ${count} day(s). Those days will become uncategorised.`:`Delete "${cat?.label}"? This can't be undone.`;
+  document.getElementById('confirmOkBtn').onclick=async()=>{
+    await removeCat(catId);
+    for(const d of days.filter(d=>d.categoryId===catId)){d.categoryId='';await persistDay(d);}
+    closeOverlay('confirmOverlay');renderCatList();renderActive();
+  };
+  openOverlay('confirmOverlay');
+};
+
+/* ── overlays ── */
+window.openOverlay=function(id){document.getElementById(id).classList.add('on');document.body.style.overflow='hidden';};
+window.closeOverlay=function(id){document.getElementById(id).classList.remove('on');if(!document.querySelector('.overlay.on,.signout-overlay.on'))document.body.style.overflow='';};
+window.bgClose=function(e,id){if(e.target===document.getElementById(id))closeOverlay(id);};
+window.openAppMenu=function(){openOverlay('appMenuOverlay');};
+window.goToApp=function(path){window.location.href=path;};
+window.openSignOut=function(){document.getElementById('signoutOverlay').classList.add('on');};
+window.closeSignOut=function(){document.getElementById('signoutOverlay').classList.remove('on');};
+window.bgCloseSignout=function(e){if(e.target===document.getElementById('signoutOverlay'))closeSignOut();};
+</script>
+</body>
+</html>
