@@ -46,6 +46,8 @@ body.modal-open {
 .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .loading-txt { font-size:14px; color:var(--ink3); }
+.loading-reload { display:none; margin-top:4px; }
+.loading-reload.show { display:inline-flex; }
 #authScreen {
   position:fixed; inset:0; background:var(--bg);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -236,7 +238,8 @@ body.modal-open {
 
 <div id="loadingScreen">
   <div class="spinner"></div>
-  <div class="loading-txt">Loading…</div>
+  <div class="loading-txt" id="loadingText">Loading…</div>
+  <button class="btn-sec loading-reload" id="loadingReloadBtn" onclick="window.location.reload()">Reload</button>
 </div>
 
 <div id="authScreen" class="hidden">
@@ -542,6 +545,7 @@ let currentUser=null,days=[],categories=[],exercises=[];
 let unsubDays=null,unsubCats=null;
 let activeTab='log',moOffset=0,logViewDate='';
 let activeDayId=null,editEntryId=null,editCatId=null;
+let daysReady=false,catsReady=false,loadingTimer=null;
 
 /* ── helpers ── */
 const pad=n=>String(n).padStart(2,'0');
@@ -575,6 +579,30 @@ const sessionEmoji=(group,value)=>{
   if(group==='tiredness')return {low:'🥱',medium:'🙂',high:'🫨'}[value]||'';
   return '';
 };
+function showLoading(msg='Loading…'){
+  document.getElementById('loadingText').textContent=msg;
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  document.getElementById('loadingReloadBtn').classList.remove('show');
+}
+function hideLoading(){
+  clearTimeout(loadingTimer);loadingTimer=null;
+  document.getElementById('loadingScreen').classList.add('hidden');
+  document.getElementById('loadingReloadBtn').classList.remove('show');
+}
+function beginDataLoad(msg='Loading your data…'){
+  showLoading(msg);
+  clearTimeout(loadingTimer);
+  loadingTimer=setTimeout(()=>{
+    document.getElementById('loadingText').textContent='Still loading. Try reloading if this gets stuck.';
+    document.getElementById('loadingReloadBtn').classList.add('show');
+  },3500);
+}
+function failDataLoad(){
+  clearTimeout(loadingTimer);loadingTimer=null;
+  document.getElementById('loadingText').textContent='Could not load data.';
+  document.getElementById('loadingReloadBtn').classList.add('show');
+}
+function maybeFinishDataLoad(){if(daysReady&&catsReady)hideLoading();}
 
 function renderSwatches(id,sel,onPick){
   const el=document.getElementById(id);if(!el)return;
@@ -626,9 +654,8 @@ function renderSessionOption(group,value){
 /* ── auth ── */
 getRedirectResult(auth).catch(()=>{});
 onAuthStateChanged(auth,user=>{
-  document.getElementById('loadingScreen').classList.add('hidden');
-  if(user&&ALLOWED.includes(user.email?.toLowerCase())){currentUser=user;showApp(user);subscribeFirestore(user.uid);}
-  else{if(user)signOut(auth);currentUser=null;teardown();showAuth();}
+  if(user&&ALLOWED.includes(user.email?.toLowerCase())){currentUser=user;showApp(user);beginDataLoad();subscribeFirestore(user.uid);}
+  else{if(user)signOut(auth);currentUser=null;teardown();hideLoading();showAuth();}
 });
 function showAuth(){
   document.getElementById('authScreen').classList.remove('hidden');
@@ -653,16 +680,19 @@ function clearAuthErr(){document.getElementById('authError').classList.remove('s
 
 /* ── firestore ── */
 function subscribeFirestore(uid){
+  daysReady=false;catsReady=false;
   unsubDays=onSnapshot(query(collection(db,'users',uid,'lift_days'),orderBy('date','desc')),snap=>{
     days=snap.docs.map(d=>({id:d.id,...d.data()}));
+    daysReady=true;
     renderActive();
     if(activeDayId&&document.getElementById('dayViewOverlay').classList.contains('on'))renderDayView(activeDayId);
-  });
+    maybeFinishDataLoad();
+  },()=>failDataLoad());
   unsubCats=onSnapshot(collection(db,'users',uid,'lift_categories'),snap=>{
-    categories=snap.docs.map(d=>({id:d.id,...d.data()}));renderActive();
-  });
+    categories=snap.docs.map(d=>({id:d.id,...d.data()}));catsReady=true;renderActive();maybeFinishDataLoad();
+  },()=>failDataLoad());
 }
-function teardown(){if(unsubDays){unsubDays();unsubDays=null;}if(unsubCats){unsubCats();unsubCats=null;}days=[];categories=[];exercises=[];}
+function teardown(){if(unsubDays){unsubDays();unsubDays=null;}if(unsubCats){unsubCats();unsubCats=null;}daysReady=false;catsReady=false;clearTimeout(loadingTimer);loadingTimer=null;days=[];categories=[];exercises=[];}
 async function persistDay(day){setSyncing(true);try{const{id,...data}=day;await setDoc(doc(db,'users',currentUser.uid,'lift_days',id),data);}finally{setSyncing(false);}}
 async function removeDay(id){setSyncing(true);try{await deleteDoc(doc(db,'users',currentUser.uid,'lift_days',id));}finally{setSyncing(false);}}
 async function persistCat(cat){setSyncing(true);try{const{id,...data}=cat;await setDoc(doc(db,'users',currentUser.uid,'lift_categories',id),data);}finally{setSyncing(false);}}

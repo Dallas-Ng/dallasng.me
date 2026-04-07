@@ -134,6 +134,8 @@ body.modal-open {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-txt { font-size: 14px; color: var(--ink3); }
+.loading-reload { display: none; margin-top: 4px; }
+.loading-reload.show { display: inline-flex; }
 
 /* ── SYNC INDICATOR ── */
 .sync-dot {
@@ -557,7 +559,8 @@ body.modal-open {
 <!-- ══ LOADING SCREEN ══ -->
 <div id="loadingScreen">
   <div class="spinner"></div>
-  <div class="loading-txt">Loading…</div>
+  <div class="loading-txt" id="loadingText">Loading…</div>
+  <button class="btn-sec loading-reload" id="loadingReloadBtn" onclick="window.location.reload()">Reload</button>
 </div>
 
 <!-- ══ AUTH SCREEN ══ -->
@@ -836,6 +839,9 @@ let entries      = [];
 let goal         = null;
 let unsubEntries = null;
 let unsubGoals   = null;
+let entriesReady = false;
+let goalsReady   = false;
+let loadingTimer = null;
 
 let activeTab = 'daily';
 let viewDate  = todayStr();
@@ -899,20 +905,47 @@ function setSyncing(s) {
   const d = document.getElementById('syncDot');
   if (d) d.className = 'sync-dot' + (s ? ' syncing' : '');
 }
+function showLoading(msg = 'Loading…') {
+  document.getElementById('loadingText').textContent = msg;
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  document.getElementById('loadingReloadBtn').classList.remove('show');
+}
+function hideLoading() {
+  clearTimeout(loadingTimer); loadingTimer = null;
+  document.getElementById('loadingScreen').classList.add('hidden');
+  document.getElementById('loadingReloadBtn').classList.remove('show');
+}
+function beginDataLoad(msg = 'Loading your data…') {
+  showLoading(msg);
+  clearTimeout(loadingTimer);
+  loadingTimer = setTimeout(() => {
+    document.getElementById('loadingText').textContent = 'Still loading. Try reloading if this gets stuck.';
+    document.getElementById('loadingReloadBtn').classList.add('show');
+  }, 3500);
+}
+function failDataLoad() {
+  clearTimeout(loadingTimer); loadingTimer = null;
+  document.getElementById('loadingText').textContent = 'Could not load data.';
+  document.getElementById('loadingReloadBtn').classList.add('show');
+}
+function maybeFinishDataLoad() {
+  if (entriesReady && goalsReady) hideLoading();
+}
 
 // ── Auth state ─────────────────────────────────────
 getRedirectResult(auth).catch(() => {});
 
 onAuthStateChanged(auth, user => {
-  document.getElementById('loadingScreen').classList.add('hidden');
   if (user && ALLOWED_EMAILS.includes(user.email?.toLowerCase())) {
     currentUser = user;
     showApp(user);
+    beginDataLoad();
     subscribeFirestore(user.uid);
   } else {
     if (user) signOut(auth);
     currentUser = null;
     teardownFirestore();
+    hideLoading();
     showAuth();
   }
 });
@@ -941,19 +974,26 @@ function showApp(user) {
 
 // ── Firestore listeners ────────────────────────────
 function subscribeFirestore(uid) {
+  entriesReady = false;
+  goalsReady = false;
   unsubEntries = onSnapshot(
     collection(db, 'users', uid, 'protein_entries'),
-    snap => { entries = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderActive(); }
+    snap => { entries = snap.docs.map(d => ({ id: d.id, ...d.data() })); entriesReady = true; renderActive(); maybeFinishDataLoad(); },
+    () => failDataLoad()
   );
   unsubGoals = onSnapshot(
     doc(db, 'users', uid, 'protein_goals', 'main'),
-    snap => { goal = snap.exists() ? (snap.data().value || null) : null; renderActive(); }
+    snap => { goal = snap.exists() ? (snap.data().value || null) : null; goalsReady = true; renderActive(); maybeFinishDataLoad(); },
+    () => failDataLoad()
   );
 }
 
 function teardownFirestore() {
   if (unsubEntries) { unsubEntries(); unsubEntries = null; }
   if (unsubGoals)   { unsubGoals();   unsubGoals   = null; }
+  entriesReady = false;
+  goalsReady = false;
+  clearTimeout(loadingTimer); loadingTimer = null;
   entries = []; goal = null;
 }
 
