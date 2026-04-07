@@ -1,0 +1,16 @@
+{
+  "name": "Lift",
+  "short_name": "Lift",
+  "start_url": "/lift-tracker.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#1d4ed8",
+  "icons": [
+    {
+      "src": "/logo-blue.png",
+      "sizes": "1000x1000",
+      "type": "image/png"
+    }
+  ]
+}

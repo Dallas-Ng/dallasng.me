@@ -1,0 +1,16 @@
+{
+  "name": "Protein",
+  "short_name": "Protein",
+  "start_url": "/protein-tracker.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#c2410c",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1000x1000",
+      "type": "image/png"
+    }
+  ]
+}
