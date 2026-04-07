@@ -719,7 +719,11 @@ function renderLog(){
   if(!day){
     activeDayId=null;
     document.getElementById('fabLabel').textContent='Set category';
-    el.innerHTML=`<div class="empty"><div class="empty-ico">🏋️</div><div class="empty-txt">No category selected yet.<br>Tap Set category to start this session.</div></div>`;
+    el.innerHTML=`<div class="log-day-head" onclick="handleLogFab()" style="background:${hexToRgba('#a8a29e',.08)};border-color:${hexToRgba('#a8a29e',.2)};cursor:pointer">
+      <div class="log-day-kicker">${isToday?"Today's session":fmtDateLong(logViewDate)}</div>
+      <div class="log-day-main" style="color:#a8a29e">No category</div>
+    </div>
+    <div class="empty"><div class="empty-ico">🏋️</div><div class="empty-txt">No category selected yet.<br>Tap Set category to start this session.</div></div>`;
     return;
   }
 
