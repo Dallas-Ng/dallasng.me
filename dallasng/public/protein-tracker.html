@@ -54,6 +54,13 @@ body {
   display: flex;
   flex-direction: column;
 }
+body.modal-open {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
 /* ── AUTH SCREEN ── */
 #authScreen {
@@ -1239,8 +1246,26 @@ window.saveGoal = async function() {
 };
 
 // ── Overlay helpers ────────────────────────────────
-window.openOverlay  = function(id) { document.getElementById(id).classList.add('on'); document.body.style.overflow = 'hidden'; };
-window.closeOverlay = function(id) { document.getElementById(id).classList.remove('on'); if (!document.querySelector('.overlay.on')) document.body.style.overflow = ''; };
+let lockedScrollY = 0;
+function lockPageScroll() {
+  lockedScrollY = window.scrollY || window.pageYOffset || 0;
+  document.body.classList.add('modal-open');
+  document.body.style.top = `-${lockedScrollY}px`;
+}
+function unlockPageScroll() {
+  const top = document.body.style.top;
+  document.body.classList.remove('modal-open');
+  document.body.style.top = '';
+  window.scrollTo(0, Math.abs(parseInt(top || '0', 10)));
+}
+window.openOverlay  = function(id) {
+  document.getElementById(id).classList.add('on');
+  if (!document.body.classList.contains('modal-open')) lockPageScroll();
+};
+window.closeOverlay = function(id) {
+  document.getElementById(id).classList.remove('on');
+  if (!document.querySelector('.overlay.on')) unlockPageScroll();
+};
 window.bgClose      = function(e, id) { if (e.target === document.getElementById(id)) closeOverlay(id); };
 window.openAppMenu  = function() { openOverlay('appMenuOverlay'); };
 window.goToApp      = function(path) { window.location.href = path; };
