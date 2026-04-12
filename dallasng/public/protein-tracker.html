@@ -408,8 +408,8 @@ body.modal-open {
   border-radius: var(--r); padding: 18px 16px 14px; margin-bottom: 18px;
 }
 .chart-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink3); margin-bottom: 14px; }
-.bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 90px; }
-.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end; cursor: pointer; }
+.bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 160px; position: relative; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; height: 100%; justify-content: flex-end; cursor: pointer; position: relative; }
 .bar-col:active .bar { opacity: 0.7; }
 .bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 3px; background: var(--surface2); transition: height 0.4s cubic-bezier(.4,0,.2,1); }
 .bar.partial { background: var(--yellow-border); }
@@ -417,6 +417,16 @@ body.modal-open {
 .bar.miss    { background: var(--red-border); }
 .bar.future  { background: var(--surface2); opacity: 0.4; }
 .bar-day { font-size: 10px; color: var(--ink3); font-family: 'Geist Mono', monospace; }
+.bar-goal-line { position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--orange); pointer-events: none; z-index: 1; }
+.bar-val { font-size: 9px; color: var(--ink3); font-family: 'Geist Mono', monospace; line-height: 1; margin-bottom: 3px; white-space: nowrap; }
+.bar-chart-wrap { display: flex; gap: 6px; align-items: flex-start; }
+.bar-yaxis-outer { display: flex; flex-direction: column; flex-shrink: 0; }
+.bar-yaxis { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; height: 160px; }
+.bar-yaxis-spacer { height: 20px; }
+.bar-yaxis-lbl { font-size: 9px; color: var(--ink3); font-family: 'Geist Mono', monospace; line-height: 1; }
+.bar-chart-col { flex: 1; display: flex; flex-direction: column; }
+.bar-days-row { display: flex; gap: 5px; height: 20px; align-items: center; }
+.bar-day-cell { flex: 1; text-align: center; font-size: 10px; color: var(--ink3); font-family: 'Geist Mono', monospace; }
 
 /* ── CALENDAR ── */
 .cal-box {
@@ -663,7 +673,16 @@ body.modal-open {
     </div>
     <div class="chart-box">
       <div class="chart-lbl">Daily protein</div>
-      <div class="bar-chart" id="wChart"></div>
+      <div class="bar-chart-wrap">
+        <div class="bar-yaxis-outer">
+          <div class="bar-yaxis" id="wChartYAxis"></div>
+          <div class="bar-yaxis-spacer"></div>
+        </div>
+        <div class="bar-chart-col">
+          <div class="bar-chart" id="wChart"></div>
+          <div class="bar-days-row" id="wChartDays"></div>
+        </div>
+      </div>
       <div class="cal-legend">
         <div class="leg-item"><div class="leg-dot hit"></div> Hit goal</div>
         <div class="leg-item"><div class="leg-dot partial"></div> Partial</div>
@@ -1163,14 +1182,39 @@ function renderWeekly() {
   document.getElementById('wAvg').textContent   = fmt(total / 7) + 'g';
   document.getElementById('wHit').textContent   = hit + '/7';
 
-  const max = Math.max(...tots, 1);
-  document.getElementById('wChart').innerHTML = days.map((d, i) => {
-    const cls = dayStatus(tots[i], goal, d, false);
-    const lbl = new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'narrow' });
-    const pct = Math.max(tots[i] / max * 100, 2);
+  // Ceiling: snap to nearest 50g above the highest of rawMax and goal
+  const rawMax  = Math.max(...tots, 1);
+  let ceiling = Math.ceil(Math.max(rawMax, (goal || 0) + 1) / 50) * 50;
+  if (goal && ceiling - goal < 20) ceiling += 50;
+  const CHART_H = 160; // matches CSS height in px
+
+  const barsHTML = days.map((d, i) => {
+    const cls   = dayStatus(tots[i], goal, d, false);
+    const pct   = tots[i] > 0 ? Math.max(tots[i] / ceiling * 100, 2) : 0;
+    const barPx = pct / 100 * CHART_H;
     const click = cls !== 'future' ? ` onclick="openCalDay('${d}')"` : '';
-    return `<div class="bar-col"${click}><div class="bar ${cls}" style="height:${pct}%"></div><div class="bar-day">${lbl}</div></div>`;
+    const valHTML = (tots[i] > 0 && barPx >= 18)
+      ? `<div class="bar-val">${fmt(tots[i])}g</div>`
+      : `<div class="bar-val" style="visibility:hidden">0</div>`;
+    return `<div class="bar-col"${click}>${valHTML}<div class="bar ${cls}" style="height:${pct}%"></div></div>`;
   }).join('');
+
+  const goalLineHTML = goal
+    ? `<div class="bar-goal-line" style="bottom:${Math.min(goal / ceiling * 100, 100)}%"></div>`
+    : '';
+
+  document.getElementById('wChart').innerHTML = barsHTML + goalLineHTML;
+
+  document.getElementById('wChartDays').innerHTML = days.map(d => {
+    const lbl = new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'narrow' });
+    return `<div class="bar-day-cell">${lbl}</div>`;
+  }).join('');
+
+  // Y-axis: 50g steps top→bottom (space-between flex column)
+  const ySteps = [];
+  for (let v = ceiling; v >= 0; v -= 50) ySteps.push(v);
+  document.getElementById('wChartYAxis').innerHTML =
+    ySteps.map(v => `<div class="bar-yaxis-lbl">${v > 0 ? v + 'g' : '0'}</div>`).join('');
 }
 
 // ── MONTHLY ────────────────────────────────────────
